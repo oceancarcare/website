@@ -1305,7 +1305,6 @@
 
   function Stages() {
     const sequenceRef = useRef(null);
-    const [progress, setProgress] = useState(0);
     const [activeIdx, setActiveIdx] = useState(0);
     const [slamming, setSlamming] = useState(false);
 
@@ -1320,8 +1319,6 @@
       const update = () => {
         cancelAnimationFrame(frame);
         frame = requestAnimationFrame(() => {
-          const maxScroll = Math.max(1, sequence.scrollWidth - sequence.clientWidth);
-          const overall = Math.min(1, Math.max(0, sequence.scrollLeft / maxScroll));
           const viewportCenter = sequence.scrollLeft + sequence.clientWidth / 2;
           const stages = Array.from(sequence.children);
           const idx = stages.reduce((nearest, stage, stageIdx) => {
@@ -1334,7 +1331,6 @@
               : nearest;
           }, 0);
 
-          setProgress(overall);
           if (idx !== previousStage) {
             previousStage = idx;
             setActiveIdx(idx);
@@ -1374,7 +1370,7 @@
       if (!stage) return;
       sequence.scrollTo({
         left: stage.offsetLeft - (sequence.clientWidth - stage.offsetWidth) / 2,
-        behavior: "smooth",
+        behavior: idx === 0 && activeIdx === STAGE_DATA.length - 1 ? "instant" : "smooth",
       });
     };
 
@@ -1408,6 +1404,7 @@
               playsinline
               autoPlay
               preload="auto"
+              onEnded=${() => goToStage((i + 1) % STAGE_DATA.length)}
               aria-label=${"Detailing process: " + st.tag.toLowerCase()}
             ></video>` : null}
           </div>
@@ -1435,6 +1432,7 @@
               key=${buttonStage.idx}
               class=${"cinema-stage-button" + (activeIdx === buttonIdx ? " on" : "")}
               onClick=${() => goToStage(buttonIdx)}
+              onMouseEnter=${() => goToStage(buttonIdx)}
               aria-current=${activeIdx === buttonIdx ? "step" : null}
               aria-label=${"Go to stage " + buttonStage.idx + ": " + buttonStage.tag.toLowerCase()}
             >
@@ -1462,17 +1460,6 @@
             </button>
           </div>
 
-          <footer class="cinema-bottom">
-            <div class="cinema-progress" aria-label="Detailing process progress">
-              <div
-                class="cinema-progress-fill"
-                style=${{ transform: "scaleX(" + progress + ")" }}
-              ></div>
-            </div>
-            <div class="cinema-scroll-hint">
-              <i></i><span>Swipe to explore</span>
-            </div>
-          </footer>
         </section>`)}
       </div>
     </div>`;
