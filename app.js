@@ -1305,75 +1305,77 @@
 
   function Stages() {
     const sequenceRef = useRef(null);
-    const [order, setOrder] = useState(STAGE_DATA.map((_, idx) => idx));
-    const [dragX, setDragX] = useState(0);
-    const [dragging, setDragging] = useState(false);
+    const [activeIdx, setActiveIdx] = useState(0);
     const [slamming, setSlamming] = useState(false);
-    const dragRef = useRef(null);
-    const activeIdx = order[0];
 
     useEffect(() => {
+      const sequence = sequenceRef.current;
+      if (!sequence) return;
+
+      let frame = 0;
+      let previousStage = -1;
       let slamTimer = 0;
-      setSlamming(true);
-      slamTimer = window.setTimeout(() => setSlamming(false), 650);
-      return () => {
-        window.clearTimeout(slamTimer);
+
+      const update = () => {
+        cancelAnimationFrame(frame);
+        frame = requestAnimationFrame(() => {
+          const viewportCenter = sequence.scrollLeft + sequence.clientWidth / 2;
+          const stages = Array.from(sequence.children);
+          const idx = stages.reduce((nearest, stage, stageIdx) => {
+            const stageCenter = stage.offsetLeft + stage.offsetWidth / 2;
+            const nearestCenter =
+              stages[nearest].offsetLeft + stages[nearest].offsetWidth / 2;
+            return Math.abs(stageCenter - viewportCenter) <
+              Math.abs(nearestCenter - viewportCenter)
+              ? stageIdx
+              : nearest;
+          }, 0);
+
+          if (idx !== previousStage) {
+            previousStage = idx;
+            setActiveIdx(idx);
+            setSlamming(true);
+            window.clearTimeout(slamTimer);
+            slamTimer = window.setTimeout(() => setSlamming(false), 650);
+          }
+        });
       };
-    }, [activeIdx]);
+
+      sequence.addEventListener("scroll", update, { passive: true });
+      window.addEventListener("resize", update);
+      update();
+
+      return () => {
+        cancelAnimationFrame(frame);
+        window.clearTimeout(slamTimer);
+        sequence.removeEventListener("scroll", update);
+        window.removeEventListener("resize", update);
+      };
+    }, []);
 
     const goToStage = (idx) => {
       const sequence = sequenceRef.current;
       if (!sequence) return;
       if (idx === activeIdx) {
-        const video = sequence.querySelector(".cinema-stage.is-active video");
+        const video = sequence.querySelector(
+          ".cinema-stage:nth-child(" + (idx + 1) + ") video",
+        );
         if (video) {
           video.currentTime = 0;
           video.play().catch(() => {});
         }
         return;
       }
-      setOrder((current) => {
-        const selectedPosition = current.indexOf(idx);
-        return [
-          ...current.slice(selectedPosition),
-          ...current.slice(0, selectedPosition),
-        ];
+      const stage = sequence.children[idx];
+      if (!stage) return;
+      sequence.scrollTo({
+        left: stage.offsetLeft - (sequence.clientWidth - stage.offsetWidth) / 2,
+        behavior: idx === 0 && activeIdx === STAGE_DATA.length - 1 ? "instant" : "smooth",
       });
-      setDragX(0);
     };
 
-    const moveBy = (amount) => {
-      setOrder((current) =>
-        amount > 0
-          ? [...current.slice(1), current[0]]
-          : [current[current.length - 1], ...current.slice(0, -1)],
-      );
-      setDragX(0);
-    };
-
-    const handlePointerDown = (event) => {
-      if (event.button !== 0 || event.target.closest("button")) return;
-      dragRef.current = { pointerId: event.pointerId, startX: event.clientX };
-      event.currentTarget.setPointerCapture(event.pointerId);
-      setDragging(true);
-    };
-
-    const handlePointerMove = (event) => {
-      if (!dragRef.current || dragRef.current.pointerId !== event.pointerId) return;
-      const distance = event.clientX - dragRef.current.startX;
-      const limit = window.innerWidth * 0.55;
-      setDragX(Math.max(-limit, Math.min(limit, distance)));
-    };
-
-    const handlePointerUp = (event) => {
-      if (!dragRef.current || dragRef.current.pointerId !== event.pointerId) return;
-      const distance = event.clientX - dragRef.current.startX;
-      dragRef.current = null;
-      setDragging(false);
-      if (distance > 60) moveBy(1);
-      else if (distance < -60) moveBy(-1);
-      else setDragX(0);
-    };
+    const moveBy = (amount) =>
+      goToStage(Math.min(STAGE_DATA.length - 1, Math.max(0, activeIdx + amount)));
 
     return html`<div class="ln-wrap">
       <div class="ln-header">
@@ -1383,45 +1385,26 @@
             5-Stage <span class="bl">Precision Transformation</span>
           </h2>
           <p class="ln-desc">
-            Swipe right to send the front card to the back, or use the arrows to
-            explore Wash → Foam → Polish → Coating → Final Check.
+            Swipe horizontally or use the arrows to explore each detailing
+            phase: Wash → Foam → Polish → Coating → Final Check.
           </p>
         </div>
       </div>
 
-      <div
-        class=${"cinema-sequence" + (dragging ? " is-dragging" : "")}
-        ref=${sequenceRef}
-        onPointerDown=${handlePointerDown}
-        onPointerMove=${handlePointerMove}
-        onPointerUp=${handlePointerUp}
-        onPointerCancel=${handlePointerUp}
-      >
-        ${order.map((stageIdx, position) => {
-          const st = STAGE_DATA[stageIdx];
-          const isActive = position === 0;
-          const cardClass =
-            "cinema-stage stack-card-" + position +
-            (isActive ? " is-active" : "") +
-            (slamming && isActive ? " slam" : "");
-          const cardStyle = {
-            "--drag-x": isActive ? dragX + "px" : "0px",
-            "--drag-rotation": isActive ? dragX * -0.035 + "deg" : "0deg",
-          };
-          return html`<section
+      <div class="cinema-sequence" ref=${sequenceRef}>
+        ${STAGE_DATA.map((st, i) => html`<section
           key=${st.idx}
-          class=${cardClass}
-          style=${cardStyle}
+          class=${"cinema-stage" + (activeIdx === i ? " is-active" : "") + (slamming && activeIdx === i ? " slam" : "")}
           aria-label=${"Stage " + st.idx + ": " + st.tag.toLowerCase()}
         >
           <div class="cinema-footage">
-            ${isActive ? html`<video
+            ${activeIdx === i ? html`<video
               src=${st.src}
               muted
               playsinline
               autoPlay
               preload="auto"
-              onEnded=${() => moveBy(1)}
+              onEnded=${() => goToStage((i + 1) % STAGE_DATA.length)}
               aria-label=${"Detailing process: " + st.tag.toLowerCase()}
             ></video>` : null}
           </div>
@@ -1444,12 +1427,26 @@
           </div>
           <div class="cinema-side-label">${st.tag} · ${st.idx} / 05</div>
 
-        </section>`;
-        })}
-        <div class="cinema-arrows">
-          <button class="cinema-arrow" onClick=${() => moveBy(-1)} aria-label="Previous stage">←</button>
-          <button class="cinema-arrow" onClick=${() => moveBy(1)} aria-label="Next stage">→</button>
-        </div>
+          <div class="cinema-arrows">
+            <button
+              class="cinema-arrow"
+              onClick=${() => moveBy(-1)}
+              disabled=${activeIdx === 0}
+              aria-label="Previous stage"
+            >
+              ←
+            </button>
+            <button
+              class="cinema-arrow"
+              onClick=${() => moveBy(1)}
+              disabled=${activeIdx === STAGE_DATA.length - 1}
+              aria-label="Next stage"
+            >
+              →
+            </button>
+          </div>
+
+        </section>`)}
       </div>
       <div class="cinema-stage-nav" aria-label="Detailing stages">
         ${STAGE_DATA.map((buttonStage, buttonIdx) => html`<button
