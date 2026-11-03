@@ -2438,6 +2438,20 @@ select option {
     min-height: 0;
   }
   .hero-car-showcase {
-    bottom: 0;
+    position: relative;
+    right: auto;
+    bottom: auto;
+    width: 100%;
+    max-width: none;
+    margin: 0 auto;
+  }
+  .hero-car-img {
+    width: 100%;
+  }
+}
+@media (max-width: 640px) {
+  .hero-car-showcase {
+    width: 140%;
+    margin: 0 0 0 -20%;
   }
 }
