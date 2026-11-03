@@ -60,9 +60,6 @@ h1{font-size:clamp(58px,8.6vw,124px)}h2{font-size:clamp(40px,6vw,82px)}h3{font-s
 .hero-left-col h1 {
   color: #000000 !important;
 }
-.hero-left-col h1 .bl {
-  color: #000000 !important;
-}
 
 /* CINEMATIC DETAILING SCROLL SHOWCASE */
 .ln{position:relative;z-index:2;border-block:1px solid var(--line);background:radial-gradient(ellipse 90% 60% at 50% 0%,rgba(255,43,56,.14),transparent 75%),linear-gradient(180deg,#02050b 0%,#050a16 50%,#02050b 100%);padding:56px 0 72px;overflow:hidden}
@@ -170,7 +167,7 @@ input,select,textarea{width:100%;min-height:56px;padding:16px 20px;border-radius
 .hero-wash-link:hover .hero-wash-arrow{transform:translateX(6px)}
 .hero-wa-btn{padding:10px 20px;font-size:15px}
 .hero-stats{margin-top:28px}
-.hero-car-showcase{position:relative;width:100%;max-width:1120px;margin:8px auto -20px;display:flex;justify-content:flex-end;align-items:flex-end;z-index:1}
+.hero-car-showcase{position:relative;width:100%;max-width:1120px;margin:24px auto 0;display:flex;justify-content:center;align-items:flex-end;z-index:1}
 .hero-car-glow{position:absolute;right:6%;bottom:10%;width:70%;height:58%;background:radial-gradient(ellipse closest-side,rgba(255,255,255,.28),transparent 75%);pointer-events:none;filter:blur(40px)}
 .hero-car-img{width:min(920px,88vw);height:auto;display:block;position:relative;z-index:2;filter:drop-shadow(0 25px 35px rgba(255,255,255,.28)) drop-shadow(0 0 25px rgba(255,255,255,.28));animation:carFloat 6s ease-in-out infinite alternate}
 @keyframes carFloat{0%{transform:translateY(0px)}100%{transform:translateY(-8px)}}

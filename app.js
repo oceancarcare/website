@@ -389,21 +389,16 @@ function Home({go,pick}){return html`<div class="pg">
         <div><b>20+</b><span>Years</span></div>
         <div><b>4.9★</b><span>Google</span></div>
         <div><b>117+</b><span>Reviews</span></div>
-      </div><div class="hero-car-showcase">
-  <div class="hero-car-glow"></div>
-
-  <img
-    src="hero-porsche.png"
-    alt="Ocean Car Detailing Porsche 911 GT3 RS"
-    class="hero-car-img"
-  />
-
-</div>
+      </div>
     </div>
 
-  </div>
+    </div>
 
- 
+    <div class="hero-car-showcase">
+  <div class="hero-car-glow"></div>
+  <img src="hero-porsche.png" alt="Ocean Car Detailing Porsche 911 GT3 RS" class="hero-car-img" />
+</div>
+
 </section>
 </div>
 
