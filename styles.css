@@ -2058,7 +2058,7 @@ width: min(920px, 88vw);
     border-color 0.2s;
 }
 .ac .b.p:hover {
-  background: #fff;
+  background: #000;
   color: var(--bl);
   border-color: var(--bl);
   box-shadow: none;
