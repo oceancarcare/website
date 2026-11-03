@@ -228,3 +228,18 @@ input,select,textarea{width:100%;min-height:56px;padding:16px 20px;border-radius
 
 .ac .b.p{transition:transform .3s,box-shadow .3s,background .2s,color .2s,border-color .2s}
 .ac .b.p:hover{background:#fff;color:var(--bl);border-color:var(--bl);box-shadow:none}
+
+
+/* Match the desktop hero composition at every viewport width. */
+.pg:has(> .hsec){padding-top:78px}
+.hsec{box-sizing:border-box;aspect-ratio:auto;min-height:0;padding:0;background:#fff!important;display:grid}
+.hero.filllo-hero{grid-area:1/1;position:relative;isolation:isolate;box-sizing:border-box;width:min(1560px,calc(100% - 40px));max-width:1560px;height:auto;min-height:0;aspect-ratio:16/9;margin:0 auto;padding:0;display:block;overflow:hidden}
+.hero-top-row{position:relative;z-index:2;grid-template-columns:1.15fr 1fr;gap:clamp(16px,3vw,40px);width:100%;margin:0;padding:clamp(14px,2vw,32px)}
+.hero-car-showcase{position:absolute;inset:auto 0 0 auto;width:78%;height:58%;max-width:none;margin:0;overflow:hidden;z-index:1;pointer-events:none}
+.hero-car-img{position:absolute;inset:0;width:100%;height:100%;max-width:100%;object-fit:contain;object-position:right bottom;animation:none;filter:none}
+@media(max-width:900px){
+  .pg:has(> .hsec){padding-top:78px}
+  .hero.filllo-hero{width:calc(100% - 24px)}
+  .hero-top-row{grid-template-columns:1.05fr 1fr;gap:10px;padding:clamp(8px,2vw,16px)}
+  .hero-car-showcase{width:82%;height:52%}
+}
