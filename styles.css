@@ -2150,20 +2150,37 @@ width: min(920px, 88vw);
   margin: 0 auto 36px;
 }
 .cinema-sequence {
+  display: flex;
   position: relative;
   width: 100vw;
-  height: 600svh;
+  height: clamp(480px, 72svh, 780px);
   margin-left: calc(50% - 50vw);
+  overflow-x: auto;
+  overflow-y: hidden;
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  scroll-snap-stop: always;
+  scrollbar-width: none;
+  overscroll-behavior-x: contain;
+  touch-action: pan-x pan-y;
+}
+.cinema-sequence::-webkit-scrollbar {
+  display: none;
 }
 .cinema-stage {
-  position: sticky;
-  top: 78px;
-  height: calc(100svh - 78px);
-  min-height: 520px;
+  position: relative;
+  top: auto;
+  flex: 0 0 100%;
+  width: 100%;
+  min-width: 100%;
+  height: 100%;
+  min-height: 0;
   overflow: hidden;
   isolation: isolate;
   background: #050505;
   color: #fff;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
 }
 .cinema-footage,
 .cinema-footage video,
@@ -2360,9 +2377,41 @@ width: min(920px, 88vw);
   border-color: var(--bl);
   background: rgba(12, 5, 6, 0.9);
 }
-.cinema-stage-button.on b,
-.cinema-stage-button.playing span {
+.cinema-stage-button.on b {
   color: var(--bl);
+}
+.cinema-arrows {
+  position: absolute;
+  top: 50%;
+  right: clamp(22px, 5vw, 76px);
+  z-index: 6;
+  display: grid;
+  gap: 12px;
+  transform: translateY(-50%);
+}
+.cinema-arrow {
+  display: grid;
+  width: 50px;
+  height: 50px;
+  padding: 0;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.58);
+  border-radius: 50%;
+  background: rgba(5, 5, 5, 0.72);
+  color: #fff;
+  font: 400 30px/1 Inter, system-ui, sans-serif;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: border-color 0.2s, color 0.2s, background 0.2s, opacity 0.2s;
+}
+.cinema-arrow:not(:disabled):hover {
+  border-color: var(--bl);
+  background: rgba(15, 5, 6, 0.95);
+  color: var(--bl);
+}
+.cinema-arrow:disabled {
+  opacity: 0.35;
+  cursor: default;
 }
 .cinema-progress {
   height: 2px;
@@ -2438,17 +2487,11 @@ width: min(920px, 88vw);
     linear-gradient(180deg, rgba(255, 255, 255, 0.2), transparent 22%);
   mix-blend-mode: screen;
 }
-.cinema-sequence + .stage-nav {
-  width: min(1240px, calc(100% - 40px));
-  margin: 24px auto 0;
-}
 @media (max-width: 700px) {
   .ln-header {
     margin-bottom: 24px;
   }
   .cinema-stage {
-    top: 120px;
-    height: calc(100svh - 120px);
     min-height: 0;
   }
   .cinema-footage video {
@@ -2461,7 +2504,7 @@ width: min(920px, 88vw);
   }
   .cinema-copy {
     top: auto;
-    bottom: 20%;
+    bottom: 32%;
     left: 25px;
     width: calc(100% - 50px);
     transform: none;
@@ -2495,6 +2538,16 @@ width: min(920px, 88vw);
     bottom: 68px;
     left: 16px;
     gap: 5px;
+  }
+  .cinema-arrows {
+    top: 45%;
+    right: 18px;
+    gap: 9px;
+  }
+  .cinema-arrow {
+    width: 42px;
+    height: 42px;
+    font-size: 26px;
   }
   .cinema-stage-button {
     min-height: 46px;

@@ -1305,138 +1305,72 @@
 
   function Stages() {
     const sequenceRef = useRef(null);
-    const videoRef = useRef(null);
     const [progress, setProgress] = useState(0);
     const [activeIdx, setActiveIdx] = useState(0);
-    const [isPlaying, setIsPlaying] = useState(false);
     const [slamming, setSlamming] = useState(false);
-    const progressRef = useRef({ overall: 0, segment: 0 });
-    const playbackRef = useRef(false);
-
-    useEffect(() => {
-      const video = videoRef.current;
-      if (!video || !isPlaying) return;
-
-      const startPlayback = () => {
-        video.currentTime = 0;
-        video.play().catch(() => {
-          playbackRef.current = false;
-          setIsPlaying(false);
-        });
-      };
-
-      if (video.readyState >= 2) startPlayback();
-      else video.addEventListener("loadeddata", startPlayback, { once: true });
-
-      return () => video.removeEventListener("loadeddata", startPlayback);
-    }, [activeIdx, isPlaying]);
 
     useEffect(() => {
       const sequence = sequenceRef.current;
       if (!sequence) return;
 
       let frame = 0;
-      let previousStage = 0;
-      let previousFrame = performance.now();
-      let previousUiUpdate = 0;
-      let scrollStamp = performance.now();
-      let foamClock = 0;
+      let previousStage = -1;
       let slamTimer = 0;
 
-      const seek = (video, time) => {
-        if (!video || !Number.isFinite(video.duration) || video.duration <= 0)
-          return;
-        const nextTime = Math.max(0, Math.min(video.duration - 0.045, time));
-        if (Math.abs(video.currentTime - nextTime) > 0.045)
-          video.currentTime = nextTime;
-      };
+      const update = () => {
+        cancelAnimationFrame(frame);
+        frame = requestAnimationFrame(() => {
+          const maxScroll = Math.max(1, sequence.scrollWidth - sequence.clientWidth);
+          const overall = Math.min(1, Math.max(0, sequence.scrollLeft / maxScroll));
+          const idx = Math.min(
+            STAGE_DATA.length - 1,
+            Math.round(sequence.scrollLeft / sequence.clientWidth),
+          );
 
-      const handleScroll = () => {
-        scrollStamp = performance.now();
-        foamClock = 0;
-        if (playbackRef.current) {
-          playbackRef.current = false;
-          previousStage = -1;
-          videoRef.current?.pause();
-          setIsPlaying(false);
-        }
-      };
-
-      const update = (now) => {
-        const rect = sequence.getBoundingClientRect();
-        const travel = Math.max(1, sequence.offsetHeight - window.innerHeight);
-        const overall = Math.min(1, Math.max(0, -rect.top / travel));
-        const scaled = overall * STAGE_DATA.length;
-        const idx = Math.min(STAGE_DATA.length - 1, Math.floor(scaled));
-        const segment = overall >= 1 ? 1 : scaled - idx;
-        const nextProgress = { overall, segment };
-        progressRef.current = nextProgress;
-
-        const stageChanged = idx !== previousStage;
-        if (stageChanged) {
-          previousStage = idx;
-          if (!playbackRef.current) {
+          setProgress(overall);
+          if (idx !== previousStage) {
+            previousStage = idx;
             setActiveIdx(idx);
             setSlamming(true);
             window.clearTimeout(slamTimer);
             slamTimer = window.setTimeout(() => setSlamming(false), 650);
           }
-        }
-
-        const video = videoRef.current;
-        if (video && video.readyState >= 2 && !playbackRef.current) {
-          if (idx === 1 && now - scrollStamp > 180) {
-            if (!foamClock) foamClock = Math.max(0.15, video.currentTime || 0.15);
-            foamClock += Math.min(40, now - previousFrame) * 0.00052;
-            const loopEnd = Math.min(
-              video.duration - 0.08,
-              Math.max(1.5, video.duration * 0.58),
-            );
-            if (foamClock > loopEnd) foamClock = 0.25;
-            seek(video, foamClock);
-          } else {
-            foamClock = video.currentTime || 0;
-            seek(video, segment * Math.max(0, video.duration - 0.08));
-          }
-        }
-
-        if (now - previousUiUpdate > 70 || stageChanged) {
-          setProgress(overall);
-          previousUiUpdate = now;
-        }
-        previousFrame = now;
-        frame = requestAnimationFrame(update);
+        });
       };
 
-      window.addEventListener("scroll", handleScroll, { passive: true });
-      frame = requestAnimationFrame(update);
+      sequence.addEventListener("scroll", update, { passive: true });
+      window.addEventListener("resize", update);
+      update();
 
       return () => {
         cancelAnimationFrame(frame);
         window.clearTimeout(slamTimer);
-        window.removeEventListener("scroll", handleScroll);
+        sequence.removeEventListener("scroll", update);
+        window.removeEventListener("resize", update);
       };
     }, []);
 
-    const playStage = (idx) => {
-      const video = videoRef.current;
-      playbackRef.current = true;
-      if (idx === activeIdx && isPlaying && video) {
-        video.currentTime = 0;
-        video.play().catch(() => {
-          playbackRef.current = false;
-          setIsPlaying(false);
-        });
+    const goToStage = (idx) => {
+      const sequence = sequenceRef.current;
+      if (!sequence) return;
+      if (idx === activeIdx) {
+        const video = sequence.querySelector(
+          ".cinema-stage:nth-child(" + (idx + 1) + ") video",
+        );
+        if (video) {
+          video.currentTime = 0;
+          video.play().catch(() => {});
+        }
         return;
       }
-      setActiveIdx(idx);
-      setIsPlaying(true);
-      setSlamming(true);
-      window.setTimeout(() => setSlamming(false), 650);
+      sequence.scrollTo({
+        left: idx * sequence.clientWidth,
+        behavior: "smooth",
+      });
     };
 
-    const cur = STAGE_DATA[activeIdx];
-    const pctDisplay = Math.round(progress * 100);
+    const moveBy = (amount) =>
+      goToStage(Math.min(STAGE_DATA.length - 1, Math.max(0, activeIdx + amount)));
 
     return html`<div class="ln-wrap">
       <div class="ln-header">
@@ -1446,87 +1380,91 @@
             5-Stage <span class="bl">Precision Transformation</span>
           </h2>
           <p class="ln-desc">
-            Scroll to scrub each detailing phase, or select a stage to play its
-            video: Wash → Foam → Polish → Coating → Final Check.
+            Swipe horizontally or use the arrows to explore each detailing
+            phase: Wash → Foam → Polish → Coating → Final Check.
           </p>
         </div>
       </div>
 
       <div class="cinema-sequence" ref=${sequenceRef}>
-        <section class=${"cinema-stage" + (slamming ? " slam" : "")}>
+        ${STAGE_DATA.map((st, i) => html`<section
+          key=${st.idx}
+          class=${"cinema-stage" + (slamming && activeIdx === i ? " slam" : "")}
+          aria-label=${"Stage " + st.idx + ": " + st.tag.toLowerCase()}
+        >
           <div class="cinema-footage">
-            <video
-              key=${cur.idx}
-              ref=${videoRef}
-              src=${cur.src}
+            ${activeIdx === i ? html`<video
+              src=${st.src}
               muted
               playsinline
+              autoPlay
               preload="auto"
-              onLoadedMetadata=${(event) => {
-                const video = event.currentTarget;
-                if (Number.isFinite(video.duration)) {
-                  video.currentTime =
-                    progressRef.current.segment * Math.max(0, video.duration - 0.08);
-                }
-              }}
-              aria-label=${"Detailing process: " + cur.tag.toLowerCase()}
-            ></video>
+              aria-label=${"Detailing process: " + st.tag.toLowerCase()}
+            ></video>` : null}
           </div>
           <div class="cinema-shade"></div>
           <div class="cinema-grain"></div>
           <div class="cinema-impact"></div>
 
           <div class="cinema-copy">
-            <span class="cinema-eyebrow">
-              Process / ${cur.idx} · ${cur.subtitle}
-            </span>
+            <span class="cinema-eyebrow">Process / ${st.idx} · ${st.subtitle}</span>
             <h3 class="cinema-title">
-              ${cur.headline.map((line) => html`<span key=${line}>${line}</span>`)}
+              ${st.headline.map((line) => html`<span key=${line}>${line}</span>`)}
             </h3>
-            <span class="cinema-step-name">${cur.tag}</span>
-            <p class="cinema-description">${cur.desc}</p>
+            <span class="cinema-step-name">${st.tag}</span>
+            <p class="cinema-description">${st.desc}</p>
           </div>
 
           <div class="cinema-count">
-            <span class="cinema-count-current">${cur.idx}</span>
+            <span class="cinema-count-current">${st.idx}</span>
             <span class="cinema-count-total">/ 05</span>
           </div>
-          <div class="cinema-side-label">
-            ${cur.tag} · ${cur.idx} / 05
-          </div>
+          <div class="cinema-side-label">${st.tag} · ${st.idx} / 05</div>
 
           <div class="cinema-stage-nav">
-            ${STAGE_DATA.map((st, i) => html`<button
-              key=${st.idx}
-              class=${"cinema-stage-button" + (activeIdx === i ? " on" : "") + (activeIdx === i && isPlaying ? " playing" : "")}
-              onClick=${() => playStage(i)}
-              aria-pressed=${activeIdx === i && isPlaying}
-              aria-label=${"Play stage " + st.idx + ": " + st.tag.toLowerCase()}
+            ${STAGE_DATA.map((buttonStage, buttonIdx) => html`<button
+              key=${buttonStage.idx}
+              class=${"cinema-stage-button" + (activeIdx === buttonIdx ? " on" : "")}
+              onClick=${() => goToStage(buttonIdx)}
+              aria-current=${activeIdx === buttonIdx ? "step" : null}
+              aria-label=${"Go to stage " + buttonStage.idx + ": " + buttonStage.tag.toLowerCase()}
             >
-              <span>STAGE ${st.idx}</span>
-              <b>${st.tag}</b>
+              <span>STAGE ${buttonStage.idx}</span>
+              <b>${buttonStage.tag}</b>
             </button>`)}
           </div>
 
-          <footer class="cinema-bottom">
-            <div
-              class="cinema-progress"
-              role="progressbar"
-              aria-label="Detailing process progress"
-              aria-valuemin="0"
-              aria-valuemax="100"
-              aria-valuenow=${pctDisplay}
+          <div class="cinema-arrows">
+            <button
+              class="cinema-arrow"
+              onClick=${() => moveBy(-1)}
+              disabled=${activeIdx === 0}
+              aria-label="Previous stage"
             >
+              ←
+            </button>
+            <button
+              class="cinema-arrow"
+              onClick=${() => moveBy(1)}
+              disabled=${activeIdx === STAGE_DATA.length - 1}
+              aria-label="Next stage"
+            >
+              →
+            </button>
+          </div>
+
+          <footer class="cinema-bottom">
+            <div class="cinema-progress" aria-label="Detailing process progress">
               <div
                 class="cinema-progress-fill"
                 style=${{ transform: "scaleX(" + progress + ")" }}
               ></div>
             </div>
             <div class="cinema-scroll-hint">
-              <i></i><span>Scroll to explore</span>
+              <i></i><span>Swipe to explore</span>
             </div>
           </footer>
-        </section>
+        </section>`)}
       </div>
     </div>`;
   }
