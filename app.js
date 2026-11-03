@@ -1498,7 +1498,6 @@
               </div>
             </div>
           </div>
-
           <div class="hero-car-showcase">
             <div class="hero-car-glow"></div>
             <img

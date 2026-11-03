@@ -13,12 +13,12 @@
   --s3: url("assets/s3.jpg");
   --s4: url("assets/s4.jpg");
   --s5: url("assets/s5.jpg");
-  --bg: #060304;
-  --card: #130809;
-  --line: rgba(255, 64, 72, 0.18);
-  --mu: #c2aaaa;
+  --bg: #ffffff;
+  --card: #f7f8fa;
+  --line: rgba(15, 23, 42, 0.14);
+  --mu: #5b6472;
   --bl: #ff2b38;
-  --bl2: #8e0d18;
+  --bl2: #c21f31;
   --rd: #ff4b4b;
   --fd: "Barlow Condensed", Impact, sans-serif;
 }
@@ -32,13 +32,10 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 body {
-  margin: 0;
+margin: 0;
   background: var(--bg);
-  color: #fff;
-  font:
-    400 16px/1.65 Inter,
-    system-ui,
-    sans-serif;
+  color: #1f2937;
+  font: 400 16px/1.65 Inter, system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
@@ -650,7 +647,10 @@ h3 {
   animation: spn 3s linear infinite;
 }
 .hero-left-col h1 {
-  color: #000;
+color: #111827;
+  font-size: clamp(58px, 8.6vw, 124px);
+  line-height: 0.92;
+  margin: 0 0 16px;
 }
 
 /* CINEMATIC DETAILING SCROLL SHOWCASE */
@@ -1862,9 +1862,9 @@ select option {
 
 /* Hero section inspired by reference design */
 .hsec {
-  position: relative;
+position: relative;
   overflow: hidden;
-  padding: 0;
+  padding: 24px 0 0;
   background: #fff;
 }
 .hero-watermark {
@@ -1884,25 +1884,23 @@ select option {
   z-index: 0;
 }
 .hero.filllo-hero {
+display: block;
+  min-height: auto;
+  width: min(1240px, calc(100% - 40px));
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 16px 0 24px;
   position: relative;
   z-index: 1;
-  isolation: isolate;
-  width: min(1560px, calc(100% - 40px));
-  max-width: 1560px;
-  min-height: clamp(660px, 45vw, 760px);
-  margin: 0 auto;
-  padding: 0 0 24px;
-  overflow: hidden;
+  overflow: visible;
 }
 .hero-top-row {
+display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: 40px;
+  align-items: flex-start;
   position: relative;
   z-index: 2;
-  display: grid;
-  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
-  gap: clamp(20px, 3vw, 48px);
-  width: 100%;
-  margin: 0;
-  padding: clamp(32px, 4vw, 60px) clamp(18px, 3vw, 48px);
 }
 .hero-title {
   font-family: var(--fd), Inter, sans-serif;
@@ -1927,15 +1925,18 @@ select option {
   margin: 0;
 }
 .hero-right-col {
+position: relative;
   padding-top: 16px;
   max-width: 480px;
   margin-left: auto;
 }
 .hero-right-col .hero-lead {
-  font-size: clamp(15px, 1.35vw, 18px);
+font-size: clamp(15px, 1.35vw, 18px);
   line-height: 1.65;
-  color: #d1d5db;
+  color: #4b5563;
   margin: 0 0 24px;
+  position: relative;
+  z-index: 3;
 }
 .hero-cta-group {
   display: flex;
@@ -1974,19 +1975,20 @@ select option {
   font-size: 15px;
 }
 .hero-stats {
-  margin-top: 28px;
+margin-top: 28px;
+  position: relative;
+  z-index: 3;
 }
 .hero-car-showcase {
-  position: absolute;
+position: relative;
+  width: 100%;
+  max-width: 1120px;
+  margin: 8px auto -20px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
   z-index: 1;
-  right: 0;
-  bottom: 0;
-  width: 80%;
-  height: 68%;
-  max-width: 1200px;
-  margin: 0;
-  overflow: hidden;
-  pointer-events: none;
+  overflow: visible;
 }
 .hero-car-glow {
   position: absolute;
@@ -2003,54 +2005,51 @@ select option {
   filter: blur(40px);
 }
 .hero-car-img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center 68%;
+width: min(920px, 88vw);
+  height: auto;
+  max-width: none;
+  display: block;
+  position: relative;
+  z-index: 1;
+  filter: drop-shadow(0 18px 24px rgba(15, 23, 42, 0.12));
 }
 @media (max-width: 900px) {
   .hero.filllo-hero {
     width: calc(100% - 32px);
-    min-height: 660px;
   }
   .hero-top-row {
-    grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
-    gap: 20px;
-    padding: 36px 20px;
+    grid-template-columns: 1fr;
+    gap: 24px;
   }
   .hero-left-col h1 {
-    font-size: clamp(42px, 6.4vw, 68px);
+    font-size: clamp(48px, 9vw, 76px);
     line-height: 0.94;
     margin: 8px 0;
   }
-  .hero-left-col .pl {
-    font-size: 11px;
-  }
-  .hero-left-col .lead {
-    font-size: 15px;
-    line-height: 1.35;
-  }
   .hero-right-col {
-    max-width: none;
+    max-width: 100%;
     margin-left: 0;
-    padding-top: 8px;
+    padding-top: 0;
   }
   .hero-right-col .hero-lead {
     font-size: 15px;
     line-height: 1.5;
-    margin-bottom: 18px;
+    margin-bottom: 12px;
   }
   .hero-stats {
-    margin-top: 12px;
+    margin-top: 8px;
   }
   .hero-car-showcase {
-    width: 88%;
-    height: 60%;
+    width: 100%;
+    max-width: 1120px;
+    margin: 18px auto 0;
+    justify-content: center;
   }
-}
-.ac .b.p {
+  .hero-car-img {
+    width: 100%;
+    max-width: 920px;
+  }
+}.ac .b.p {
   transition:
     transform 0.3s,
     box-shadow 0.3s,
@@ -2101,33 +2100,24 @@ select option {
   }
   .hero.filllo-hero {
     width: calc(100% - 24px);
-    min-height: 700px;
-    padding-bottom: 12px;
+    padding-top: 12px;
   }
   .hero-top-row {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 12px;
-    padding: 18px 10px;
+    gap: 14px;
+    padding: 12px 4px;
   }
   .hero-left-col h1 {
-    font-size: clamp(42px, 11vw, 58px);
+    font-size: clamp(44px, 12vw, 64px);
     line-height: 0.92;
     margin: 8px 0;
   }
   .hero-left-col .pl {
     font-size: 10px;
   }
-  .hero-left-col .lead {
-    font-size: 15px;
-    line-height: 1.3;
-  }
-  .hero-right-col {
-    padding-top: 0;
-  }
+  .hero-left-col .lead,
   .hero-right-col .hero-lead {
     font-size: 14px;
     line-height: 1.45;
-    margin: 0 0 10px;
   }
   .hero-stats {
     gap: 18px;
@@ -2138,14 +2128,221 @@ select option {
   }
   .hero-car-showcase {
     width: 100%;
-    height: 62%;
-    max-width: none;
+    margin: 16px auto 0;
   }
   .hero-car-img {
-    object-fit: cover;
-    object-position: center 68%;
+    width: 100%;
+    height: auto;
   }
 }
+
+/* Match the supplied local hero: copy sits above a car image layered behind it. */
+.hsec {
+  min-height: 684px;
+  padding: 0;
+  background: #fff;
+}
+.hero.filllo-hero {
+  width: min(1568px, calc(100% - 48px));
+  max-width: 1568px;
+  min-height: 684px;
+  padding: 46px 0 0;
+  overflow: hidden;
+}
+.hero-top-row {
+  grid-template-columns: minmax(0, 1.35fr) minmax(320px, 0.9fr);
+  gap: 52px;
+  align-items: start;
+  min-height: 100%;
+}
+.hero-left-col,
+.hero-right-col {
+  position: relative;
+  z-index: 2;
+}
+.hero-left-col h1 {
+  width: max-content;
+  max-width: 100%;
+  color: #111827;
+  font-size: clamp(64px, 7.25vw, 112px);
+  line-height: 0.92;
+  margin: 0 0 16px;
+}
+.hero-left-col h1 .bl {
+  color: transparent;
+  text-shadow: none;
+}
+.hero-left-col .lead,
+.hero-right-col .hero-lead {
+  color: #667085;
+}
+.hero-right-col {
+  max-width: 540px;
+  padding-top: 18px;
+}
+.hero-right-col .hero-lead {
+  font-size: clamp(17px, 1.4vw, 22px);
+  line-height: 1.65;
+}
+.hero-stats {
+  gap: 38px;
+  margin-top: 34px;
+}
+.hero-car-showcase {
+  position: absolute;
+  right: 4%;
+  bottom: 0;
+  width: 72%;
+  max-width: 1120px;
+  height: auto;
+  margin: 0;
+  justify-content: flex-end;
+  align-items: flex-end;
+  z-index: 1;
+  pointer-events: none;
+}
+.hero-car-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: none;
+  mix-blend-mode: multiply;
+}
+.hero-car-glow {
+  display: none;
+}
+
+/* Keep content areas light and legible while retaining their photography/video. */
+.glow {
+  display: none;
+}
+.ln {
+  color: #1f2937;
+  background: #fff;
+  border-color: var(--line);
+}
+.ln-title,
+.stage-tab .st-name {
+  color: #111827;
+}
+.ln-desc,
+.stage-tab .st-range {
+  color: #5b6472;
+}
+.ln-hud-badge,
+.stage-tab {
+  color: #273244;
+  background: #f7f8fa;
+  border-color: rgba(15, 23, 42, 0.14);
+}
+.stage-tab .st-num {
+  color: #667085;
+}
+.stage-tab.on {
+  background: #fff1f2;
+  border-color: var(--bl);
+  box-shadow: 0 4px 18px rgba(255, 43, 56, 0.12);
+}
+.cinema-box {
+  border-color: var(--line);
+  box-shadow: 0 18px 50px rgba(15, 23, 42, 0.12);
+}
+.ft {
+  color: #1f2937;
+  background: #fff;
+}
+.ft button,
+.ft a {
+  color: #344054;
+}
+input,
+select,
+textarea {
+  background: #fff;
+  color: #1f2937;
+  border-color: rgba(15, 23, 42, 0.2);
+}
+.map {
+  background-color: #f7f8fa;
+}
+
+@media (max-width: 900px) {
+  .hsec,
+  .hero.filllo-hero {
+    min-height: 700px;
+  }
+  .hero.filllo-hero {
+    width: calc(100% - 40px);
+    padding-top: 30px;
+  }
+  .hero-top-row {
+    grid-template-columns: minmax(0, 1.15fr) minmax(260px, 0.85fr);
+    gap: 24px;
+  }
+  .hero-left-col h1 {
+    font-size: clamp(54px, 7.5vw, 76px);
+  }
+  .hero-car-showcase {
+    width: 78%;
+    right: 0;
+  }
+}
+@media (max-width: 640px) {
+  .hsec,
+  .hero.filllo-hero {
+    min-height: 790px;
+  }
+  .hero.filllo-hero {
+    width: calc(100% - 32px);
+    padding-top: 26px;
+  }
+  .hero-top-row {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 12px;
+    padding: 0;
+  }
+  .hero-left-col h1 {
+    width: auto;
+    font-size: clamp(48px, 12.2vw, 68px);
+    line-height: 0.94;
+    margin: 6px 0 12px;
+  }
+  .hero-left-col .pl {
+    font-size: 12px;
+    margin-bottom: 16px;
+  }
+  .hero-left-col .lead {
+    margin: 10px 0 14px;
+    font-size: 16px;
+  }
+  .hero-right-col {
+    max-width: 100%;
+    padding: 0;
+    margin: 0;
+  }
+  .hero-right-col .hero-lead {
+    font-size: 15px;
+    line-height: 1.5;
+    margin-bottom: 8px;
+  }
+  .hero-stats {
+    gap: 22px;
+    margin-top: 6px;
+  }
+  .hero-stats b {
+    font-size: 34px;
+  }
+  .hero-stats span {
+    font-size: 11px;
+  }
+  .hero-car-showcase {
+    width: 150%;
+    max-width: none;
+    right: -27%;
+    bottom: 0;
+  }
+}
+
 .noscript-message {
   padding: 40px;
 }
