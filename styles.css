@@ -2427,3 +2427,17 @@ select option {
 .ft {
   border-top-color: rgba(255, 255, 255, 0.16);
 }
+
+/* Keep the car attached to the copy on narrow screens instead of the old fixed hero height. */
+@media (max-width: 900px) {
+  .hsec,
+  .hero.filllo-hero {
+    min-height: 0;
+  }
+  .hero-top-row {
+    min-height: 0;
+  }
+  .hero-car-showcase {
+    bottom: 0;
+  }
+}
