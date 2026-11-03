@@ -1308,8 +1308,28 @@
     const videoRef = useRef(null);
     const [progress, setProgress] = useState(0);
     const [activeIdx, setActiveIdx] = useState(0);
+    const [isPlaying, setIsPlaying] = useState(false);
     const [slamming, setSlamming] = useState(false);
     const progressRef = useRef({ overall: 0, segment: 0 });
+    const playbackRef = useRef(false);
+
+    useEffect(() => {
+      const video = videoRef.current;
+      if (!video || !isPlaying) return;
+
+      const startPlayback = () => {
+        video.currentTime = 0;
+        video.play().catch(() => {
+          playbackRef.current = false;
+          setIsPlaying(false);
+        });
+      };
+
+      if (video.readyState >= 2) startPlayback();
+      else video.addEventListener("loadeddata", startPlayback, { once: true });
+
+      return () => video.removeEventListener("loadeddata", startPlayback);
+    }, [activeIdx, isPlaying]);
 
     useEffect(() => {
       const sequence = sequenceRef.current;
@@ -1334,6 +1354,12 @@
       const handleScroll = () => {
         scrollStamp = performance.now();
         foamClock = 0;
+        if (playbackRef.current) {
+          playbackRef.current = false;
+          previousStage = -1;
+          videoRef.current?.pause();
+          setIsPlaying(false);
+        }
       };
 
       const update = (now) => {
@@ -1349,14 +1375,16 @@
         const stageChanged = idx !== previousStage;
         if (stageChanged) {
           previousStage = idx;
-          setActiveIdx(idx);
-          setSlamming(true);
-          window.clearTimeout(slamTimer);
-          slamTimer = window.setTimeout(() => setSlamming(false), 650);
+          if (!playbackRef.current) {
+            setActiveIdx(idx);
+            setSlamming(true);
+            window.clearTimeout(slamTimer);
+            slamTimer = window.setTimeout(() => setSlamming(false), 650);
+          }
         }
 
         const video = videoRef.current;
-        if (video && video.readyState >= 2) {
+        if (video && video.readyState >= 2 && !playbackRef.current) {
           if (idx === 1 && now - scrollStamp > 180) {
             if (!foamClock) foamClock = Math.max(0.15, video.currentTime || 0.15);
             foamClock += Math.min(40, now - previousFrame) * 0.00052;
@@ -1390,16 +1418,21 @@
       };
     }, []);
 
-    const jumpTo = (idx) => {
-      const sequence = sequenceRef.current;
-      if (!sequence) return;
-      const rect = sequence.getBoundingClientRect();
-      const travel = Math.max(1, sequence.offsetHeight - window.innerHeight);
-      const targetP = (idx + 0.5) / STAGE_DATA.length;
-      window.scrollTo({
-        top: window.scrollY + rect.top + travel * targetP,
-        behavior: "smooth",
-      });
+    const playStage = (idx) => {
+      const video = videoRef.current;
+      playbackRef.current = true;
+      if (idx === activeIdx && isPlaying && video) {
+        video.currentTime = 0;
+        video.play().catch(() => {
+          playbackRef.current = false;
+          setIsPlaying(false);
+        });
+        return;
+      }
+      setActiveIdx(idx);
+      setIsPlaying(true);
+      setSlamming(true);
+      window.setTimeout(() => setSlamming(false), 650);
     };
 
     const cur = STAGE_DATA[activeIdx];
@@ -1413,14 +1446,9 @@
             5-Stage <span class="bl">Precision Transformation</span>
           </h2>
           <p class="ln-desc">
-            Scroll through the timeline to experience the luxury sports car
-            moving through each detailing phase: Wash → Foam → Polish → Coating
-            → Final Check.
+            Scroll to scrub each detailing phase, or select a stage to play its
+            video: Wash → Foam → Polish → Coating → Final Check.
           </p>
-        </div>
-        <div class="ln-hud-badge">
-          <span class="ln-live-dot"></span>
-          <span>SCROLL SCRUBBER · 0–100%</span>
         </div>
       </div>
 
@@ -1428,6 +1456,7 @@
         <section class=${"cinema-stage" + (slamming ? " slam" : "")}>
           <div class="cinema-footage">
             <video
+              key=${cur.idx}
               ref=${videoRef}
               src=${cur.src}
               muted
@@ -1466,6 +1495,19 @@
             ${cur.tag} · ${cur.idx} / 05
           </div>
 
+          <div class="cinema-stage-nav">
+            ${STAGE_DATA.map((st, i) => html`<button
+              key=${st.idx}
+              class=${"cinema-stage-button" + (activeIdx === i ? " on" : "") + (activeIdx === i && isPlaying ? " playing" : "")}
+              onClick=${() => playStage(i)}
+              aria-pressed=${activeIdx === i && isPlaying}
+              aria-label=${"Play stage " + st.idx + ": " + st.tag.toLowerCase()}
+            >
+              <span>STAGE ${st.idx}</span>
+              <b>${st.tag}</b>
+            </button>`)}
+          </div>
+
           <footer class="cinema-bottom">
             <div
               class="cinema-progress"
@@ -1485,30 +1527,6 @@
             </div>
           </footer>
         </section>
-      </div>
-
-      <div class="stage-nav">
-        ${STAGE_DATA.map((st, i) => {
-          const isActive = activeIdx === i;
-          const fillW =
-            progress >= st.pctMax
-              ? 100
-              : progress <= st.pctMin
-                ? 0
-                : Math.round(
-                    ((progress - st.pctMin) / (st.pctMax - st.pctMin)) * 100,
-                  );
-          return html`<button
-            key=${st.idx}
-            class=${"stage-tab" + (isActive ? " on" : "")}
-            onClick=${() => jumpTo(i)}
-          >
-            <span class="st-num">STAGE ${st.idx}</span>
-            <span class="st-name">${st.tag}</span>
-            <span class="st-range">${st.range}</span>
-            <div class="st-fill" style=${{ width: fillW + "%" }}></div>
-          </button>`;
-        })}
       </div>
     </div>`;
   }

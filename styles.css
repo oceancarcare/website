@@ -2318,6 +2318,52 @@ width: min(920px, 88vw);
   align-items: center;
   gap: 22px;
 }
+.cinema-stage-nav {
+  position: absolute;
+  right: clamp(22px, 5vw, 76px);
+  bottom: 72px;
+  left: clamp(22px, 5vw, 76px);
+  z-index: 5;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+}
+.cinema-stage-button {
+  display: grid;
+  gap: 3px;
+  min-width: 0;
+  min-height: 52px;
+  padding: 8px 12px;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 8px;
+  background: rgba(5, 5, 5, 0.72);
+  color: #fff;
+  text-align: left;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: border-color 0.2s, background 0.2s, color 0.2s;
+}
+.cinema-stage-button span {
+  color: rgba(255, 255, 255, 0.68);
+  font: 700 10px/1.1 var(--fd);
+  letter-spacing: 0.12em;
+}
+.cinema-stage-button b {
+  overflow: hidden;
+  color: #fff;
+  font: 800 15px/1.05 var(--fd);
+  letter-spacing: 0.08em;
+  text-overflow: ellipsis;
+}
+.cinema-stage-button:hover,
+.cinema-stage-button.on {
+  border-color: var(--bl);
+  background: rgba(12, 5, 6, 0.9);
+}
+.cinema-stage-button.on b,
+.cinema-stage-button.playing span {
+  color: var(--bl);
+}
 .cinema-progress {
   height: 2px;
   flex: 1;
@@ -2443,6 +2489,25 @@ width: min(920px, 88vw);
     bottom: 25px;
     left: 22px;
     gap: 14px;
+  }
+  .cinema-stage-nav {
+    right: 16px;
+    bottom: 68px;
+    left: 16px;
+    gap: 5px;
+  }
+  .cinema-stage-button {
+    min-height: 46px;
+    padding: 6px 5px;
+    text-align: center;
+  }
+  .cinema-stage-button span {
+    font-size: 8px;
+    letter-spacing: 0.04em;
+  }
+  .cinema-stage-button b {
+    font-size: 12px;
+    letter-spacing: 0.03em;
   }
   .cinema-scroll-hint {
     font-size: 8px;
