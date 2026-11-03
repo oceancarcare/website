@@ -2136,7 +2136,7 @@ width: min(920px, 88vw);
   }
 }
 
-/* Scroll-scrubbed five-stage detailing reel */
+/* Horizontal five-stage detailing carousel */
 .ln {
   overflow: visible;
   padding-bottom: 48px;
@@ -2340,11 +2340,9 @@ width: min(920px, 88vw);
   writing-mode: vertical-rl;
 }
 .cinema-stage-nav {
-  position: absolute;
-  right: clamp(22px, 5vw, 76px);
-  bottom: 24px;
-  left: clamp(22px, 5vw, 76px);
-  z-index: 5;
+  position: relative;
+  width: 100%;
+  margin: 24px auto 0;
   display: grid;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 10px;
@@ -2503,9 +2501,7 @@ width: min(920px, 88vw);
     display: none;
   }
   .cinema-stage-nav {
-    right: 16px;
-    bottom: 20px;
-    left: 16px;
+    margin-top: 16px;
     gap: 5px;
   }
   .cinema-arrows {

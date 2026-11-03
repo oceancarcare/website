@@ -1427,20 +1427,6 @@
           </div>
           <div class="cinema-side-label">${st.tag} · ${st.idx} / 05</div>
 
-          <div class="cinema-stage-nav">
-            ${STAGE_DATA.map((buttonStage, buttonIdx) => html`<button
-              key=${buttonStage.idx}
-              class=${"cinema-stage-button" + (activeIdx === buttonIdx ? " on" : "")}
-              onClick=${() => goToStage(buttonIdx)}
-              onMouseEnter=${() => goToStage(buttonIdx)}
-              aria-current=${activeIdx === buttonIdx ? "step" : null}
-              aria-label=${"Go to stage " + buttonStage.idx + ": " + buttonStage.tag.toLowerCase()}
-            >
-              <span>STAGE ${buttonStage.idx}</span>
-              <b>${buttonStage.tag}</b>
-            </button>`)}
-          </div>
-
           <div class="cinema-arrows">
             <button
               class="cinema-arrow"
@@ -1461,6 +1447,19 @@
           </div>
 
         </section>`)}
+      </div>
+      <div class="cinema-stage-nav" aria-label="Detailing stages">
+        ${STAGE_DATA.map((buttonStage, buttonIdx) => html`<button
+          key=${buttonStage.idx}
+          class=${"cinema-stage-button" + (activeIdx === buttonIdx ? " on" : "")}
+          onClick=${() => goToStage(buttonIdx)}
+          onMouseEnter=${() => goToStage(buttonIdx)}
+          aria-current=${activeIdx === buttonIdx ? "step" : null}
+          aria-label=${"Go to stage " + buttonStage.idx + ": " + buttonStage.tag.toLowerCase()}
+        >
+          <span>STAGE ${buttonStage.idx}</span>
+          <b>${buttonStage.tag}</b>
+        </button>`)}
       </div>
     </div>`;
   }
