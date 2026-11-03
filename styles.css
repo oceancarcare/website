@@ -198,3 +198,15 @@ input,select,textarea{width:100%;min-height:56px;padding:16px 20px;border-radius
   .hero-car-showcase{margin-top:4px}
   .hero-car-img{width:auto;height:100%;max-width:100%}
 }
+
+
+/* Layer the car into the hero backdrop and anchor the visible vehicle at bottom-right. */
+.hero.filllo-hero{isolation:isolate}
+.hero-top-row{z-index:2}
+.hero-car-showcase{position:absolute;inset:0;z-index:1;width:auto;max-width:none;margin:0;overflow:hidden;pointer-events:none}
+.hero-car-glow{display:none}
+.hero-car-img{position:absolute;right:-33%;bottom:0;width:133%;height:auto;max-width:none;object-fit:contain;object-position:right bottom;animation:none;filter:none}
+@media(max-width:900px){
+  .hero-car-showcase{margin:0}
+  .hero-car-img{right:-38%;bottom:0;width:145%;height:auto;max-width:none}
+}
