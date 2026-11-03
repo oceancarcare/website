@@ -2346,3 +2346,84 @@ textarea {
 .noscript-message {
   padding: 40px;
 }
+
+/* Dark site theme */
+:root {
+  --bg: #050505;
+  --card: #111111;
+  --line: rgba(255, 255, 255, 0.16);
+  --mu: #c2c7d0;
+}
+body,
+.pg,
+.w,
+.sec,
+.hsec,
+.hero.filllo-hero,
+.ln,
+.ft {
+  background-color: #050505;
+  color: #f5f5f5;
+}
+.nav {
+  background: #050505;
+  border-bottom-color: rgba(255, 255, 255, 0.16);
+}
+.hero-watermark {
+  color: rgba(255, 255, 255, 0.035);
+}
+.hero-left-col h1 {
+  color: #f5f5f5;
+}
+.hero-left-col .lead,
+.hero-right-col .hero-lead,
+.ln-desc,
+.ft button,
+.ft a {
+  color: #c2c7d0;
+}
+.ln-title,
+.stage-tab .st-name {
+  color: #f5f5f5;
+}
+.ln-hud-badge,
+.stage-tab {
+  color: #e5e7eb;
+  background: #111;
+  border-color: rgba(255, 255, 255, 0.16);
+}
+.stage-tab .st-num,
+.stage-tab .st-range {
+  color: #b8bec8;
+}
+.stage-tab.on {
+  background: #111;
+  border-color: var(--bl);
+}
+.cd,
+.stt div,
+.fl2 button,
+.form,
+form,
+.mi,
+.md .in2 {
+  background-color: #111;
+  color: #f5f5f5;
+}
+input,
+select,
+textarea {
+  background: #0b0b0b;
+  color: #f5f5f5;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+select option {
+  background: #111;
+  color: #f5f5f5;
+}
+.map {
+  background-color: #050505;
+}
+.ft {
+  border-top-color: rgba(255, 255, 255, 0.16);
+}
