@@ -2136,6 +2136,324 @@ width: min(920px, 88vw);
   }
 }
 
+/* Scroll-scrubbed five-stage detailing reel */
+.ln {
+  overflow: visible;
+  padding-bottom: 48px;
+  background: #050505;
+}
+.ln-wrap {
+  width: 100%;
+}
+.ln-header {
+  width: min(1240px, calc(100% - 40px));
+  margin: 0 auto 36px;
+}
+.cinema-sequence {
+  position: relative;
+  width: 100vw;
+  height: 600svh;
+  margin-left: calc(50% - 50vw);
+}
+.cinema-stage {
+  position: sticky;
+  top: 78px;
+  height: calc(100svh - 78px);
+  min-height: 520px;
+  overflow: hidden;
+  isolation: isolate;
+  background: #050505;
+  color: #fff;
+}
+.cinema-footage,
+.cinema-footage video,
+.cinema-shade,
+.cinema-grain,
+.cinema-impact {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+.cinema-footage {
+  z-index: -3;
+  overflow: hidden;
+  background: #090909;
+}
+.cinema-footage video {
+  display: block;
+  object-fit: cover;
+  object-position: center 54%;
+  opacity: 0.85;
+  transform: scale(1.02);
+  will-change: transform, filter;
+}
+.cinema-shade {
+  z-index: -2;
+  background:
+    linear-gradient(90deg, rgba(5, 5, 5, 0.9), rgba(5, 5, 5, 0.54) 42%, rgba(5, 5, 5, 0.08) 82%),
+    linear-gradient(0deg, rgba(5, 5, 5, 0.82), transparent 35%, rgba(5, 5, 5, 0.2));
+}
+.cinema-grain {
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.08;
+  background-image: repeating-radial-gradient(#fff 0 0.5px, transparent 0.5px 3px);
+  background-size: 4px 4px;
+  mix-blend-mode: soft-light;
+}
+.cinema-copy {
+  position: absolute;
+  left: clamp(24px, 11vw, 170px);
+  top: 50%;
+  width: min(600px, 58vw);
+  transform: translateY(-47%);
+  z-index: 2;
+}
+.cinema-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--bl);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+.cinema-eyebrow::before {
+  content: "";
+  width: 27px;
+  height: 1px;
+  background: var(--bl);
+}
+.cinema-title {
+  margin: 25px 0 15px;
+  color: #fff;
+  font-family: Inter, system-ui, sans-serif;
+  font-size: clamp(64px, 10vw, 148px);
+  font-style: normal;
+  font-weight: 700;
+  letter-spacing: -0.075em;
+  line-height: 0.82;
+  text-transform: uppercase;
+}
+.cinema-title span {
+  display: block;
+}
+.cinema-title span:last-child {
+  color: var(--bl);
+}
+.cinema-step-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 18px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.cinema-step-name::before {
+  content: "";
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--bl);
+  box-shadow: 0 0 16px var(--bl);
+}
+.cinema-description {
+  max-width: 350px;
+  margin: 18px 0 0;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 15px;
+  line-height: 1.65;
+}
+.cinema-count {
+  position: absolute;
+  top: 50%;
+  right: clamp(24px, 8vw, 120px);
+  z-index: 2;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  transform: translateY(-50%);
+}
+.cinema-count-current {
+  color: #fff;
+  font-size: clamp(48px, 7vw, 88px);
+  font-weight: 500;
+  letter-spacing: -0.08em;
+  line-height: 0.9;
+}
+.cinema-count-total {
+  padding-top: 8px;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+}
+.cinema-count-total::before {
+  content: "/";
+  margin-right: 7px;
+  color: var(--bl);
+}
+.cinema-side-label {
+  position: absolute;
+  right: clamp(24px, 5vw, 76px);
+  bottom: 116px;
+  z-index: 2;
+  color: rgba(255, 255, 255, 0.66);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  writing-mode: vertical-rl;
+}
+.cinema-bottom {
+  position: absolute;
+  right: clamp(22px, 5vw, 76px);
+  bottom: 30px;
+  left: clamp(22px, 5vw, 76px);
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+.cinema-progress {
+  height: 2px;
+  flex: 1;
+  background: rgba(255, 255, 255, 0.3);
+}
+.cinema-progress-fill {
+  width: 100%;
+  height: 100%;
+  background: var(--bl);
+  transform-origin: left center;
+  will-change: transform;
+}
+.cinema-scroll-hint {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.cinema-scroll-hint i {
+  position: relative;
+  display: block;
+  width: 20px;
+  height: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.58);
+  border-radius: 50%;
+}
+.cinema-scroll-hint i::after {
+  position: absolute;
+  top: 5px;
+  left: 6px;
+  width: 6px;
+  height: 6px;
+  border-right: 1px solid var(--bl);
+  border-bottom: 1px solid var(--bl);
+  content: "";
+  transform: rotate(45deg);
+}
+.cinema-stage.slam .cinema-footage video {
+  animation: detail-slam 0.64s cubic-bezier(0.12, 0.72, 0.18, 1) both;
+}
+.cinema-stage.slam .cinema-impact {
+  animation: detail-flash 0.5s ease-out both;
+}
+.cinema-stage.slam .cinema-copy {
+  animation: detail-copy-in 0.52s cubic-bezier(0.2, 0.75, 0.2, 1) both;
+}
+@keyframes detail-slam {
+  0% { transform: scale(1.19); filter: blur(9px) brightness(1.8); }
+  45% { transform: scale(0.985); filter: blur(0) brightness(1.12); }
+  72% { transform: scale(1.025); }
+  100% { transform: scale(1.02); filter: none; }
+}
+@keyframes detail-flash {
+  0% { opacity: 0.9; }
+  100% { opacity: 0; }
+}
+@keyframes detail-copy-in {
+  0% { opacity: 0.35; translate: 0 16px; }
+  100% { opacity: 1; translate: 0 0; }
+}
+.cinema-impact {
+  z-index: 4;
+  pointer-events: none;
+  opacity: 0;
+  background:
+    linear-gradient(0deg, rgba(255, 43, 56, 0.2), transparent 36%),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.2), transparent 22%);
+  mix-blend-mode: screen;
+}
+.cinema-sequence + .stage-nav {
+  width: min(1240px, calc(100% - 40px));
+  margin: 24px auto 0;
+}
+@media (max-width: 700px) {
+  .ln-header {
+    margin-bottom: 24px;
+  }
+  .cinema-stage {
+    top: 120px;
+    height: calc(100svh - 120px);
+    min-height: 0;
+  }
+  .cinema-footage video {
+    object-position: 58% center;
+  }
+  .cinema-shade {
+    background:
+      linear-gradient(90deg, rgba(5, 5, 5, 0.76), rgba(5, 5, 5, 0.26)),
+      linear-gradient(0deg, rgba(5, 5, 5, 0.8), transparent 45%);
+  }
+  .cinema-copy {
+    top: auto;
+    bottom: 20%;
+    left: 25px;
+    width: calc(100% - 50px);
+    transform: none;
+  }
+  .cinema-title {
+    margin-top: 20px;
+    font-size: clamp(58px, 16vw, 100px);
+  }
+  .cinema-description {
+    max-width: 300px;
+    font-size: 13px;
+  }
+  .cinema-count {
+    top: 24%;
+    right: 25px;
+  }
+  .cinema-count-current {
+    font-size: 52px;
+  }
+  .cinema-side-label {
+    display: none;
+  }
+  .cinema-bottom {
+    right: 22px;
+    bottom: 25px;
+    left: 22px;
+    gap: 14px;
+  }
+  .cinema-scroll-hint {
+    font-size: 8px;
+    letter-spacing: 0.1em;
+  }
+  .cinema-scroll-hint i {
+    width: 18px;
+    height: 18px;
+  }
+}
+
 /* Match the supplied local hero: copy sits above a car image layered behind it. */
 .hsec {
   min-height: 684px;

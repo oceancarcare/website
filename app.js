@@ -11,7 +11,6 @@
   const LOGO = "assets/logo.png";
   const PHONE = "918086966660";
   // Set a local or hosted video URL to enable the optional detailing reel.
-  const STAGE_VIDEO = "";
   const VIDEOS = ["", "", ""];
   const wa = (t) =>
     "https://wa.me/" + PHONE + (t ? "?text=" + encodeURIComponent(t) : "");
@@ -821,8 +820,11 @@
       idx: "01",
       tag: "WASH",
       range: "0% – 20%",
+      headline: ["Clean", "Slate."],
+      subtitle: "Surface reset",
+      src: "assets/cinematic-sequence/clips/01-wash.mp4",
       title: "Stage 01 — High-Pressure Wash",
-      desc: "A luxury sports car enters a dark professional detailing bay. High-pressure heated water jets spray across the vehicle, removing dirt and road grime in cinematic slow-motion.",
+      desc: "Rinse away the road. Every perfect finish starts with a clean surface.",
       specs: [
         "40–60°C Hot Water Jets",
         "Touchless Decontamination",
@@ -835,8 +837,11 @@
       idx: "02",
       tag: "FOAM",
       range: "20% – 40%",
+      headline: ["Let it", "Dwell."],
+      subtitle: "Safe contact",
+      src: "assets/cinematic-sequence/clips/02-foam.mp4",
       title: "Stage 02 — Active Snow Foam",
-      desc: "Thick, luxurious white snow foam spreads evenly across the entire car using a professional foam cannon, encapsulating microscopic dirt particles safely.",
+      desc: "A blanket of rich foam loosens the grit and lets the paint breathe.",
       specs: [
         "Hyper-Dense Foam Cannon",
         "Polymer Dirt Encapsulation",
@@ -849,8 +854,11 @@
       idx: "03",
       tag: "POLISH",
       range: "40% – 60%",
+      headline: ["Find the", "Gloss."],
+      subtitle: "Paint refinement",
+      src: "assets/cinematic-sequence/clips/03-polish.mp4",
       title: "Stage 03 — Precision Machine Polish",
-      desc: "Professional detailer machine-polishes paintwork using a dual-action polisher, eliminating swirl marks and scratches to reveal deep gloss and mirror clarity.",
+      desc: "Fine machine work levels the haze and brings the depth back to the paint.",
       specs: [
         "Dual-Action Orbital Polish",
         "Micro-Abrasive Compounds",
@@ -863,8 +871,11 @@
       idx: "04",
       tag: "COATING",
       range: "60% – 80%",
+      headline: ["Seal in", "the shine."],
+      subtitle: "Lasting protection",
+      src: "assets/cinematic-sequence/clips/04-coating.mp4",
       title: "Stage 04 — Ceramic Hydrophobic Shield",
-      desc: "Hand-applied 9H/10H ceramic coating bonds molecularly with the clear coat, creating intense hydrophobic water beading and permanent wet-look candy reflections.",
+      desc: "A precise protective layer locks in clarity, slickness and a lasting glow.",
       specs: [
         "9H Ceramic Molecular Bond",
         "Extreme Hydrophobic Beading",
@@ -877,8 +888,11 @@
       idx: "05",
       tag: "FINAL CHECK",
       range: "80% – 100%",
+      headline: ["Ready for", "the road."],
+      subtitle: "Quality check",
+      src: "assets/cinematic-sequence/clips/05-final-check.mp4",
       title: "Stage 05 — Studio Hero Inspection",
-      desc: "A professional detailer performs final quality inspection using specialized high-CRI detailing lights. Flawless glossy paint, sharp reflections, and showroom finish.",
+      desc: "One last walkaround. Every edge, reflection and detail gets a second look.",
       specs: [
         "High-CRI Inspection Lights",
         "360° Studio Audit",
@@ -1290,95 +1304,108 @@
   }
 
   function Stages() {
-    const containerRef = useRef(null);
+    const sequenceRef = useRef(null);
     const videoRef = useRef(null);
     const [progress, setProgress] = useState(0);
     const [activeIdx, setActiveIdx] = useState(0);
-    const [isPlaying, setIsPlaying] = useState(false);
+    const [slamming, setSlamming] = useState(false);
+    const progressRef = useRef({ overall: 0, segment: 0 });
 
     useEffect(() => {
-      const handleScroll = () => {
-        if (!containerRef.current) return;
-        const rect = containerRef.current.getBoundingClientRect();
-        const vh = window.innerHeight;
-        const totalDist = rect.height + vh;
-        const currentDist = vh - rect.top;
-        const p = Math.min(1, Math.max(0, currentDist / totalDist));
-        setProgress(p);
-        const sIdx = p < 0.2 ? 0 : p < 0.4 ? 1 : p < 0.6 ? 2 : p < 0.8 ? 3 : 4;
-        setActiveIdx(sIdx);
-        if (videoRef.current && videoRef.current.duration && !isPlaying) {
-          videoRef.current.currentTime = Math.min(
-            videoRef.current.duration * p,
-            videoRef.current.duration - 0.05,
-          );
-        }
+      const sequence = sequenceRef.current;
+      if (!sequence) return;
+
+      let frame = 0;
+      let previousStage = 0;
+      let previousFrame = performance.now();
+      let previousUiUpdate = 0;
+      let scrollStamp = performance.now();
+      let foamClock = 0;
+      let slamTimer = 0;
+
+      const seek = (video, time) => {
+        if (!video || !Number.isFinite(video.duration) || video.duration <= 0)
+          return;
+        const nextTime = Math.max(0, Math.min(video.duration - 0.045, time));
+        if (Math.abs(video.currentTime - nextTime) > 0.045)
+          video.currentTime = nextTime;
       };
-      window.addEventListener("scroll", handleScroll, { passive: true });
-      handleScroll();
-      return () => window.removeEventListener("scroll", handleScroll);
-    }, [isPlaying]);
 
-    useEffect(() => {
-      if (!isPlaying) return;
-      const interval = setInterval(() => {
-        setProgress((prev) => {
-          const next = prev >= 1 ? 0 : prev + 0.006;
-          const sIdx =
-            next < 0.2
-              ? 0
-              : next < 0.4
-                ? 1
-                : next < 0.6
-                  ? 2
-                  : next < 0.8
-                    ? 3
-                    : 4;
-          setActiveIdx(sIdx);
-          if (videoRef.current && videoRef.current.duration) {
-            videoRef.current.currentTime = Math.min(
-              videoRef.current.duration * next,
-              videoRef.current.duration - 0.05,
+      const handleScroll = () => {
+        scrollStamp = performance.now();
+        foamClock = 0;
+      };
+
+      const update = (now) => {
+        const rect = sequence.getBoundingClientRect();
+        const travel = Math.max(1, sequence.offsetHeight - window.innerHeight);
+        const overall = Math.min(1, Math.max(0, -rect.top / travel));
+        const scaled = overall * STAGE_DATA.length;
+        const idx = Math.min(STAGE_DATA.length - 1, Math.floor(scaled));
+        const segment = overall >= 1 ? 1 : scaled - idx;
+        const nextProgress = { overall, segment };
+        progressRef.current = nextProgress;
+
+        const stageChanged = idx !== previousStage;
+        if (stageChanged) {
+          previousStage = idx;
+          setActiveIdx(idx);
+          setSlamming(true);
+          window.clearTimeout(slamTimer);
+          slamTimer = window.setTimeout(() => setSlamming(false), 650);
+        }
+
+        const video = videoRef.current;
+        if (video && video.readyState >= 2) {
+          if (idx === 1 && now - scrollStamp > 180) {
+            if (!foamClock) foamClock = Math.max(0.15, video.currentTime || 0.15);
+            foamClock += Math.min(40, now - previousFrame) * 0.00052;
+            const loopEnd = Math.min(
+              video.duration - 0.08,
+              Math.max(1.5, video.duration * 0.58),
             );
+            if (foamClock > loopEnd) foamClock = 0.25;
+            seek(video, foamClock);
+          } else {
+            foamClock = video.currentTime || 0;
+            seek(video, segment * Math.max(0, video.duration - 0.08));
           }
-          return next;
-        });
-      }, 45);
-      return () => clearInterval(interval);
-    }, [isPlaying]);
+        }
+
+        if (now - previousUiUpdate > 70 || stageChanged) {
+          setProgress(overall);
+          previousUiUpdate = now;
+        }
+        previousFrame = now;
+        frame = requestAnimationFrame(update);
+      };
+
+      window.addEventListener("scroll", handleScroll, { passive: true });
+      frame = requestAnimationFrame(update);
+
+      return () => {
+        cancelAnimationFrame(frame);
+        window.clearTimeout(slamTimer);
+        window.removeEventListener("scroll", handleScroll);
+      };
+    }, []);
 
     const jumpTo = (idx) => {
-      const targetP = idx * 0.2 + 0.1;
-      setProgress(targetP);
-      setActiveIdx(idx);
-      if (videoRef.current && videoRef.current.duration) {
-        videoRef.current.currentTime = Math.min(
-          videoRef.current.duration * targetP,
-          videoRef.current.duration - 0.05,
-        );
-      }
-    };
-
-    const handleScrubClick = (e) => {
-      const bar = e.currentTarget;
-      const rect = bar.getBoundingClientRect();
-      const clickX = e.clientX - rect.left;
-      const p = Math.min(1, Math.max(0, clickX / rect.width));
-      setProgress(p);
-      const sIdx = p < 0.2 ? 0 : p < 0.4 ? 1 : p < 0.6 ? 2 : p < 0.8 ? 3 : 4;
-      setActiveIdx(sIdx);
-      if (videoRef.current && videoRef.current.duration) {
-        videoRef.current.currentTime = Math.min(
-          videoRef.current.duration * p,
-          videoRef.current.duration - 0.05,
-        );
-      }
+      const sequence = sequenceRef.current;
+      if (!sequence) return;
+      const rect = sequence.getBoundingClientRect();
+      const travel = Math.max(1, sequence.offsetHeight - window.innerHeight);
+      const targetP = (idx + 0.5) / STAGE_DATA.length;
+      window.scrollTo({
+        top: window.scrollY + rect.top + travel * targetP,
+        behavior: "smooth",
+      });
     };
 
     const cur = STAGE_DATA[activeIdx];
     const pctDisplay = Math.round(progress * 100);
 
-    return html`<div class="ln-wrap" ref=${containerRef}>
+    return html`<div class="ln-wrap">
       <div class="ln-header">
         <div>
           <span class="ln-tagline">Cinematic Detailing Showcase</span>
@@ -1397,49 +1424,67 @@
         </div>
       </div>
 
-      <div class="cinema-box">
-        ${STAGE_VIDEO ? html`<video ref=${videoRef} src=${STAGE_VIDEO} playsinline muted preload="auto" class="cinema-video"></video>` : null}
-        <${StudioCanvas} stageIdx=${activeIdx} progress=${progress} />
+      <div class="cinema-sequence" ref=${sequenceRef}>
+        <section class=${"cinema-stage" + (slamming ? " slam" : "")}>
+          <div class="cinema-footage">
+            <video
+              ref=${videoRef}
+              src=${cur.src}
+              muted
+              playsinline
+              preload="auto"
+              onLoadedMetadata=${(event) => {
+                const video = event.currentTarget;
+                if (Number.isFinite(video.duration)) {
+                  video.currentTime =
+                    progressRef.current.segment * Math.max(0, video.duration - 0.08);
+                }
+              }}
+              aria-label=${"Detailing process: " + cur.tag.toLowerCase()}
+            ></video>
+          </div>
+          <div class="cinema-shade"></div>
+          <div class="cinema-grain"></div>
+          <div class="cinema-impact"></div>
 
-        <div class="cinema-overlay">
-          <div class="cinema-top">
-            <span class="cinema-tag">4K UHD · 24FPS CINEMATIC REEL</span>
-            <span class="cinema-progress-val">${pctDisplay}%</span>
+          <div class="cinema-copy">
+            <span class="cinema-eyebrow">
+              Process / ${cur.idx} · ${cur.subtitle}
+            </span>
+            <h3 class="cinema-title">
+              ${cur.headline.map((line) => html`<span key=${line}>${line}</span>`)}
+            </h3>
+            <span class="cinema-step-name">${cur.tag}</span>
+            <p class="cinema-description">${cur.desc}</p>
           </div>
 
-          <div class="cinema-bottom">
-            <div class="cinema-info-card">
-              <span class="cinema-step-tag"
-                >Phase ${cur.idx} / 05 · ${cur.range}</span
-              >
-              <h3 class="cinema-step-title">${cur.title}</h3>
-              <p class="cinema-step-desc">${cur.desc}</p>
-              <div class="cinema-specs">
-                ${cur.specs.map((s) => html`<span key=${s}>${s}</span>`)}
-              </div>
-            </div>
-
-            <div class="cinema-ctrls">
-              <button
-                class="cinema-btn"
-                onClick=${() => setIsPlaying(!isPlaying)}
-              >
-                ${isPlaying ? "❚❚ Pause" : "▶ Auto Demo"}
-              </button>
-            </div>
+          <div class="cinema-count">
+            <span class="cinema-count-current">${cur.idx}</span>
+            <span class="cinema-count-total">/ 05</span>
           </div>
-        </div>
-      </div>
+          <div class="cinema-side-label">
+            ${cur.tag} · ${cur.idx} / 05
+          </div>
 
-      <div
-        class="cinema-scrub-wrap"
-        onClick=${handleScrubClick}
-        title="Click to scrub timeline"
-      >
-        <div
-          class="cinema-scrub-bar"
-          style=${{ width: progress * 100 + "%" }}
-        ></div>
+          <footer class="cinema-bottom">
+            <div
+              class="cinema-progress"
+              role="progressbar"
+              aria-label="Detailing process progress"
+              aria-valuemin="0"
+              aria-valuemax="100"
+              aria-valuenow=${pctDisplay}
+            >
+              <div
+                class="cinema-progress-fill"
+                style=${{ transform: "scaleX(" + progress + ")" }}
+              ></div>
+            </div>
+            <div class="cinema-scroll-hint">
+              <i></i><span>Scroll to explore</span>
+            </div>
+          </footer>
+        </section>
       </div>
 
       <div class="stage-nav">

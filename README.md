@@ -7,8 +7,9 @@ Static React site for Ocean Car Detailing ZPA, deployed to GitHub Pages.
 - `index.html` — page shell and CDN-loaded React, React DOM, and HTM libraries.
 - `app.js` — site components, page content, and interactions.
 - `styles.css` — responsive layout, theme, and image styling.
-- `assets/` — logo and images used by the stylesheet.
+- `assets/` — logo, images, and cinematic detailing video clips.
 - `assets/hero-car.png` — home page hero image.
+- `assets/cinematic-sequence/clips/` — five video cuts scrubbed by scrolling through the detailing sequence.
 - `.github/workflows/static.yml` — GitHub Pages deployment workflow.
 
 ## Preview
