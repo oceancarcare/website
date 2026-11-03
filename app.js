@@ -1322,10 +1322,17 @@
         frame = requestAnimationFrame(() => {
           const maxScroll = Math.max(1, sequence.scrollWidth - sequence.clientWidth);
           const overall = Math.min(1, Math.max(0, sequence.scrollLeft / maxScroll));
-          const idx = Math.min(
-            STAGE_DATA.length - 1,
-            Math.round(sequence.scrollLeft / sequence.clientWidth),
-          );
+          const viewportCenter = sequence.scrollLeft + sequence.clientWidth / 2;
+          const stages = Array.from(sequence.children);
+          const idx = stages.reduce((nearest, stage, stageIdx) => {
+            const stageCenter = stage.offsetLeft + stage.offsetWidth / 2;
+            const nearestCenter =
+              stages[nearest].offsetLeft + stages[nearest].offsetWidth / 2;
+            return Math.abs(stageCenter - viewportCenter) <
+              Math.abs(nearestCenter - viewportCenter)
+              ? stageIdx
+              : nearest;
+          }, 0);
 
           setProgress(overall);
           if (idx !== previousStage) {
@@ -1363,8 +1370,10 @@
         }
         return;
       }
+      const stage = sequence.children[idx];
+      if (!stage) return;
       sequence.scrollTo({
-        left: idx * sequence.clientWidth,
+        left: stage.offsetLeft - (sequence.clientWidth - stage.offsetWidth) / 2,
         behavior: "smooth",
       });
     };
@@ -1389,7 +1398,7 @@
       <div class="cinema-sequence" ref=${sequenceRef}>
         ${STAGE_DATA.map((st, i) => html`<section
           key=${st.idx}
-          class=${"cinema-stage" + (slamming && activeIdx === i ? " slam" : "")}
+          class=${"cinema-stage" + (activeIdx === i ? " is-active" : "") + (slamming && activeIdx === i ? " slam" : "")}
           aria-label=${"Stage " + st.idx + ": " + st.tag.toLowerCase()}
         >
           <div class="cinema-footage">
