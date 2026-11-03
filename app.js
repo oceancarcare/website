@@ -393,7 +393,7 @@ function Home({go,pick}){return html`<div class="pg">
   <div class="hero-car-glow"></div>
 
   <img
-    src="https://tinthaus.com.au/wp-content/uploads/2024/09/red-porsche-white-bg.jpg"
+    src="hero-porsche.png"
     alt="Ocean Car Detailing Porsche 911 GT3 RS"
     class="hero-car-img"
   />
@@ -477,3 +477,4 @@ return html`<div><${Defs}/><div class="glow"></div>
 if(!window.React||!window.ReactDOM||!window.htm){document.getElementById("root").innerHTML='<p style="padding:40px">Could not load the site libraries. Please check your internet connection and reload.</p>'}
 else ReactDOM.createRoot(document.getElementById("root")).render(html`<${App}/>`);
 })();
+
