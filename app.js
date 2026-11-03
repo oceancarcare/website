@@ -1501,7 +1501,7 @@
           <div class="hero-car-showcase">
             <div class="hero-car-glow"></div>
             <img
-              src="hero-porsche.png"
+              src="assets/hero-car.png"
               alt="Ocean Car Detailing Porsche 911 GT3 RS"
               class="hero-car-img"
             />
