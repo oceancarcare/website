@@ -2084,14 +2084,7 @@
             ${PAGES.map((p) => html`<button key=${p[0]} class=${page === p[0] ? "on" : ""} onClick=${() => go(p[0])}>${p[1]}</button>`)}
           </nav>
           <div class="ac">
-            <a
-              class="wab"
-              href=${wa("Hi Ocean Car Care")}
-              target="_blank"
-              rel="noopener"
-              aria-label="WhatsApp"
-              ><${WaI} /></a
-            ><button class="b p sm" onClick=${() => go("contact")}>
+            <button class="b p sm" onClick=${() => go("contact")}>
               Book now
             </button>
           </div>
