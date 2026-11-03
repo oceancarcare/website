@@ -243,3 +243,11 @@ input,select,textarea{width:100%;min-height:56px;padding:16px 20px;border-radius
   .hero-top-row{grid-template-columns:1.05fr 1fr;gap:10px;padding:clamp(8px,2vw,16px)}
   .hero-car-showcase{width:82%;height:52%}
 }
+
+
+/* Bring the full vehicle into view within the 16:9 hero frame. */
+.hero-car-showcase{width:100%;height:88%;inset:auto 0 0 auto}
+.hero-car-img{object-fit:contain;object-position:center bottom}
+@media(max-width:900px){
+  .hero-car-showcase{width:100%;height:88%;inset:auto 0 0 auto}
+}
