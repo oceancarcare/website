@@ -319,7 +319,6 @@ h3 {
 }
 .hsec {
   position: relative;
-  display: grid;
   overflow: hidden;
   padding: 0;
   background: #fff;
@@ -1876,7 +1875,6 @@ select option {
 /* Hero section inspired by reference design */
 .hsec {
   position: relative;
-  display: grid;
   overflow: hidden;
   padding: 0;
   background: #fff;
@@ -1898,17 +1896,13 @@ select option {
   z-index: 0;
 }
 .hero.filllo-hero {
-  grid-area: 1 / 1;
   position: relative;
-  isolation: isolate;
-  box-sizing: border-box;
+  z-index: 1;
   width: min(1560px, calc(100% - 40px));
   max-width: 1560px;
   min-height: 0;
-  aspect-ratio: 16 / 9;
   margin: 0 auto;
-  padding: 0;
-  overflow: hidden;
+  padding: 0 0 24px;
 }
 .hero-top-row {
   position: relative;
@@ -1993,15 +1987,11 @@ select option {
   margin-top: 28px;
 }
 .hero-car-showcase {
-  position: absolute;
-  inset: auto 0 0 auto;
+  position: relative;
   z-index: 1;
-  width: 100%;
-  height: 88%;
-  max-width: none;
-  margin: 0;
-  overflow: hidden;
-  pointer-events: none;
+  width: min(1120px, 100%);
+  max-width: 100%;
+  margin: 16px 0 0 auto;
 }
 .hero-car-glow {
   position: absolute;
@@ -2018,13 +2008,11 @@ select option {
   filter: blur(40px);
 }
 .hero-car-img {
-  position: absolute;
-  inset: 0;
+  display: block;
   width: 100%;
-  height: 100%;
-  max-width: 100%;
+  height: auto;
+  aspect-ratio: 16 / 9;
   object-fit: contain;
-  object-position: center bottom;
 }
 @media (max-width: 900px) {
   .hero.filllo-hero {
@@ -2032,22 +2020,20 @@ select option {
   }
   .hero-top-row {
     grid-template-columns: 1.05fr 1fr;
-    gap: 10px;
-    align-items: center;
-    padding: clamp(8px, 2vw, 16px);
+    gap: 16px;
+    padding: 16px 0;
   }
   .hero-left-col h1 {
-    font-size: clamp(25px, 7.5vw, 42px);
+    font-size: clamp(40px, 7vw, 64px);
     line-height: 0.94;
-    margin: 4px 0 6px;
+    margin: 8px 0;
   }
   .hero-left-col .pl {
-    font-size: clamp(8px, 2vw, 12px);
+    font-size: 11px;
   }
   .hero-left-col .lead {
-    font-size: clamp(9px, 2.4vw, 13px);
-    line-height: 1.25;
-    margin: 0;
+    font-size: 14px;
+    line-height: 1.35;
   }
   .hero-right-col {
     max-width: none;
@@ -2055,15 +2041,14 @@ select option {
     padding: 0;
   }
   .hero-right-col .hero-lead {
-    font-size: clamp(9px, 2vw, 12px);
-    line-height: 1.3;
-    margin-bottom: 6px;
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 12px;
   }
   .hero-stats {
-    margin-top: 4px;
+    margin-top: 12px;
   }
 }
-
 .ac .b.p {
   transition:
     transform 0.3s,
@@ -2079,8 +2064,85 @@ select option {
   box-shadow: none;
 }
 
-.noscript-message {
-  padding: 40px;
+@media (max-width: 640px) {
+  .nav .nin {
+    min-height: 0;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 8px 0 4px;
+  }
+  .lg img {
+    height: 38px;
+  }
+  .ac {
+    gap: 8px;
+  }
+  .ac .wab {
+    width: 40px;
+    height: 40px;
+  }
+  .ac .b.sm {
+    min-height: 40px;
+    padding: 0 14px;
+    font-size: 14px;
+  }
+  .tabs {
+    order: 3;
+    flex: 0 0 100%;
+    width: 100%;
+    justify-content: space-between;
+    gap: 0;
+  }
+  .tabs button {
+    min-height: 34px;
+    padding: 0 7px;
+    font-size: 13px;
+    letter-spacing: 0.06em;
+  }
+  .pg.home-page {
+    padding-top: 104px;
+  }
+  .hero.filllo-hero {
+    width: calc(100% - 28px);
+    padding-bottom: 20px;
+  }
+  .hero-top-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 10px 0 0;
+  }
+  .hero-left-col h1 {
+    font-size: clamp(40px, 11vw, 54px);
+    line-height: 0.92;
+    margin: 8px 0;
+  }
+  .hero-left-col .pl {
+    font-size: 10px;
+  }
+  .hero-left-col .lead {
+    font-size: 15px;
+    line-height: 1.3;
+  }
+  .hero-right-col .hero-lead {
+    font-size: 14px;
+    line-height: 1.45;
+    margin: 0 0 10px;
+  }
+  .hero-stats {
+    gap: 18px;
+    margin-top: 8px;
+  }
+  .hero-stats div {
+    min-width: 0;
+  }
+  .hero-car-showcase {
+    width: 100%;
+    margin-top: 16px;
+  }
+  .hero-car-img {
+    width: 100%;
+    height: auto;
+  }
 }
 
 .noscript-message {
