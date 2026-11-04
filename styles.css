@@ -2820,6 +2820,20 @@ select option {
 .ft {
   border-top-color: rgba(255, 255, 255, 0.16);
 }
+.brand-note {
+  margin: 24px 0 0;
+  padding: 16px 20px;
+  border: 1px solid rgba(255, 43, 56, 0.24);
+  border-left: 3px solid var(--bl);
+  border-radius: 0 12px 12px 0;
+  background: linear-gradient(90deg, rgba(255, 43, 56, 0.1), rgba(255, 255, 255, 0.025));
+  color: #c2c7d0;
+  font-size: 15px;
+  line-height: 1.65;
+}
+.brand-note strong {
+  color: #f5f5f5;
+}
 
 /* Keep the car attached to the copy on narrow screens instead of the old fixed hero height. */
 @media (max-width: 900px) {

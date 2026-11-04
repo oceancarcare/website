@@ -1514,6 +1514,10 @@
         <div class="g3">
           ${SV.slice(0, 3).map((s, i) => html`<${Card} key=${s.k} s=${s} i=${i} pick=${pick} />`)}
         </div>
+        <p class="brand-note rv">
+          We proudly feature <strong>3M India products</strong> across our
+          premium car care systems for a flawless, long-lasting finish.
+        </p>
         <div class="mid">
           <button class="b p" onClick=${() => go("services")}>
             Explore all services →
@@ -1578,6 +1582,10 @@
           title=${html`Full-service. <span class="bl">Fully done.</span>`}
           sub="Tap a service to send us a quick request."
         />
+        <p class="brand-note rv">
+          <strong>Engineered for perfection.</strong> Our car care systems are
+          powered by industry-leading <strong>3M India automotive solutions.</strong>
+        </p>
         <div class="g3">
           ${SV.map((s, i) => html`<${Card} key=${s.k} s=${s} i=${i} pick=${pick} />`)}
         </div>
@@ -1832,8 +1840,7 @@
               <div>
                 <small>Studio</small
                 ><span
-                  >Ocean Agencies, Door No. 39/2223-A, All India Radio Road,
-                  Puthiyangadi Post, Calicut – 673021</span
+                  >Kunduparamba Road, Puthiyangadi, Kozhikode, Kerala 673021</span
                 >
               </div>
             </div>
@@ -1945,25 +1952,24 @@
             />
             <text class="mp" x="440" y="170">Ocean Car Detailing ZPA</text>
             <text class="mp" x="560" y="136" style=${{ fontWeight: 400 }}>
-              All India Radio Station
+              Kunduparamba Road
             </text>
             <text class="mp" x="30" y="274" style=${{ fontWeight: 400 }}>
               Towards Kozhikode city
             </text>
           </svg>
-          ${live ? html`<iframe title="Live map" loading="lazy" src="https://maps.google.com/maps?q=Ocean+Car+Detailing+Puthiyangadi+Kozhikode&output=embed"></iframe>` : null}
+          ${live ? html`<iframe title="Live map" loading="lazy" src="https://maps.google.com/maps?q=Kunduparamba+Road,+Puthiyangadi,+Kozhikode,+Kerala+673021&output=embed"></iframe>` : null}
           <div class="mi">
             <b>Ocean Car Detailing ZPA</b>
             <p>
-              Ocean Agencies, Door No. 39/2223-A, All India Radio Road,
-              Puthiyangadi Post, Calicut – 673021
+              Kunduparamba Road, Puthiyangadi, Kozhikode, Kerala 673021
             </p>
             <div class="row">
               <a
                 class="b p sm"
                 target="_blank"
                 rel="noopener"
-                href="https://www.google.com/maps/dir/?api=1&destination=Ocean+Agencies+Door+No+39%2F2223-A+All+India+Radio+Road+Puthiyangadi+Post+Calicut+673021"
+                href="https://www.google.com/maps/dir/?api=1&destination=Kunduparamba+Road%2C+Puthiyangadi%2C+Kozhikode%2C+Kerala+673021"
                 >Get Directions</a
               ><button class="b sm" type="button" onClick=${() => setL(!live)}>
                 ${live ? "Hide live map" : "Load live map"}
@@ -1997,8 +2003,7 @@
               rel="noopener"
               >Instagram · ocean_cardetailing</a
             ><span class="mu" style=${{ display: "block", paddingTop: 6 }}
-              >Ocean Agencies, Door No. 39/2223-A, All India Radio Road,
-              Puthiyangadi Post, Calicut – 673021</span
+              >Kunduparamba Road, Puthiyangadi, Kozhikode, Kerala 673021</span
             >
           </div>
         </div>
