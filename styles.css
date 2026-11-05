@@ -2789,5 +2789,6 @@ h2,
 h3 {
   font-family: var(--fh) !important;
   font-style: normal !important;
-  letter-spacing: -0.045em;
+  font-weight: 600 !important;
+  letter-spacing: -0.035em;
 }
