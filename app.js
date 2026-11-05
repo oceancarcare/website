@@ -21,6 +21,19 @@
     ["about", "About"],
     ["contact", "Contact"],
   ];
+  const THREE_M_PRODUCTS = [
+    { name: "Dashboard Dresser", src: "assets/3m-products/dashboard-dresser.png" },
+    { name: "High Power Brake Cleaner", src: "assets/3m-products/brake-cleaner.png" },
+    { name: "Quick Wax", src: "assets/3m-products/quick-wax.png" },
+    { name: "1 Step Finishing Compound", src: "assets/3m-products/finishing-compound.png" },
+    { name: "Car Wash Shampoo", src: "assets/3m-products/car-wash-shampoo.png" },
+    { name: "Premium Liquid Wax", src: "assets/3m-products/premium-liquid-wax.png" },
+    { name: "Foam Wash", src: "assets/3m-products/foam-wash.png" },
+    { name: "Car Scratch Remover", src: "assets/3m-products/scratch-remover.png" },
+    { name: "Dashboard Polish", src: "assets/3m-products/dashboard-polish.png" },
+    { name: "Tyre Dresser", src: "assets/3m-products/tyre-dresser.png" },
+  ];
+  const THREE_M_LINK = "https://www.3mindia.in/3M/en_IN/auto-care-products-and-solutions-in/auto-care/";
   const SVALL = [
     {
       k: "Ceramic Coating",
@@ -1982,6 +1995,32 @@
       </div>
     </footer>`;
   }
+  function ThreeMAd() {
+    const [active, setActive] = useState(0);
+    useEffect(() => {
+      const timer = window.setInterval(() => {
+        setActive((current) => (current + 1) % THREE_M_PRODUCTS.length);
+      }, 4500);
+      return () => window.clearInterval(timer);
+    }, []);
+    const product = THREE_M_PRODUCTS[active];
+    return html`<aside class="three-m-ad" aria-label="3M India car care products">
+      <a class="three-m-ad-link" href=${THREE_M_LINK} target="_blank" rel="noopener noreferrer">
+        <span class="three-m-ad-brand"><span>3M</span> INDIA · CAR CARE</span>
+        <span class="three-m-ad-product">
+          <span class="three-m-ad-image"><img key=${product.src} src=${product.src} alt=${product.name} /></span>
+          <span class="three-m-ad-copy">
+            <span class="three-m-ad-kicker">Featured product</span>
+            <strong key=${product.name}>${product.name}</strong>
+            <span class="three-m-ad-dots" aria-hidden="true">
+              ${THREE_M_PRODUCTS.map((item, index) => html`<i key=${item.src} class=${index === active ? "active" : ""}></i>`)}
+            </span>
+          </span>
+        </span>
+        <span class="three-m-ad-cta">Browse more on 3M India <b aria-hidden="true">↗</b></span>
+      </a>
+    </aside>`;
+  }
   function App() {
     const init = () => {
       const x = location.hash.slice(1);
@@ -2063,6 +2102,7 @@
       </header>
       <main key=${page}>${V}</main>
       <${Footer} go=${go} />
+      <${ThreeMAd} />
       <button
         class=${"up" + (up ? " s" : "")}
         onClick=${() => window.scrollTo({ top: 0, behavior: "smooth" })}
