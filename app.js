@@ -2012,12 +2012,12 @@
           <span class="three-m-ad-copy">
             <span class="three-m-ad-kicker">Featured product</span>
             <strong key=${product.name}>${product.name}</strong>
+            <span class="three-m-ad-cta">Browse more on 3M India <b aria-hidden="true">↗</b></span>
             <span class="three-m-ad-dots" aria-hidden="true">
               ${THREE_M_PRODUCTS.map((item, index) => html`<i key=${item.src} class=${index === active ? "active" : ""}></i>`)}
             </span>
           </span>
         </span>
-        <span class="three-m-ad-cta">Browse more on 3M India <b aria-hidden="true">↗</b></span>
       </a>
     </aside>`;
   }
