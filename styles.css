@@ -2965,3 +2965,23 @@ h1 {
     animation: none;
   }
 }
+
+
+.hero-car-showcase {
+  isolation: isolate;
+}
+.hero-car-showcase::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background:
+    linear-gradient(90deg, #050505 0%, rgba(5, 5, 5, 0.78) 4%, transparent 25%, transparent 75%, rgba(5, 5, 5, 0.78) 96%, #050505 100%),
+    linear-gradient(180deg, #050505 0%, rgba(5, 5, 5, 0.86) 5%, transparent 42%);
+}
+.hero-car-img.hero-car-video {
+  mix-blend-mode: normal;
+  object-fit: cover;
+  filter: none;
+}

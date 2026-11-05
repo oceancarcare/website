@@ -1480,11 +1480,16 @@
           </div>
           <div class="hero-car-showcase">
             <div class="hero-car-glow"></div>
-            <img
-              src="assets/hero-car.png"
-              alt="Ocean Car Detailing Porsche 911 GT3 RS"
-              class="hero-car-img"
-            />
+            <video
+              src="assets/hero-car-loop.mp4"
+              class="hero-car-img hero-car-video"
+              autoPlay
+              muted
+              loop
+              playsinline
+              preload="metadata"
+              aria-label="Ocean Car Care Porsche detailing video"
+            ></video>
           </div>
         </section>
       </div>
