@@ -20,7 +20,7 @@
   --bl: #ff2b38;
   --bl2: #c21f31;
   --rd: #ff4b4b;
-  --fd: "Oswald", "Arial Narrow", Impact, sans-serif;
+  --fd: "Barlow Condensed", Impact, sans-serif;
 }
 *,
 *::before,
@@ -2261,7 +2261,7 @@ width: min(920px, 88vw);
   margin: 25px 0 15px;
   min-height: 1.64em;
   color: #fff;
-  font-family: var(--fd);
+  font-family: Inter, system-ui, sans-serif;
   font-size: clamp(54px, 7.6vw, 118px);
   font-style: normal;
   font-weight: 700;
@@ -2308,6 +2308,45 @@ width: min(920px, 88vw);
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 }
+.cinema-count {
+  position: absolute;
+  top: 50%;
+  right: clamp(24px, 8vw, 120px);
+  z-index: 2;
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  transform: translateY(-50%);
+}
+.cinema-count-current {
+  color: #fff;
+  font-size: clamp(48px, 7vw, 88px);
+  font-weight: 500;
+  letter-spacing: -0.08em;
+  line-height: 0.9;
+}
+.cinema-count-total {
+  padding-top: 8px;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 12px;
+  letter-spacing: 0.12em;
+}
+.cinema-count-total::before {
+  content: "/";
+  margin-right: 7px;
+  color: var(--bl);
+}
+.cinema-side-label {
+  position: absolute;
+  right: clamp(24px, 5vw, 76px);
+  bottom: 116px;
+  z-index: 2;
+  color: rgba(255, 255, 255, 0.66);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  writing-mode: vertical-rl;
+}
 .cinema-stage-nav {
   position: relative;
   width: 100%;
@@ -2350,6 +2389,39 @@ width: min(920px, 88vw);
 }
 .cinema-stage-button.on b {
   color: var(--bl);
+}
+.cinema-arrows {
+  position: absolute;
+  top: 50%;
+  right: clamp(22px, 5vw, 76px);
+  z-index: 6;
+  display: grid;
+  gap: 12px;
+  transform: translateY(-50%);
+}
+.cinema-arrow {
+  display: grid;
+  width: 50px;
+  height: 50px;
+  padding: 0;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.58);
+  border-radius: 50%;
+  background: rgba(5, 5, 5, 0.72);
+  color: #fff;
+  font: 400 30px/1 Inter, system-ui, sans-serif;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: border-color 0.2s, color 0.2s, background 0.2s, opacity 0.2s;
+}
+.cinema-arrow:not(:disabled):hover {
+  border-color: var(--bl);
+  background: rgba(15, 5, 6, 0.95);
+  color: var(--bl);
+}
+.cinema-arrow:disabled {
+  opacity: 0.35;
+  cursor: default;
 }
 .cinema-stage.slam .cinema-footage video {
   animation: detail-slam 0.64s cubic-bezier(0.12, 0.72, 0.18, 1) both;
@@ -2428,9 +2500,29 @@ width: min(920px, 88vw);
     font-size: 13px;
     -webkit-line-clamp: 3;
   }
+  .cinema-count {
+    top: 24%;
+    right: 25px;
+  }
+  .cinema-count-current {
+    font-size: 52px;
+  }
+  .cinema-side-label {
+    display: none;
+  }
   .cinema-stage-nav {
     margin-top: 16px;
     gap: 5px;
+  }
+  .cinema-arrows {
+    top: 45%;
+    right: 18px;
+    gap: 9px;
+  }
+  .cinema-arrow {
+    width: 42px;
+    height: 42px;
+    font-size: 26px;
   }
   .cinema-stage-button {
     min-height: 46px;

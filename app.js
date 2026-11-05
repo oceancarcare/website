@@ -1374,6 +1374,9 @@
       });
     };
 
+    const moveBy = (amount) =>
+      goToStage(Math.min(STAGE_DATA.length - 1, Math.max(0, activeIdx + amount)));
+
     return html`<div class="ln-wrap">
       <div class="ln-header">
         <div>
@@ -1382,7 +1385,7 @@
             5-Stage <span class="bl">Precision Transformation</span>
           </h2>
           <p class="ln-desc">
-            Swipe horizontally to explore each detailing
+            Swipe horizontally or use the arrows to explore each detailing
             phase: Wash → Foam → Polish → Coating → Final Check.
           </p>
         </div>
@@ -1416,6 +1419,31 @@
             </h3>
             <span class="cinema-step-name">${st.tag}</span>
             <p class="cinema-description">${st.desc}</p>
+          </div>
+
+          <div class="cinema-count">
+            <span class="cinema-count-current">${st.idx}</span>
+            <span class="cinema-count-total">/ 05</span>
+          </div>
+          <div class="cinema-side-label">${st.tag} · ${st.idx} / 05</div>
+
+          <div class="cinema-arrows">
+            <button
+              class="cinema-arrow"
+              onClick=${() => moveBy(-1)}
+              disabled=${activeIdx === 0}
+              aria-label="Previous stage"
+            >
+              ←
+            </button>
+            <button
+              class="cinema-arrow"
+              onClick=${() => moveBy(1)}
+              disabled=${activeIdx === STAGE_DATA.length - 1}
+              aria-label="Next stage"
+            >
+              →
+            </button>
           </div>
 
         </section>`)}
