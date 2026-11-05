@@ -2220,12 +2220,6 @@ width: min(920px, 88vw);
   transform: scale(1.02);
   will-change: transform, filter;
 }
-.cinema-footage video.cinema-final-video {
-  object-fit: contain;
-  object-position: center;
-  opacity: 1;
-  transform: none;
-}
 .cinema-shade {
   z-index: -2;
   background:

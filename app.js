@@ -1409,7 +1409,6 @@
         >
           <div class="cinema-footage">
             ${activeIdx === i ? html`<video
-              class=${i === 4 ? "cinema-final-video" : ""}
               src=${st.src}
               muted
               playsinline
