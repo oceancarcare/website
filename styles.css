@@ -21,6 +21,7 @@
   --bl2: #c21f31;
   --rd: #ff4b4b;
   --fd: "Barlow Condensed", Impact, sans-serif;
+  --fh: "Manrope", Inter, system-ui, sans-serif;
 }
 *,
 *::before,
@@ -211,9 +212,9 @@ h1,
 h2,
 h3 {
   margin: 0;
-  font-family: var(--fd);
+  font-family: var(--fh);
   text-transform: uppercase;
-  font-style: italic;
+  font-style: normal;
   font-weight: 800;
   line-height: 0.95;
 }
@@ -2779,4 +2780,14 @@ select option {
     width: 140%;
     margin: 0 0 0 -20%;
   }
+}
+
+
+/* Consistent, clean typography for all page headings. */
+h1,
+h2,
+h3 {
+  font-family: var(--fh) !important;
+  font-style: normal !important;
+  letter-spacing: -0.045em;
 }
