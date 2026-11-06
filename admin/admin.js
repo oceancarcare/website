@@ -18,7 +18,8 @@
   const apiPath = (path) => path.split("/").map(encodeURIComponent).join("/");
 
   async function api(path, options = {}) {
-    const response = await fetch(`${API_ROOT}${path}`, {
+    const url = path.startsWith("https://") ? path : `${API_ROOT}${path}`;
+    const response = await fetch(url, {
       ...options,
       headers: {
         Accept: "application/vnd.github+json",
@@ -194,7 +195,7 @@
     state.busy = true;
     render();
     try {
-      const user = await api("/user");
+      const user = await api("https://api.github.com/user");
       state.username = user.login;
       await loadMedia();
       state.status = `Connected as ${user.login}.`;
