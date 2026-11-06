@@ -1,39 +1,39 @@
 {
   "items": [
     {
-      "type": "image",
-      "name": "i-d1.png",
-      "description": "Our studio"
-    },
-    {
-      "type": "image",
-      "name": "i-d2.jpg",
-      "description": "Studio after dark"
-    },
-    {
-      "type": "video",
-      "name": "ocean-detailing-project-2.mp4",
-      "description": "Ocean Car Care detailing showcase — Project 2"
-    },
-    {
-      "type": "video",
-      "name": "ocean-detailing-project-3.mp4",
-      "description": "Ocean Car Care detailing showcase — Project 3"
-    },
-    {
-      "type": "video",
-      "name": "ocean-detailing-project-3-alternate.mp4",
-      "description": "Ocean Car Care detailing showcase — Project 3, alternate cut"
-    },
-    {
-      "type": "video",
-      "name": "ocean-detailing-project-4.mp4",
-      "description": "Ocean Car Care detailing showcase — Project 4"
-    },
-    {
-      "type": "image",
       "name": "hyundai-detailing-studio.png",
-      "description": "Hyundai detailing in our illuminated studio"
+      "description": "Detailing in our illuminated studio",
+      "type": "image"
+    },
+    {
+      "name": "i-d1.png",
+      "description": "Our studio",
+      "type": "image"
+    },
+    {
+      "name": "i-d2.jpg",
+      "description": "Studio after dark",
+      "type": "image"
+    },
+    {
+      "name": "ocean-detailing-project-2.mp4",
+      "description": "Ocean Car Care detailing showcase — Project 2",
+      "type": "video"
+    },
+    {
+      "name": "ocean-detailing-project-3-alternate.mp4",
+      "description": "Ocean Car Care detailing showcase — Project 3, alternate cut",
+      "type": "video"
+    },
+    {
+      "name": "ocean-detailing-project-3.mp4",
+      "description": "Ocean Car Care detailing showcase — Project 3",
+      "type": "video"
+    },
+    {
+      "name": "ocean-detailing-project-4.mp4",
+      "description": "Ocean Car Care detailing showcase — Project 4",
+      "type": "video"
     }
   ]
 }
