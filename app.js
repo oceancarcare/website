@@ -1588,12 +1588,10 @@
     </div>`;
   }
   const ITEMS = [
-    { t: "p", k: "d1", c: "Our studio" },
     { t: "v", n: 0, c: "Signature foam wash" },
     { t: "l", a: ["coupe", "Blue"], c: "Blue coupe" },
     { t: "l", a: ["suv", "Black"], c: "Black SUV" },
     { t: "v", n: 1, c: "Paint correction" },
-    { t: "p", k: "d2", c: "Studio after dark" },
     { t: "l", a: ["coupe", "Red"], c: "Red coupe" },
     { t: "v", n: 2, c: "Ceramic coating" },
     { t: "l", a: ["coupe", "White"], c: "Pearl white" },
@@ -1601,11 +1599,27 @@
     { t: "a", k: "paint", c: "Paint correction" },
     { t: "a", k: "lamp", c: "Headlight care" },
   ];
-  const key = (x) => x.t + (x.k || x.n || (x.a && x.a.join(""))) + x.c;
+  const key = (x) => x.t + (x.name || x.k || x.n || (x.a && x.a.join(""))) + x.c;
   function Gallery({ go }) {
     const [f, setF] = useState("all"),
       [m, setM] = useState(null),
-      [exp, setExp] = useState(false);
+      [exp, setExp] = useState(false),
+      [managedMedia, setManagedMedia] = useState([]);
+    useEffect(() => {
+      let active = true;
+      fetch("assets/gallery/gallery.json", { cache: "no-store" })
+        .then((response) => {
+          if (!response.ok) throw new Error("Gallery manifest unavailable");
+          return response.json();
+        })
+        .then((data) => {
+          if (active) setManagedMedia(Array.isArray(data.items) ? data.items : []);
+        })
+        .catch(() => {
+          if (active) setManagedMedia([]);
+        });
+      return () => { active = false; };
+    }, []);
     useEffect(() => {
       const k = (e) => {
         if (e.key === "Escape") setM(null);
@@ -1619,16 +1633,26 @@
         document.body.style.overflow = "";
       };
     }, [m]);
-    const list = ITEMS.filter(
-      (x) => f === "all" || (f === "photos" ? x.t !== "v" : x.t === "v"),
-    );
+    const galleryMedia = managedMedia.map((item) => ({
+      t: "media",
+      name: item.name,
+      type: item.type,
+      src: "assets/gallery/" + encodeURIComponent(item.name),
+      c: item.description || item.name,
+    }));
+    const allItems = [...galleryMedia, ...ITEMS];
+    const list = allItems.filter((x) => {
+      const isVideo = x.t === "v" || x.type === "video";
+      return f === "all" || (f === "photos" ? !isVideo : isVideo);
+    });
     const shown = exp ? list : list.slice(0, 6);
     const body = (x, big) =>
-      x.t === "p"
-        ? html`<div
-            class=${big ? "pic" : "im"}
-            style=${{ backgroundImage: "var(--i-" + x.k + ")" }}
-          ></div>`
+      x.t === "media"
+        ? html`<div class=${"gallery-media-frame" + (big ? " large" : "")}>
+            ${x.type === "video"
+              ? html`<video src=${x.src} controls=${big} autoPlay=${big} muted playsinline preload="metadata"></video>`
+              : html`<img src=${x.src} alt=${x.c} loading="lazy" />`}
+          </div>`
         : x.t === "v"
           ? html`<${Reel} src=${VIDEOS[x.n]} n=${big ? 34 : 12} tag=${big} />`
           : x.t === "l"
@@ -1675,7 +1699,7 @@
           )}
         </div>
         <div class="gg">
-          ${shown.map((x) => html`<button key=${key(x)} class="tl pop" data-c=${x.c} onClick=${() => setM(x)}>${body(x, false)}${x.t === "v" ? html`<span class="play"></span>` : null}</button>`)}
+          ${shown.map((x) => html`<button key=${key(x)} class="tl pop" data-c=${x.c} onClick=${() => setM(x)}>${body(x, false)}${x.t === "v" || x.type === "video" ? html`<span class="play"></span>` : null}</button>`)}
         </div>
         ${
           list.length > 6

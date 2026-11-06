@@ -1,6 +1,5 @@
 :root {
-  --i-d1: url("assets/gallery/i-d1.png");
-  --i-d2: url("assets/gallery/i-d2.jpg");
+  --i-about: url("assets/about/studio.webp");
   --u-hero: url("assets/u-hero.jpg");
   --u-car: url("assets/u-car.jpg");
   --u-cc: url("assets/u-cc.png");
@@ -1154,7 +1153,7 @@ color: #111827;
 .big {
   aspect-ratio: 4/5;
   border-radius: 28px;
-  background: var(--i-d1) center/cover;
+  background: var(--i-about) center/cover;
   border: 1px solid var(--line);
   position: relative;
   overflow: hidden;
@@ -2984,4 +2983,32 @@ h1 {
   mix-blend-mode: normal;
   object-fit: cover;
   filter: none;
+}
+
+
+.tl .gallery-media-frame {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #090909;
+}
+.gallery-media-frame img,
+.gallery-media-frame video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.md .gallery-media-frame.large {
+  position: relative;
+  width: 100%;
+  height: min(78vh, 720px);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  overflow: hidden;
+  background: #050505;
+}
+.md .gallery-media-frame.large img,
+.md .gallery-media-frame.large video {
+  object-fit: contain;
 }
