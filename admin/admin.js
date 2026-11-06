@@ -102,6 +102,13 @@
     state.manifestSha = updated.content?.sha || null;
   }
 
+  function explainError(error) {
+    if (error instanceof TypeError || /Failed to fetch|NetworkError|Load failed/i.test(error?.message || "")) {
+      return "The browser could not reach api.github.com, so GitHub did not validate the token. Check network, firewall, or browser-extension blocking and retry.";
+    }
+    return error?.message || "Unknown error";
+  }
+
   function status(message, type = "") {
     state.status = message;
     state.statusType = type;
@@ -143,7 +150,7 @@
       <form id="login-form">
         <label class="field-label" for="pat">GitHub personal access token</label>
         <input id="pat" name="pat" type="password" autocomplete="off" spellcheck="false" placeholder="github_pat_…" required />
-        <p class="hint">Use a fine-grained token for <strong>oceancarcare/website</strong> with Contents read and write access. The token stays in this browser session and is never saved in the repository.</p>
+        <p class="hint">Use a fine-grained token for <strong>oceancarcare/website</strong> with Contents read and write access. The token stays in this browser session and is never saved in the repository. “Failed to fetch” means the browser could not reach GitHub; “Bad credentials” means GitHub rejected the token.</p>
         <div class="actions"><button class="button primary" type="submit" ${state.busy ? "disabled" : ""}>${state.busy ? "Connecting…" : "Connect to GitHub"}</button></div>
       </form>
       <p class="status ${escapeHtml(state.statusType)}">${escapeHtml(state.status)}</p>
@@ -195,7 +202,7 @@
     } catch (error) {
       state.token = "";
       state.username = "";
-      state.status = `Could not connect: ${error.message}. Check the token and Contents permission.`;
+      state.status = `Could not connect: ${explainError(error)} Check that the token is scoped to this repository with Contents read/write access.`;
       state.statusType = "";
     } finally {
       state.busy = false;
@@ -213,7 +220,7 @@
     if (action === "refresh") {
       state.busy = true; status("Refreshing from GitHub…");
       try { await loadMedia(); status("Gallery list refreshed.", "good"); }
-      catch (error) { status(`Refresh failed: ${error.message}`); }
+      catch (error) { status(`Refresh failed: ${explainError(error)}`); }
       finally { state.busy = false; render(); }
       return;
     }
@@ -230,7 +237,7 @@
       item.description = card.querySelector("[data-description]").value.trim() || prettyName(item.name);
       state.busy = true; status("Saving description to GitHub…");
       try { await saveManifest(`Update Gallery description for ${item.name}`); status("Description saved to the public Gallery.", "good"); }
-      catch (error) { item.description = previous; status(`Could not save description: ${error.message}`); }
+      catch (error) { item.description = previous; status(`Could not save description: ${explainError(error)}`); }
       finally { state.busy = false; render(); }
       return;
     }
@@ -242,7 +249,7 @@
         await saveManifest(`Remove ${name} from Gallery manifest`);
         await api(`/contents/${apiPath(`${DIR}/${name}`)}`, { method: "DELETE", body: JSON.stringify({ message: `Delete Gallery media ${name}`, sha: item.sha, branch: BRANCH }) });
         status("Media deleted and Gallery manifest updated.", "good");
-      } catch (error) { status(`Delete or manifest update failed: ${error.message}. Refresh to inspect the repository state.`); }
+      } catch (error) { status(`Delete or manifest update failed: ${explainError(error)}. Refresh to inspect the repository state.`); }
       finally { state.busy = false; try { await loadMedia(); } catch (_) {} render(); }
     }
   }
@@ -263,7 +270,7 @@
       state.media.push({ name, sha: "", type: mediaType(name), description: prettyName(name), preview: `../${DIR}/${encodeURIComponent(name)}` });
       await saveManifest(`Add ${name} to Gallery manifest`);
       status("Media uploaded and added to the public Gallery.", "good");
-    } catch (error) { status(`Upload or manifest update failed: ${error.message}. Refresh to inspect repository contents.`); }
+    } catch (error) { status(`Upload or manifest update failed: ${explainError(error)}. Refresh to inspect repository contents.`); }
     finally { state.busy = false; try { await loadMedia(); } catch (_) {} render(); }
   }
 
@@ -283,7 +290,7 @@
       const updated = await api(`/contents/${apiPath(`${DIR}/${name}`)}`, { method: "PUT", body: JSON.stringify({ message: `Replace Gallery media ${name}`, content: await fileToBase64(file), sha: item.sha, branch: BRANCH }) });
       item.sha = updated.content?.sha || item.sha;
       status("Media replaced.", "good");
-    } catch (error) { status(`Replace failed: ${error.message}`); }
+    } catch (error) { status(`Replace failed: ${explainError(error)}`); }
     finally { state.busy = false; try { await loadMedia(); } catch (_) {} render(); }
   }
 
