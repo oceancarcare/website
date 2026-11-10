@@ -10,7 +10,7 @@
   const root = document.getElementById("admin-root");
   const state = {
     token: "", username: "", media: [], manifestSha: null, busy: false,
-    arranging: false, originalOrder: [], status: "", statusType: "",
+    arranging: false, originalOrder: [], draggedName: "", status: "", statusType: "",
   };
 
   const escapeHtml = (value) => String(value ?? "").replace(/[&<>"']/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[ch]);
@@ -134,19 +134,18 @@
       ? `<video src="${escapeHtml(item.preview)}" controls preload="metadata"></video>`
       : `<img src="${escapeHtml(item.preview)}" alt="${escapeHtml(item.description)}" loading="lazy" />`;
     const actions = state.arranging
-      ? `<button class="button order" data-action="move-up" ${index === 0 || state.busy ? "disabled" : ""} aria-label="Move ${escapeHtml(item.name)} earlier">Move up</button>
-          <button class="button order" data-action="move-down" ${index === state.media.length - 1 || state.busy ? "disabled" : ""} aria-label="Move ${escapeHtml(item.name)} later">Move down</button>`
+      ? ""
       : `<button class="button primary" data-action="save">Save description</button>
           <button class="button" data-action="replace">Replace</button>
           <input class="replace-input" type="file" data-replace-file accept="image/*,video/mp4,video/webm,video/quicktime" />
           <button class="button danger" data-action="delete">Delete</button>`;
-    return `<article class="media-card" data-name="${escapeHtml(item.name)}">
+    return `<article class="media-card${state.arranging ? " arrange-card" : ""}" data-name="${escapeHtml(item.name)}" draggable="${state.arranging ? "true" : "false"}">
       <div class="preview">${media}</div>
       <div class="file-meta"><span class="file-name" title="${escapeHtml(item.name)}">${escapeHtml(item.name)}</span><span class="type-chip">${escapeHtml(item.type)}</span></div>
       <div class="card-body">
-        ${state.arranging ? `<p class="order-hint">Gallery position ${index + 1}</p>` : `<label for="desc-${escapeHtml(item.name)}">Gallery description</label>
+        ${state.arranging ? `<p class="order-hint"><span aria-hidden="true">⠿</span> Drag and drop to reorder · ${index + 1}</p>` : `<label for="desc-${escapeHtml(item.name)}">Gallery description</label>
           <input type="text" id="desc-${escapeHtml(item.name)}" data-description value="${escapeHtml(item.description)}" maxlength="180" />`}
-        <div class="card-actions">${actions}</div>
+        ${state.arranging ? "" : `<div class="card-actions">${actions}</div>`}
       </div>
     </article>`;
   }
@@ -190,7 +189,64 @@
     </tbody></table></section>`;
     root.querySelectorAll("[data-action]").forEach((button) => button.addEventListener("click", onAction));
     root.querySelectorAll("[data-replace-file]").forEach((input) => input.addEventListener("change", onReplaceFile));
+    root.querySelectorAll('.media-card[draggable="true"]').forEach((card) => {
+      card.addEventListener("dragstart", onMediaDragStart);
+      card.addEventListener("dragover", onMediaDragOver);
+      card.addEventListener("dragleave", onMediaDragLeave);
+      card.addEventListener("drop", onMediaDrop);
+      card.addEventListener("dragend", onMediaDragEnd);
+    });
     document.getElementById("upload-file").addEventListener("change", onUploadFile);
+  }
+
+  function onMediaDragStart(event) {
+    if (!state.arranging) return;
+    state.draggedName = event.currentTarget.dataset.name;
+    event.dataTransfer.effectAllowed = "move";
+    event.dataTransfer.setData("text/plain", state.draggedName);
+    event.currentTarget.classList.add("is-dragging");
+  }
+
+  function onMediaDragOver(event) {
+    if (!state.arranging || !state.draggedName) return;
+    event.preventDefault();
+    event.dataTransfer.dropEffect = "move";
+    event.currentTarget.classList.add("drop-target");
+  }
+
+  function onMediaDragLeave(event) {
+    if (!event.currentTarget.contains(event.relatedTarget)) {
+      event.currentTarget.classList.remove("drop-target");
+    }
+  }
+
+  function onMediaDrop(event) {
+    event.preventDefault();
+    const target = event.currentTarget;
+    target.classList.remove("drop-target");
+    const sourceName = state.draggedName || event.dataTransfer.getData("text/plain");
+    const targetName = target.dataset.name;
+    const sourceIndex = state.media.findIndex((item) => item.name === sourceName);
+    const targetIndex = state.media.findIndex((item) => item.name === targetName);
+    if (!state.arranging || sourceIndex < 0 || targetIndex < 0 || sourceIndex === targetIndex) return;
+
+    const bounds = target.getBoundingClientRect();
+    const insertAfter = event.clientY >= bounds.top + bounds.height / 2;
+    let insertIndex = targetIndex + (insertAfter ? 1 : 0);
+    if (sourceIndex < insertIndex) insertIndex -= 1;
+    const reordered = [...state.media];
+    const [dragged] = reordered.splice(sourceIndex, 1);
+    reordered.splice(insertIndex, 0, dragged);
+    state.media = reordered;
+    state.status = "Order changed. Select Done to create one commit.";
+    state.statusType = "";
+    render();
+  }
+
+  function onMediaDragEnd(event) {
+    state.draggedName = "";
+    event.currentTarget.classList.remove("is-dragging", "drop-target");
+    root.querySelectorAll(".media-card").forEach((card) => card.classList.remove("drop-target", "is-dragging"));
   }
 
   function render() {
@@ -283,17 +339,6 @@
     const name = card.dataset.name;
     const item = state.media.find((entry) => entry.name === name);
     if (!item) return;
-    if (action === "move-up" || action === "move-down") {
-      const index = state.media.findIndex((entry) => entry.name === name);
-      const nextIndex = index + (action === "move-up" ? -1 : 1);
-      if (!state.arranging || nextIndex < 0 || nextIndex >= state.media.length) return;
-      state.media = [...state.media];
-      [state.media[index], state.media[nextIndex]] = [state.media[nextIndex], state.media[index]];
-      state.status = "Order changed. Select Done to create one commit.";
-      state.statusType = "";
-      render();
-      return;
-    }
     if (action === "replace") {
       card.querySelector("[data-replace-file]").click();
       return;
