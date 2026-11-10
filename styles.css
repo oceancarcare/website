@@ -99,6 +99,24 @@ button {
   width: auto;
   display: block;
 }
+.brand-lockup {
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 16px;
+}
+.three-m-header {
+  display: inline-flex;
+  align-items: center;
+  border-left: 1px solid rgba(15, 23, 42, 0.2);
+  padding-left: 16px;
+  line-height: 0;
+}
+.three-m-header img {
+  display: block;
+  width: 44px;
+  height: auto;
+}
 .tabs {
   flex: 1;
   min-width: 0;
@@ -1745,6 +1763,10 @@ select option {
   .lg {
     grid-area: lg;
   }
+  .brand-lockup {
+    grid-area: lg;
+    gap: 12px;
+  }
   .tabs {
     grid-area: tb;
   }
@@ -2073,6 +2095,15 @@ width: min(920px, 88vw);
   }
   .lg img {
     height: 38px;
+  }
+  .three-m-header {
+    padding-left: 10px;
+  }
+  .three-m-header img {
+    width: 34px;
+  }
+  .brand-lockup {
+    gap: 10px;
   }
   .ac {
     gap: 8px;

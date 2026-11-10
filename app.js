@@ -1587,17 +1587,6 @@
       <${CTA} go=${go} />
     </div>`;
   }
-  const ITEMS = [
-    { t: "v", n: 0, c: "Signature foam wash" },
-    { t: "l", a: ["coupe", "Blue"], c: "Blue coupe" },
-    { t: "l", a: ["suv", "Black"], c: "Black SUV" },
-    { t: "v", n: 1, c: "Paint correction" },
-    { t: "l", a: ["coupe", "Red"], c: "Red coupe" },
-    { t: "v", n: 2, c: "Ceramic coating" },
-    { t: "l", a: ["coupe", "White"], c: "Pearl white" },
-    { t: "a", k: "ceramic", c: "Ceramic coating" },
-    { t: "a", k: "paint", c: "Paint correction" },
-  ];
   const key = (x) => x.t + (x.name || x.k || x.n || (x.a && x.a.join(""))) + x.c;
   function Gallery({ go }) {
     const [f, setF] = useState("all"),
@@ -1639,7 +1628,7 @@
       src: "assets/gallery/" + encodeURIComponent(item.name),
       c: item.description || item.name,
     }));
-    const allItems = [...galleryMedia, ...ITEMS];
+    const allItems = galleryMedia;
     const list = allItems.filter((x) => {
       const isVideo = x.t === "v" || x.type === "video";
       return f === "all" || (f === "photos" ? !isVideo : isVideo);
@@ -2111,13 +2100,24 @@
       <div class="glow"></div>
       <header class="nav">
         <div class="nin">
-          <button
-            class="lg"
-            onClick=${() => go("home")}
-            aria-label="Ocean Car Detailing ZPA home"
-          >
-            <img src=${LOGO} alt="Ocean Car Detailing ZPA" />
-          </button>
+          <div class="brand-lockup">
+            <button
+              class="lg"
+              onClick=${() => go("home")}
+              aria-label="Ocean Car Detailing ZPA home"
+            >
+              <img src=${LOGO} alt="Ocean Car Detailing ZPA" />
+            </button>
+            <a
+              class="three-m-header"
+              href=${THREE_M_LINK}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="3M India auto care products"
+            >
+              <img src="assets/3m-logo.svg" alt="3M" />
+            </a>
+          </div>
           <nav class="tabs" aria-label="Pages">
             ${PAGES.map((p) => html`<button key=${p[0]} class=${page === p[0] ? "on" : ""} onClick=${() => go(p[0])}>${p[1]}</button>`)}
           </nav>

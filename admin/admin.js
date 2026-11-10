@@ -79,20 +79,23 @@
       readManifest(),
     ]);
     if (!Array.isArray(directory)) throw new Error("Gallery folder could not be read.");
-    const metadata = new Map(manifestItems.map((item) => [item.name, item]));
-    state.media = directory
+    const files = new Map(directory
       .filter((item) => item.type === "file" && item.name !== "gallery.json" && isMedia(item.name))
-      .map((file) => {
-        const record = metadata.get(file.name) || {};
-        return {
-          name: file.name,
-          sha: file.sha,
-          type: mediaType(file.name),
-          description: record.description || prettyName(file.name),
-          preview: file.download_url || `../${DIR}/${encodeURIComponent(file.name)}`,
-        };
-      })
-      .sort((a, b) => a.name.localeCompare(b.name));
+      .map((file) => [file.name, file]));
+    const orderedNames = manifestItems.map((item) => item.name).filter((name) => files.has(name));
+    const included = new Set(orderedNames);
+    const remainingNames = [...files.keys()].filter((name) => !included.has(name)).sort((a, b) => a.localeCompare(b));
+    state.media = [...orderedNames, ...remainingNames].map((name) => {
+      const file = files.get(name);
+      const record = manifestItems.find((item) => item.name === name) || {};
+      return {
+        name,
+        sha: file.sha,
+        type: mediaType(name),
+        description: record.description || prettyName(name),
+        preview: file.download_url || `../${DIR}/${encodeURIComponent(name)}`,
+      };
+    });
   }
 
   async function saveManifest(message) {
@@ -123,7 +126,7 @@
     });
   }
 
-  function cardTemplate(item) {
+  function cardTemplate(item, index) {
     const media = item.type === "video"
       ? `<video src="${escapeHtml(item.preview)}" controls preload="metadata"></video>`
       : `<img src="${escapeHtml(item.preview)}" alt="${escapeHtml(item.description)}" loading="lazy" />`;
@@ -134,6 +137,8 @@
         <label for="desc-${escapeHtml(item.name)}">Gallery description</label>
         <input type="text" id="desc-${escapeHtml(item.name)}" data-description value="${escapeHtml(item.description)}" maxlength="180" />
         <div class="card-actions">
+          <button class="button order" data-action="move-up" ${index === 0 || state.busy ? "disabled" : ""} aria-label="Move ${escapeHtml(item.name)} earlier">Move up</button>
+          <button class="button order" data-action="move-down" ${index === state.media.length - 1 || state.busy ? "disabled" : ""} aria-label="Move ${escapeHtml(item.name)} later">Move down</button>
           <button class="button primary" data-action="save">Save description</button>
           <button class="button" data-action="replace">Replace</button>
           <input class="replace-input" type="file" data-replace-file accept="image/*,video/mp4,video/webm,video/quicktime" />
@@ -161,7 +166,7 @@
 
   function renderDashboard() {
     root.innerHTML = `<section class="toolbar">
-      <div><p class="eyebrow">Ocean Car Care · ${escapeHtml(state.username)}</p><h1>Gallery media</h1><p>Files in <code>${DIR}/</code> are shown on the public Gallery page.</p></div>
+      <div><p class="eyebrow">Ocean Car Care · ${escapeHtml(state.username)}</p><h1>Gallery media</h1><p>Files in <code>${DIR}/</code> are shown on the public Gallery page. Use Move up / Move down to set their display order.</p></div>
       <div class="actions"><button class="button" data-action="refresh" ${state.busy ? "disabled" : ""}>Refresh</button><button class="button" data-action="logout">Log out</button></div>
     </section>
     <p class="status ${escapeHtml(state.statusType)}">${escapeHtml(state.status)}</p>
@@ -176,6 +181,7 @@
       <tr><td>Upload</td><td>Adds a new file and creates a GitHub commit.</td></tr>
       <tr><td>Replace</td><td>Updates an existing file and creates a GitHub commit.</td></tr>
       <tr><td>Save / Delete</td><td>Saves the Gallery caption, or removes the media file and its caption with GitHub commits.</td></tr>
+      <tr><td>Move up / Move down</td><td>Changes the public Gallery order and saves it to GitHub.</td></tr>
     </tbody></table></section>`;
     root.querySelectorAll("[data-action]").forEach((button) => button.addEventListener("click", onAction));
     root.querySelectorAll("[data-replace-file]").forEach((input) => input.addEventListener("change", onReplaceFile));
@@ -229,6 +235,27 @@
     const name = card.dataset.name;
     const item = state.media.find((entry) => entry.name === name);
     if (!item) return;
+    if (action === "move-up" || action === "move-down") {
+      const previous = state.media;
+      const index = state.media.findIndex((entry) => entry.name === name);
+      const nextIndex = index + (action === "move-up" ? -1 : 1);
+      if (nextIndex < 0 || nextIndex >= state.media.length) return;
+      state.media = [...state.media];
+      [state.media[index], state.media[nextIndex]] = [state.media[nextIndex], state.media[index]];
+      state.busy = true;
+      status("Saving Gallery order to GitHub…");
+      try {
+        await saveManifest(`Reorder Gallery media: ${name}`);
+        status("Gallery order saved.", "good");
+      } catch (error) {
+        state.media = previous;
+        status(`Could not save Gallery order: ${explainError(error)}`);
+      } finally {
+        state.busy = false;
+        render();
+      }
+      return;
+    }
     if (action === "replace") {
       card.querySelector("[data-replace-file]").click();
       return;
