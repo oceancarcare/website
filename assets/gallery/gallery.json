@@ -6,13 +6,18 @@
       "type": "image"
     },
     {
-      "name": "i-d2.jpg",
-      "description": "Studio after dark",
-      "type": "image"
+      "name": "ocean-detailing-project-4.mp4",
+      "description": "Ocean Car Care detailing showcase — Project 4",
+      "type": "video"
     },
     {
       "name": "hyundai-detailing-studio.png",
       "description": "Detailing in our illuminated studio",
+      "type": "image"
+    },
+    {
+      "name": "i-d2.jpg",
+      "description": "Studio after dark",
       "type": "image"
     },
     {
@@ -28,11 +33,6 @@
     {
       "name": "ocean-detailing-project-3.mp4",
       "description": "Ocean Car Care detailing showcase — Project 3",
-      "type": "video"
-    },
-    {
-      "name": "ocean-detailing-project-4.mp4",
-      "description": "Ocean Car Care detailing showcase — Project 4",
       "type": "video"
     },
     {
