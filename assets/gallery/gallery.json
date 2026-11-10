@@ -1,6 +1,11 @@
 {
   "items": [
     {
+      "name": "headlight-renewal-3m.png",
+      "type": "image",
+      "description": "3M Headlight Renewal — before and after restoration"
+    },
+    {
       "name": "hyundai-detailing-studio.png",
       "description": "Detailing in our illuminated studio",
       "type": "image"

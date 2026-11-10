@@ -1597,7 +1597,6 @@
     { t: "l", a: ["coupe", "White"], c: "Pearl white" },
     { t: "a", k: "ceramic", c: "Ceramic coating" },
     { t: "a", k: "paint", c: "Paint correction" },
-    { t: "a", k: "lamp", c: "Headlight care" },
   ];
   const key = (x) => x.t + (x.name || x.k || x.n || (x.a && x.a.join(""))) + x.c;
   function Gallery({ go }) {
