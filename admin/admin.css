@@ -59,7 +59,7 @@ input:focus { border-color: var(--red); box-shadow: 0 0 0 3px rgba(255,43,56,.13
 .upload-copy span { color: var(--muted); font-size: 12px; }
 .file-picker { position: relative; overflow: hidden; }
 .file-picker input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
-.media-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(245px,1fr)); gap: 16px; }
+.media-grid { display: grid; grid-template-rows: repeat(3, auto); grid-auto-flow: column; grid-auto-columns: minmax(245px, 1fr); gap: 16px; align-items: start; overflow-x: auto; padding: 2px 2px 12px; }
 .media-card { min-width: 0; overflow: hidden; border: 1px solid var(--line); border-radius: 14px; background: var(--panel); }
 .preview { display: grid; height: 180px; place-items: center; overflow: hidden; background: #080809; }
 .preview img, .preview video { display: block; width: 100%; height: 100%; object-fit: contain; }
@@ -68,6 +68,7 @@ input:focus { border-color: var(--red); box-shadow: 0 0 0 3px rgba(255,43,56,.13
 .type-chip { flex: none; padding: 4px 7px; border-radius: 99px; background: rgba(255,43,56,.12); color: #ff9299; font-size: 9px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
 .card-body { padding: 12px 13px 13px; }
 .card-body label { display: block; margin-bottom: 6px; color: var(--muted); font-size: 11px; font-weight: 700; }
+.order-hint { margin: 0; color: var(--muted); font-size: 12px; }
 .card-actions { display: flex; gap: 7px; flex-wrap: wrap; margin-top: 10px; }
 .card-actions .button { min-height: 34px; padding: 7px 10px; font-size: 11px; }
 .replace-input { display: none; }
@@ -85,4 +86,5 @@ input:focus { border-color: var(--red); box-shadow: 0 0 0 3px rgba(255,43,56,.13
   .panel { margin: 28px auto; }
   .help { overflow-x: auto; }
   .help table { min-width: 480px; }
+  .media-grid { grid-auto-columns: minmax(240px, calc(100vw - 42px)); }
 }

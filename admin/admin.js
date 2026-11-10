@@ -8,7 +8,10 @@
   const API_ROOT = `https://api.github.com/repos/${OWNER}/${REPO}`;
   const MEDIA_EXTENSIONS = new Set(["png", "jpg", "jpeg", "webp", "gif", "mp4", "webm", "mov"]);
   const root = document.getElementById("admin-root");
-  const state = { token: "", username: "", media: [], manifestSha: null, busy: false, status: "", statusType: "" };
+  const state = {
+    token: "", username: "", media: [], manifestSha: null, busy: false,
+    arranging: false, originalOrder: [], status: "", statusType: "",
+  };
 
   const escapeHtml = (value) => String(value ?? "").replace(/[&<>"']/g, (ch) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[ch]);
   const extOf = (name) => String(name).split(".").pop().toLowerCase();
@@ -130,20 +133,20 @@
     const media = item.type === "video"
       ? `<video src="${escapeHtml(item.preview)}" controls preload="metadata"></video>`
       : `<img src="${escapeHtml(item.preview)}" alt="${escapeHtml(item.description)}" loading="lazy" />`;
+    const actions = state.arranging
+      ? `<button class="button order" data-action="move-up" ${index === 0 || state.busy ? "disabled" : ""} aria-label="Move ${escapeHtml(item.name)} earlier">Move up</button>
+          <button class="button order" data-action="move-down" ${index === state.media.length - 1 || state.busy ? "disabled" : ""} aria-label="Move ${escapeHtml(item.name)} later">Move down</button>`
+      : `<button class="button primary" data-action="save">Save description</button>
+          <button class="button" data-action="replace">Replace</button>
+          <input class="replace-input" type="file" data-replace-file accept="image/*,video/mp4,video/webm,video/quicktime" />
+          <button class="button danger" data-action="delete">Delete</button>`;
     return `<article class="media-card" data-name="${escapeHtml(item.name)}">
       <div class="preview">${media}</div>
       <div class="file-meta"><span class="file-name" title="${escapeHtml(item.name)}">${escapeHtml(item.name)}</span><span class="type-chip">${escapeHtml(item.type)}</span></div>
       <div class="card-body">
-        <label for="desc-${escapeHtml(item.name)}">Gallery description</label>
-        <input type="text" id="desc-${escapeHtml(item.name)}" data-description value="${escapeHtml(item.description)}" maxlength="180" />
-        <div class="card-actions">
-          <button class="button order" data-action="move-up" ${index === 0 || state.busy ? "disabled" : ""} aria-label="Move ${escapeHtml(item.name)} earlier">Move up</button>
-          <button class="button order" data-action="move-down" ${index === state.media.length - 1 || state.busy ? "disabled" : ""} aria-label="Move ${escapeHtml(item.name)} later">Move down</button>
-          <button class="button primary" data-action="save">Save description</button>
-          <button class="button" data-action="replace">Replace</button>
-          <input class="replace-input" type="file" data-replace-file accept="image/*,video/mp4,video/webm,video/quicktime" />
-          <button class="button danger" data-action="delete">Delete</button>
-        </div>
+        ${state.arranging ? `<p class="order-hint">Gallery position ${index + 1}</p>` : `<label for="desc-${escapeHtml(item.name)}">Gallery description</label>
+          <input type="text" id="desc-${escapeHtml(item.name)}" data-description value="${escapeHtml(item.description)}" maxlength="180" />`}
+        <div class="card-actions">${actions}</div>
       </div>
     </article>`;
   }
@@ -166,13 +169,15 @@
 
   function renderDashboard() {
     root.innerHTML = `<section class="toolbar">
-      <div><p class="eyebrow">Ocean Car Care · ${escapeHtml(state.username)}</p><h1>Gallery media</h1><p>Files in <code>${DIR}/</code> are shown on the public Gallery page. Use Move up / Move down to set their display order.</p></div>
-      <div class="actions"><button class="button" data-action="refresh" ${state.busy ? "disabled" : ""}>Refresh</button><button class="button" data-action="logout">Log out</button></div>
+      <div><p class="eyebrow">Ocean Car Care · ${escapeHtml(state.username)}</p><h1>Gallery media</h1><p>Files in <code>${DIR}/</code> are shown on the public Gallery page.${state.arranging ? " Move items, then select Done to save the new order." : ""}</p></div>
+      <div class="actions">${state.arranging
+        ? `<button class="button primary" data-action="done-arrange" ${state.busy ? "disabled" : ""}>Done</button><button class="button" data-action="cancel-arrange" ${state.busy ? "disabled" : ""}>Cancel</button>`
+        : `<button class="button" data-action="refresh" ${state.busy ? "disabled" : ""}>Refresh</button><button class="button" data-action="rearrange" ${state.busy || state.media.length < 2 ? "disabled" : ""}>Rearrange</button><button class="button" data-action="logout">Log out</button>`}</div>
     </section>
     <p class="status ${escapeHtml(state.statusType)}">${escapeHtml(state.status)}</p>
     <section class="upload-panel">
       <div class="upload-copy"><strong>Add an image or video</strong><span>PNG, JPG, WEBP, GIF, MP4, WEBM or MOV · up to 20 MB</span></div>
-      <label class="button primary file-picker">Choose media<input id="upload-file" type="file" accept="image/png,image/jpeg,image/webp,image/gif,video/mp4,video/webm,video/quicktime" ${state.busy ? "disabled" : ""} /></label>
+      <label class="button primary file-picker">Choose media<input id="upload-file" type="file" accept="image/png,image/jpeg,image/webp,image/gif,video/mp4,video/webm,video/quicktime" ${state.busy || state.arranging ? "disabled" : ""} /></label>
     </section>
     <section class="media-grid">${state.media.length ? state.media.map(cardTemplate).join("") : `<div class="empty">No gallery media found. Upload the first item above.</div>`}</section>
     <section class="help"><h2>What each operation does</h2><table><thead><tr><th>Operation</th><th>What happens</th></tr></thead><tbody>
@@ -181,7 +186,7 @@
       <tr><td>Upload</td><td>Adds a new file and creates a GitHub commit.</td></tr>
       <tr><td>Replace</td><td>Updates an existing file and creates a GitHub commit.</td></tr>
       <tr><td>Save / Delete</td><td>Saves the Gallery caption, or removes the media file and its caption with GitHub commits.</td></tr>
-      <tr><td>Move up / Move down</td><td>Changes the public Gallery order and saves it to GitHub.</td></tr>
+      <tr><td>Rearrange / Done</td><td>Move items into a custom order, then save the new Gallery order in one GitHub commit.</td></tr>
     </tbody></table></section>`;
     root.querySelectorAll("[data-action]").forEach((button) => button.addEventListener("click", onAction));
     root.querySelectorAll("[data-replace-file]").forEach((input) => input.addEventListener("change", onReplaceFile));
@@ -222,7 +227,50 @@
     const action = event.currentTarget.dataset.action;
     const card = event.currentTarget.closest(".media-card");
     if (action === "logout") {
-      state.token = ""; state.username = ""; state.media = []; state.manifestSha = null; state.status = ""; state.statusType = ""; render(); return;
+      state.token = ""; state.username = ""; state.media = []; state.manifestSha = null; state.arranging = false; state.originalOrder = []; state.status = ""; state.statusType = ""; render(); return;
+    }
+    if (action === "rearrange") {
+      state.originalOrder = state.media.map((item) => item.name);
+      state.arranging = true;
+      state.status = "Move items into the order you want, then select Done.";
+      state.statusType = "";
+      render();
+      return;
+    }
+    if (action === "cancel-arrange") {
+      const byName = new Map(state.media.map((item) => [item.name, item]));
+      state.media = state.originalOrder.map((name) => byName.get(name)).filter(Boolean);
+      state.arranging = false;
+      state.originalOrder = [];
+      state.status = "Rearrangement cancelled; no commit was made.";
+      state.statusType = "";
+      render();
+      return;
+    }
+    if (action === "done-arrange") {
+      const orderChanged = state.media.some((item, index) => item.name !== state.originalOrder[index]);
+      if (!orderChanged) {
+        state.arranging = false;
+        state.originalOrder = [];
+        state.status = "No order changes to save.";
+        state.statusType = "";
+        render();
+        return;
+      }
+      state.busy = true;
+      status("Saving Gallery order to GitHub…");
+      try {
+        await saveManifest("Rearrange Gallery media");
+        state.arranging = false;
+        state.originalOrder = [];
+        status("Gallery order saved in one commit.", "good");
+      } catch (error) {
+        status(`Could not save Gallery order: ${explainError(error)}`);
+      } finally {
+        state.busy = false;
+        render();
+      }
+      return;
     }
     if (action === "refresh") {
       state.busy = true; status("Refreshing from GitHub…");
@@ -236,24 +284,14 @@
     const item = state.media.find((entry) => entry.name === name);
     if (!item) return;
     if (action === "move-up" || action === "move-down") {
-      const previous = state.media;
       const index = state.media.findIndex((entry) => entry.name === name);
       const nextIndex = index + (action === "move-up" ? -1 : 1);
-      if (nextIndex < 0 || nextIndex >= state.media.length) return;
+      if (!state.arranging || nextIndex < 0 || nextIndex >= state.media.length) return;
       state.media = [...state.media];
       [state.media[index], state.media[nextIndex]] = [state.media[nextIndex], state.media[index]];
-      state.busy = true;
-      status("Saving Gallery order to GitHub…");
-      try {
-        await saveManifest(`Reorder Gallery media: ${name}`);
-        status("Gallery order saved.", "good");
-      } catch (error) {
-        state.media = previous;
-        status(`Could not save Gallery order: ${explainError(error)}`);
-      } finally {
-        state.busy = false;
-        render();
-      }
+      state.status = "Order changed. Select Done to create one commit.";
+      state.statusType = "";
+      render();
       return;
     }
     if (action === "replace") {
@@ -292,10 +330,14 @@
     if (state.media.some((item) => item.name.toLowerCase() === file.name.toLowerCase())) { status("A file with this name already exists. Use Replace on that item instead."); return; }
     const name = file.name.replace(/[^a-zA-Z0-9._-]+/g, "-").replace(/^-+|-+$/g, "");
     if (!name || name === "gallery.json") { status("That filename cannot be used."); return; }
+    const descriptionInput = window.prompt("Enter a description for this Gallery item:", prettyName(name));
+    if (descriptionInput === null) { status("Upload cancelled; no commit was made."); return; }
+    const description = descriptionInput.trim().slice(0, 180);
+    if (!description) { status("A description is required before upload."); return; }
     state.busy = true; status(`Uploading ${name} to GitHub…`);
     try {
       await api(`/contents/${apiPath(`${DIR}/${name}`)}`, { method: "PUT", body: JSON.stringify({ message: `Add Gallery media ${name}`, content: await fileToBase64(file), branch: BRANCH }) });
-      state.media.push({ name, sha: "", type: mediaType(name), description: prettyName(name), preview: `../${DIR}/${encodeURIComponent(name)}` });
+      state.media.push({ name, sha: "", type: mediaType(name), description, preview: `../${DIR}/${encodeURIComponent(name)}` });
       await saveManifest(`Add ${name} to Gallery manifest`);
       status("Media uploaded and added to the public Gallery.", "good");
     } catch (error) { status(`Upload or manifest update failed: ${explainError(error)}. Refresh to inspect repository contents.`); }
