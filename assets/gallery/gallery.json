@@ -31,14 +31,14 @@
       "type": "video"
     },
     {
-      "name": "headlight-renewal-3m.png",
-      "description": "3M Headlight Care",
-      "type": "image"
-    },
-    {
       "name": "ocean-detailing-project-4.mp4",
       "description": "Ocean Car Care detailing showcase — Project 4",
       "type": "video"
+    },
+    {
+      "name": "headlight-renewal-3m.png",
+      "description": "3M Headlight Care",
+      "type": "image"
     }
   ]
 }
