@@ -2983,6 +2983,9 @@ h1 {
   mix-blend-mode: normal;
   object-fit: cover;
   filter: none;
+  border: 0;
+  outline: 0;
+  clip-path: inset(0 3px 0 0);
 }
 
 
