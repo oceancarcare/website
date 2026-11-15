@@ -1730,7 +1730,7 @@
   }
   function About({ go }) {
     return html`<div class="pg">
-      <section class="w sec" style=${{ paddingTop: 30 }}>
+      <section class="w sec about-intro" style=${{ paddingTop: 30 }}>
         <${Bg}
           items=${[
             ["car", 52, 62, 520, 2],
@@ -1740,19 +1740,13 @@
         <div class="two">
           <div class="rv">
             <span class="eb">About us</span>
-            <h2>
-              20 years of making cars look <span class="bl">brand new.</span>
-            </h2>
+            <h2>Ocean Agencies</h2>
+            <h3 class="about-tagline">25+ Years of Automotive Industry Experience | Excellence in Automotive Detailing</h3>
             <p class="lead">
-              With our customers’ appreciation and support, we are stepping into
-              a new initiative in the automobile detailing industry. With 20
-              years of experience in car detailing and working with major car
-              brands, we assure you high market standards.
+              Established in January 2020, Ocean Agencies is a professionally managed automotive detailing and car care company founded by Mr. Anil and Mr. Sreehari. Operating alongside the AB Enterprises business group, Ocean Agencies builds on a legacy of more than 25 years in 3M distribution and automotive care solutions, dating back to 2000.
             </p>
             <p class="mu">
-              We care for your car with our best quality products, services and
-              certified technicians, from detailing to accessories, for an
-              unmatched customer experience.
+              We bring technical expertise and industry knowledge to premium vehicle detailing, paint protection and specialized car care for individual customers. Our goal is to enhance each vehicle’s appearance, preserve its value and deliver an exceptional ownership experience through quality products, skilled professionals and personalized service.
             </p>
           </div>
           <div class="big rv"></div>
@@ -1760,9 +1754,62 @@
       </section>
       <section class="w sec" style=${{ paddingTop: 0 }}>
         <div class="stt rv">
-          <div><${Count} to=${20} suf="+" /><span>Years experience</span></div>
+          <div><${Count} to=${25} suf="+" /><span>Years industry experience</span></div>
           <div><b>4.9★</b><span>Google rating</span></div>
           <div><${Count} to=${117} suf="+" /><span>Reviews</span></div>
+        </div>
+      </section>
+      <section class="w sec about-section" style=${{ paddingTop: 0 }}>
+        <div class="about-copy-block rv">
+          <span class="eb">Our legacy</span>
+          <h2>Journey since <span class="bl">2000.</span></h2>
+          <p>
+            Our journey began in 2000 with the establishment of AB Enterprises as an authorized 3M distributor, marking the start of more than two decades of experience in automotive care products, distribution and services.
+          </p>
+          <p>
+            Building on this foundation, Ocean Agencies was established in January 2020 to focus on premium automotive detailing and specialized car care, bringing our group’s experience and expertise closer to individual vehicle owners.
+          </p>
+        </div>
+      </section>
+      <section class="w sec about-section" style=${{ paddingTop: 0 }}>
+        <${Head}
+          eb="Our expertise"
+          title=${html`Complete care. <span class="bl">Expertly delivered.</span>`}
+          sub="Specialized automotive detailing and protection, tailored to each vehicle."
+        />
+        <div class="about-expertise-grid">
+          ${[
+            "Next-generation coatings: borophene, graphene and ceramic",
+            "Paint Protection Film (PPF)",
+            "Automotive sun films",
+            "Exterior detailing and paint correction",
+            "Premium interior detailing and enrichment",
+            "Vehicle polishing and restoration",
+            "Premium car wash and maintenance packages",
+            "Automotive care products and accessories",
+          ].map((item, index) => html`<div class="about-expertise-item rv" key=${item}>
+            <span>${String(index + 1).padStart(2, "0")}</span><h3>${item}</h3>
+          </div>`)}
+        </div>
+      </section>
+      <section class="w sec about-section" style=${{ paddingTop: 0 }}>
+        <div class="about-values-grid">
+          <article class="about-value rv">
+            <span class="eb">Our business strength</span>
+            <h3>Experience you can trust.</h3>
+            <p>Backed by established industry expertise, quality products, trained professionals and a customer-centric approach, we strive to meet the evolving expectations of modern vehicle owners. Every vehicle deserves professional care, attention to detail and high standards of quality.</p>
+          </article>
+          <article class="about-value rv">
+            <span class="eb">Our commitment</span>
+            <h3>Quality in every detail.</h3>
+            <p>Quality, trust and customer satisfaction are at the heart of everything we do. We use quality automotive care products, maintain professional service standards and continually adopt innovative detailing technologies and solutions.</p>
+            <p>Our focus is to protect each vehicle’s appearance, maintain its value and provide a premium ownership experience.</p>
+          </article>
+          <article class="about-value rv">
+            <span class="eb">Our vision</span>
+            <h3>A preferred name in car care.</h3>
+            <p>To become one of the region’s most trusted and preferred automotive detailing and car care brands by delivering premium solutions, exceptional customer experiences and lasting value to every vehicle owner.</p>
+          </article>
         </div>
       </section>
       <section class="w sec" style=${{ paddingTop: 0 }}>
