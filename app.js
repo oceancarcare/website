@@ -1954,58 +1954,16 @@
         <h2 style=${{ marginBottom: 40 }}>
           Find <span class="bl">the studio.</span>
         </h2>
+        
         <div class="map rv">
-          <svg
-            viewBox="0 0 800 340"
-            preserveAspectRatio="xMidYMid slice"
-            role="img"
-            aria-label="Map sketch"
-          >
-            <path
-              d="M0 240 Q240 214 420 190 T800 124"
-              fill="none"
-              stroke="#fff"
-              strokeOpacity=".12"
-              strokeWidth="24"
-            />
-            <path
-              d="M366 0 Q386 150 420 190 T470 340"
-              fill="none"
-              stroke="#fff"
-              strokeOpacity=".12"
-              strokeWidth="18"
-            />
-            <g fill="none" stroke="#fff" strokeOpacity=".22" strokeWidth="1.5">
-              <rect x="80" y="70" width="140" height="80" />
-              <rect x="110" y="260" width="160" height="60" />
-              <rect x="560" y="220" width="150" height="80" />
-              <rect x="540" y="50" width="160" height="70" />
-            </g>
-            <path
-              class="rt"
-              d="M40 246 Q240 220 420 190"
-              fill="none"
-              stroke="#25b4f0"
-              strokeWidth="3"
-            />
-            <circle class="pin" cx="420" cy="188" r="16" fill="#f0524a" />
-            <circle
-              cx="420"
-              cy="188"
-              r="8"
-              fill="#f0524a"
-              stroke="#fff"
-              strokeWidth="3"
-            />
-            <text class="mp" x="440" y="170">Ocean Car Detailing ZPA</text>
-            <text class="mp" x="560" y="136" style=${{ fontWeight: 400 }}>
-              Kunduparamba Road
-            </text>
-            <text class="mp" x="30" y="274" style=${{ fontWeight: 400 }}>
-              Towards Kozhikode city
-            </text>
-          </svg>
-          ${live ? html`<iframe title="Live map" loading="lazy" src="https://maps.google.com/maps?q=Kunduparamba+Road,+Puthiyangadi,+Kozhikode,+Kerala+673021&output=embed"></iframe>` : null}
+          <iframe
+            title="Google Maps Preview"
+            loading="lazy"
+            src="https://maps.google.com/maps?q=Kunduparamba+Road,+Puthiyangadi,+Kozhikode,+Kerala+673021&output=embed"
+            style="width: 100%; height: 340px; border: 0; display: block;"
+            allowFullScreen
+          ></iframe>
+        
           <div class="mi">
             <b>Ocean Car Detailing ZPA</b>
             <p>
@@ -2017,13 +1975,13 @@
                 target="_blank"
                 rel="noopener"
                 href="https://www.google.com/maps/dir/?api=1&destination=Kunduparamba+Road%2C+Puthiyangadi%2C+Kozhikode%2C+Kerala+673021"
-                >Get Directions</a
-              ><button class="b sm" type="button" onClick=${() => setL(!live)}>
-                ${live ? "Hide live map" : "Load live map"}
-              </button>
+              >
+                Get Directions
+              </a>
             </div>
           </div>
         </div>
+
       </section>
     </div>`;
   }
