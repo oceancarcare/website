@@ -19,8 +19,8 @@
   --bl: #ff2b38;
   --bl2: #c21f31;
   --rd: #ff4b4b;
-  --fd: "Barlow Condensed", Impact, sans-serif;
-  --fh: "Manrope", Inter, system-ui, sans-serif;
+  --fd: "Montserrat", system-ui, sans-serif;
+  --fh: "Montserrat", system-ui, sans-serif;
 }
 *,
 *::before,
@@ -35,7 +35,7 @@ body {
 margin: 0;
   background: var(--bg);
   color: #1f2937;
-  font: 400 16px/1.65 Inter, system-ui, sans-serif;
+  font: 400 16px/1.65 "Montserrat", system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
@@ -1474,7 +1474,7 @@ select option {
   border: 0;
 }
 .mp {
-  font: 600 13px Inter;
+  font: 600 13px "Montserrat", system-ui, sans-serif;
   fill: #fff;
 }
 .mi {
@@ -1608,7 +1608,7 @@ select option {
   color: #e2e9f7;
   cursor: pointer;
   text-align: left;
-  font: 400 16px Inter;
+  font: 400 16px "Montserrat", system-ui, sans-serif;
 }
 .ft button:hover,
 .ft a:hover {
@@ -1925,7 +1925,7 @@ display: grid;
   z-index: 2;
 }
 .hero-title {
-  font-family: var(--fd), Inter, sans-serif;
+  font-family: var(--fd), "Montserrat", sans-serif;
   font-size: clamp(54px, 7.5vw, 102px);
   font-weight: 900;
   line-height: 0.96;
@@ -1973,7 +1973,7 @@ font-size: clamp(15px, 1.35vw, 18px);
   background: transparent;
   border: none;
   color: var(--bl);
-  font-family: Inter, system-ui, sans-serif;
+  font-family: "Montserrat", system-ui, sans-serif;
   font-size: clamp(17px, 1.5vw, 20px);
   font-weight: 700;
   cursor: pointer;
@@ -2292,7 +2292,7 @@ width: min(920px, 88vw);
   margin: 25px 0 15px;
   min-height: 1.64em;
   color: #fff;
-  font-family: Inter, system-ui, sans-serif;
+  font-family: "Montserrat", system-ui, sans-serif;
   font-size: clamp(54px, 7.6vw, 118px);
   font-style: normal;
   font-weight: 700;
@@ -2857,12 +2857,12 @@ h1 {
   gap: 5px;
   margin-bottom: 4px;
   color: #c2c7d0;
-  font: 700 10px/1.2 Inter, system-ui, sans-serif;
+  font: 700 10px/1.2 "Montserrat", system-ui, sans-serif;
   letter-spacing: 0.12em;
 }
 .three-m-ad-brand > span {
   color: #ff2b38;
-  font: 800 16px/1 Arial, sans-serif;
+  font: 800 16px/1 "Montserrat", system-ui, sans-serif;
   letter-spacing: -0.08em;
 }
 .three-m-ad-product {
@@ -2892,13 +2892,13 @@ h1 {
 }
 .three-m-ad-kicker {
   color: #ff6874;
-  font: 700 9px/1.2 Inter, system-ui, sans-serif;
+  font: 700 9px/1.2 "Montserrat", system-ui, sans-serif;
   letter-spacing: 0.14em;
   text-transform: uppercase;
 }
 .three-m-ad-copy strong {
   color: #fff;
-  font: 700 13px/1.22 Inter, system-ui, sans-serif;
+  font: 700 13px/1.22 "Montserrat", system-ui, sans-serif;
   animation: three-m-copy-in 0.45s ease both;
 }
 .three-m-ad-dots {
@@ -2926,7 +2926,7 @@ h1 {
   gap: 4px;
   margin-top: 1px;
   color: #ff6874;
-  font: 700 9px/1.25 Inter, system-ui, sans-serif;
+  font: 700 9px/1.25 "Montserrat", system-ui, sans-serif;
 }
 .three-m-ad-cta b {
   color: #ff2b38;
