@@ -1980,7 +1980,7 @@
             title="Google Maps Preview"
             loading="lazy"
             src="https://maps.google.com/maps?q=Kunduparamba+Road,+Puthiyangadi,+Kozhikode,+Kerala+673021&output=embed"
-            style="width: 100%; height: 340px; border: 0; display: block;"
+            style=${{ width: "100%", height: "340px", border: 0, display: "block" }}
             allowFullScreen
           ></iframe>
         
