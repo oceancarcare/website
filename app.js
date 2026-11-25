@@ -2176,7 +2176,7 @@
       </header>
       <main key=${page}>${V}</main>
       <${Footer} go=${go} />
-      <${ThreeMAd} />
+    
       <button
         class=${"up" + (up ? " s" : "")}
         onClick=${() => window.scrollTo({ top: 0, behavior: "smooth" })}
