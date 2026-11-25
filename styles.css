@@ -1,5 +1,8 @@
 :root {
   --i-about: url("assets/about/studio.webp");
+  --i-d1: url("assets/gallery/i-d1.png");
+  --i-coupe: url("assets/gallery/hyundai-detailing-studio.png");
+  --i-suv: url("assets/gallery/i-d2.jpg");
   --u-hero: url("assets/u-hero.jpg");
   --u-car: url("assets/u-car.jpg");
   --u-cc: url("assets/u-cc.png");
@@ -3126,5 +3129,52 @@ h1 {
   }
   .about-value {
     padding: 18px;
+  }
+}
+
+.gg {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+.gallery-card {
+  overflow: hidden;
+  border-radius: 16px;
+  background: #111;
+}
+
+.gallery-image {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  background-size: cover;
+  background-position: center;
+  transition: transform 0.5s ease;
+}
+
+.gallery-card:hover .gallery-image {
+  transform: scale(1.05);
+}
+
+.gallery-info {
+  padding: 20px;
+}
+
+.gallery-info h3 {
+  margin: 0 0 10px;
+  font-size: 20px;
+  color: #fff;
+}
+
+.gallery-info p {
+  margin: 0;
+  color: #aaa;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  .gg {
+    grid-template-columns: 1fr;
   }
 }

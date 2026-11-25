@@ -1537,14 +1537,34 @@
         />
         <div class="gg">
           ${[
-            ["p", "d1", "Our studio"],
-            ["l", ["coupe", "Blue"], "Blue coupe"],
-            ["l", ["suv", "Black"], "Black SUV"],
+            {
+              image: "var(--i-d1)",
+              title: "Premium Studio",
+              description: "A closer look at our premium automotive collection and studio.",
+            },
+            {
+              image: "var(--i-coupe)",
+              title: "Luxury Coupe",
+              description: "Experience elegant styling, sporty performance and refined details.",
+            },
+            {
+              image: "var(--i-suv)",
+              title: "Premium SUV",
+              description: "Discover bold design, spacious comfort and a powerful presence.",
+            },
           ].map(
-            (g, i) =>
-              html`<div class="tl rv" key=${i} data-c=${g[2]}>
-                ${g[0] === "p" ? html`<div class="im" style=${{ backgroundImage: "var(--i-" + g[1] + ")" }}></div>` : html`<div class="lx"><${CarSvg} t=${g[1][0]} c=${g[1][1]} /></div>`}
-              </div>`,
+            (g, i) => html`
+              <div class="gallery-card rv" key=${i}>
+                <div
+                  class="gallery-image"
+                  style=${{ backgroundImage: g.image }}
+                ></div>
+                <div class="gallery-info">
+                  <h3>${g.title}</h3>
+                  <p>${g.description}</p>
+                </div>
+              </div>
+            `,
           )}
         </div>
         <div class="mid">
