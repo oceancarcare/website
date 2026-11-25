@@ -1979,7 +1979,7 @@
           <iframe
             title="Google Maps Preview"
             loading="lazy"
-            src="https://maps.google.com/maps?q=Kunduparamba+Road,+Puthiyangadi,+Kozhikode,+Kerala+673021&output=embed"
+            src="https://maps.google.com/maps?q=Ocean Car Detailng & car wash,+Kunduparamba+Road,+Puthiyangadi,+Kozhikode,+Kerala+673021&output=embed"
             style=${{ width: "100%", height: "340px", border: 0, display: "block" }}
             allowFullScreen
           ></iframe>
@@ -1994,7 +1994,7 @@
                 class="b p sm"
                 target="_blank"
                 rel="noopener"
-                href="https://www.google.com/maps/dir/?api=1&destination=Kunduparamba+Road%2C+Puthiyangadi%2C+Kozhikode%2C+Kerala+673021"
+                href="https://www.google.com/maps/dir//Ocean+Car+Detailng+%26+car+wash,+Kunduparamba+Rd,+Puthiyangadi,+Kozhikode,+Keralam+673021"
               >
                 Get Directions
               </a>
@@ -2020,17 +2020,25 @@
             ${PAGES.map((p) => html`<button key=${p[0]} onClick=${() => go(p[0])}>${p[1]}</button>`)}
           </div>
           <div>
-            <h4>Visit and contact</h4>
-            <a href="tel:+918086966660">+91 80869 66660</a
-            ><a
-              href="https://www.instagram.com/ocean_cardetailing/"
-              target="_blank"
-              rel="noopener"
-              >Instagram · ocean_cardetailing</a
-            ><span class="mu" style=${{ display: "block", paddingTop: 6 }}
-              >Kunduparamba Road, Puthiyangadi, Kozhikode, Kerala 673021</span
-            >
-          </div>
+  <h4>Visit and contact</h4>
+  <a href="tel:+918086966660">+91 80869 66660</a>
+  <a
+    href="https://www.instagram.com/ocean_cardetailing/"
+    target="_blank"
+    rel="noopener"
+  >
+    Instagram · ocean_cardetailing
+  </a>
+  <a
+    href="https://maps.google.com/maps?q=Ocean+Car+Detailng+%26+car+wash,+Kunduparamba+Road,+Puthiyangadi,+Kozhikode,+Kerala+673021"
+    target="_blank"
+    rel="noopener noreferrer"
+    class="mu"
+    style=${{ display: "block", paddingTop: 6 }}
+  >
+    Kunduparamba Road, Puthiyangadi, Kozhikode, Kerala 673021
+  </a>
+</div>
         </div>
         <div class="cp">© 2026 Ocean Car Care · Ocean Car Detailing ZPA</div>
       </div>
