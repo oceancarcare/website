@@ -1467,8 +1467,7 @@
             <div class="hero-right-col">
               <p class="lead hero-lead">
                 Ocean Car Detailing is Kozhikode’s premier studio dedicated to
-                master-class car care. Certified technicians, premium ceramic
-                coating & graphene protection built around your car.
+                master-class car care. Certified technicians, Premium new generation coating, Sunfilms, Paint Protection films & graphene protection built around your car.
               </p>
 
               <div class="hs hero-stats">
