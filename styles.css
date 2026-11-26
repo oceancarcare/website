@@ -3247,3 +3247,14 @@ h3,
     margin: 12px;
   }
 }
+
+/* About page paragraphs: same font size for both (size 9). */
+.about-text,
+.lead.about-text {
+  font-size: 9pt;
+  line-height: 1.7;
+  max-width: 44em;
+}
+.lead.about-text {
+  margin: 22px 0 12px;
+}
