@@ -3178,3 +3178,13 @@ h1 {
     grid-template-columns: 1fr;
   }
 }
+
+.hero-3m-logo {
+  display: block;
+  height: 36px;
+  width: auto;
+  margin-bottom: 16px;
+}
+@media (max-width: 640px) {
+  .hero-3m-logo { height: 28px; margin-bottom: 12px; }
+}
