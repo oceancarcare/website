@@ -3211,3 +3211,39 @@ h3,
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
 }
+
+/* Map: make the iframe fill the whole map box (the inline 340px height was
+   overriding the 100% height, so the map only covered half of the space). */
+.map {
+  min-height: 420px;
+}
+.map iframe {
+  height: 100% !important;
+}
+
+/* Mobile: show the map first and the address / Get Directions card below it,
+   so the card no longer covers the map. */
+@media (max-width: 760px) {
+  .map {
+    display: flex;
+    flex-direction: column;
+    aspect-ratio: auto;
+    min-height: 0;
+  }
+  .map iframe {
+    position: relative;
+    inset: auto;
+    order: 1;
+    width: 100%;
+    height: 340px !important;
+    flex: none;
+  }
+  .mi {
+    order: 2;
+    position: relative;
+    left: auto;
+    top: auto;
+    max-width: none;
+    margin: 12px;
+  }
+}
