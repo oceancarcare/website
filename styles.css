@@ -105,6 +105,8 @@ button {
 .brand-lockup {
   display: flex;
   flex: none;
+  justify-content: flex-start;
+  margin-right: auto;
   align-items: center;
   gap: 16px;
 }
@@ -117,8 +119,8 @@ button {
 }
 .three-m-header img {
   display: block;
-  width: 44px;
-  height: auto;
+  height: 28px;
+  width: auto;
 }
 .tabs {
   flex: 1;
@@ -2103,7 +2105,8 @@ width: min(920px, 88vw);
     padding-left: 10px;
   }
   .three-m-header img {
-    width: 34px;
+    height: 22px;
+    width: auto;
   }
   .brand-lockup {
     gap: 10px;

@@ -1456,7 +1456,7 @@
           <div class="hero-top-row">
             <div class="hero-left-col">
               <div>
-                <img class="hero-3m-logo" src="assets/3m_new_logo.png" alt="3M" />
+                <a href=${THREE_M_LINK} target="_blank" rel="noopener noreferrer" aria-label="3M India auto care products"><img class="hero-3m-logo" src="assets/3m_new_logo.png" alt="3M" /></a>
                 <h1>
                   Fall in love<br />with <span class="bl">your car.</span>
                 </h1>
@@ -2137,8 +2137,17 @@
               onClick=${() => go("home")}
               aria-label="Ocean Car Detailing ZPA home"
             >
-            <img src=${LOGO} alt="Ocean Car Detailing ZPA" />
+              <img src=${LOGO} alt="Ocean Car Detailing ZPA" />
             </button>
+            <a
+              class="three-m-header"
+              href=${THREE_M_LINK}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="3M India auto care products"
+            >
+              <img src="assets/3m_new_logo.png" alt="3M" />
+            </a>
           </div>
           <nav class="tabs" aria-label="Pages">
             ${PAGES.map((p) => html`<button key=${p[0]} class=${page === p[0] ? "on" : ""} onClick=${() => go(p[0])}>${p[1]}</button>`)}
