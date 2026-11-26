@@ -1791,27 +1791,6 @@
         </div>
       </section>
       <section class="w sec about-section" style=${{ paddingTop: 0 }}>
-        <${Head}
-          eb="Our expertise"
-          title=${html`Complete care. <span class="bl">Expertly delivered.</span>`}
-          sub="Specialized automotive detailing and protection, tailored to each vehicle."
-        />
-        <div class="about-expertise-grid">
-          ${[
-            "Next-generation coatings: borophene, graphene and ceramic",
-            "Paint Protection Film (PPF)",
-            "Automotive sun films",
-            "Exterior detailing and paint correction",
-            "Premium interior detailing and enrichment",
-            "Vehicle polishing and restoration",
-            "Premium car wash and maintenance packages",
-            "Automotive care products and accessories",
-          ].map((item, index) => html`<div class="about-expertise-item rv" key=${item}>
-            <span>${String(index + 1).padStart(2, "0")}</span><h3>${item}</h3>
-          </div>`)}
-        </div>
-      </section>
-      <section class="w sec about-section" style=${{ paddingTop: 0 }}>
         <div class="about-values-grid">
           <article class="about-value rv">
             <span class="eb">Our business strength</span>
