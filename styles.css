@@ -3248,12 +3248,12 @@ h3,
   }
 }
 
-/* About page paragraphs: same font size for both (size 9). */
+/* About page intro paragraphs: same text size as the "Our legacy" paragraphs. */
 .about-text,
 .lead.about-text {
-  font-size: 9pt;
-  line-height: 1.7;
-  max-width: 44em;
+  font-size: 16px;
+  line-height: 1.65;
+  max-width: none;
 }
 .lead.about-text {
   margin: 22px 0 12px;
