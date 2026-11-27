@@ -3364,3 +3364,147 @@ textarea {
   font-family: "Poppins", system-ui, sans-serif;
   font-weight: 600;
 }
+
+/* Mobile-only proportional typography & UI scaling (preserves desktop & photo/video cards) */
+@media (max-width: 768px) {
+  html, body {
+    overflow-x: hidden;
+    font-size: clamp(13px, 3.6vw, 15px);
+  }
+  /* Header & Nav Tabs */
+  .nin {
+    gap: clamp(6px, 2vw, 14px);
+    min-height: clamp(58px, 15vw, 72px);
+  }
+  .lg img {
+    height: clamp(28px, 7.5vw, 38px);
+  }
+  .tabs {
+    gap: clamp(2px, 1vw, 6px);
+  }
+  .tabs button {
+    font-size: clamp(11px, 3.1vw, 15px);
+    padding: clamp(5px, 1.4vw, 8px) clamp(7px, 2vw, 12px);
+    letter-spacing: 0.04em;
+  }
+  .ac .b.sm {
+    font-size: clamp(11px, 3.1vw, 14px);
+    padding: clamp(6px, 1.6vw, 9px) clamp(10px, 3vw, 16px);
+  }
+  /* Headings & Labels */
+  h1, .hero-title {
+    font-size: clamp(32px, 9.5vw, 54px) !important;
+    line-height: 1.02;
+  }
+  h2 {
+    font-size: clamp(24px, 6.8vw, 36px) !important;
+  }
+  h3, .cd h3, form h3, .about-value h3 {
+    font-size: clamp(18px, 5vw, 24px);
+  }
+  .ft h4 {
+    font-size: clamp(12px, 3.4vw, 15px);
+  }
+  .pl, .eb {
+    font-size: clamp(11px, 3vw, 14px);
+  }
+  /* Body, Lead & Descriptions */
+  p, .lead, .hero-left-col .lead, .hero-right-col .hero-lead, .cd p, .stp p, .ln-desc, .about-text, .brand-note {
+    font-size: clamp(13px, 3.6vw, 15px);
+    line-height: 1.55;
+  }
+  .hero-tagline {
+    font-size: clamp(11px, 3vw, 13px);
+  }
+  .about-tagline {
+    font-size: clamp(16px, 4.5vw, 22px);
+  }
+  /* Buttons */
+  .b, .hero-wash-link, .hero-wa-btn, .fl2 button {
+    font-size: clamp(12px, 3.5vw, 15px);
+    padding: clamp(8px, 2.2vw, 12px) clamp(14px, 3.8vw, 20px);
+  }
+  .b.sm {
+    font-size: clamp(11px, 3vw, 13px);
+    padding: clamp(6px, 1.6vw, 8px) clamp(10px, 2.8vw, 14px);
+  }
+  /* Stats */
+  .hs, .hero-stats {
+    gap: clamp(14px, 4.5vw, 26px);
+  }
+  .hs b, .hero-stats b {
+    font-size: clamp(24px, 6.8vw, 34px);
+  }
+  .hs span, .hero-stats span {
+    font-size: clamp(10px, 2.7vw, 12px);
+  }
+  .stt {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: clamp(6px, 2vw, 10px);
+  }
+  .stt div {
+    padding: clamp(10px, 3vw, 16px) clamp(6px, 2vw, 10px);
+    min-width: 0;
+  }
+  .stt b {
+    font-size: clamp(24px, 6.8vw, 36px);
+  }
+  .stt span {
+    font-size: clamp(10px, 2.8vw, 13px);
+  }
+  .stp b {
+    font-size: clamp(32px, 9vw, 48px);
+  }
+  /* 5-Stage Carousel Text & Stage Nav */
+  .cinema-title {
+    font-size: clamp(28px, 8.5vw, 46px);
+  }
+  .cinema-description {
+    font-size: clamp(12px, 3.3vw, 14px);
+  }
+  .cinema-eyebrow, .cinema-step-name {
+    font-size: clamp(10px, 2.8vw, 12px);
+  }
+  .cinema-stage-button {
+    padding: clamp(6px, 1.8vw, 10px) clamp(4px, 1vw, 8px);
+  }
+  .cinema-stage-button span {
+    font-size: clamp(8px, 2.2vw, 10px);
+  }
+  .cinema-stage-button b {
+    font-size: clamp(10px, 2.8vw, 12px);
+  }
+  /* Service Chips & Numbers */
+  .cd .no {
+    font-size: clamp(16px, 4.5vw, 22px);
+  }
+  .ch span {
+    font-size: clamp(11px, 3vw, 13px);
+  }
+  /* About Expertise & Contact Form */
+  .about-expertise-item h3 {
+    font-size: clamp(14px, 3.8vw, 17px);
+  }
+  .it small {
+    font-size: clamp(11px, 3vw, 13px);
+  }
+  .it span, .it a {
+    font-size: clamp(14px, 4vw, 17px);
+  }
+  input, select, textarea {
+    font-size: clamp(13px, 3.6vw, 15px);
+  }
+  .mi b {
+    font-size: clamp(18px, 5vw, 22px);
+  }
+  .mi p {
+    font-size: clamp(12px, 3.3vw, 14px);
+  }
+  /* Footer */
+  .ft button, .ft a {
+    font-size: clamp(13px, 3.6vw, 15px);
+  }
+  .ft .cp {
+    font-size: clamp(11px, 3vw, 13px);
+  }
+}
