@@ -321,12 +321,12 @@
         </g>
         <g class="spx">
           ${[
-            [170, 86],
-            [330, 70],
-            [470, 100],
-          ].map(
-            (p, i) =>
-              html`<g
+        [170, 86],
+        [330, 70],
+        [470, 100],
+      ].map(
+        (p, i) =>
+          html`<g
                 key=${i}
                 transform=${"translate(" + p[0] + "," + p[1] + ") scale(1.6)"}
                 ><path
@@ -334,7 +334,7 @@
                   style=${{ animationDelay: i * 0.15 + "s" }}
                   d="M0-9L2.5-2.5 9 0 2.5 2.5 0 9-2.5 2.5-9 0-2.5-2.5Z"
               /></g>`,
-          )}
+      )}
         </g>
       </g>
       <line class="jt" x1="60" y1="40" x2="330" y2="250" />
@@ -1040,21 +1040,20 @@
           stroke-width="2"
         />
 
-        ${
-          stageIdx === 0
-            ? html`<g>
+        ${stageIdx === 0
+        ? html`<g>
                 <g clipPath="url(#studioBodyClip)">
                   <g class="dirt" opacity=${Math.max(0.1, 0.8 - progress * 4)}>
                     ${[
-                      [80, 120, 28, 10],
-                      [200, 100, 18, 8],
-                      [300, 132, 32, 12],
-                      [420, 118, 22, 8],
-                      [360, 96, 14, 6],
-                      [150, 140, 24, 8],
-                    ].map(
-                      (q, k) =>
-                        html`<ellipse
+            [80, 120, 28, 10],
+            [200, 100, 18, 8],
+            [300, 132, 32, 12],
+            [420, 118, 22, 8],
+            [360, 96, 14, 6],
+            [150, 140, 24, 8],
+          ].map(
+            (q, k) =>
+              html`<ellipse
                           key=${k}
                           cx=${q[0]}
                           cy=${q[1]}
@@ -1063,7 +1062,7 @@
                           fill="#1e1b15"
                           opacity="0.85"
                         />`,
-                    )}
+          )}
                   </g>
                 </g>
                 <g
@@ -1077,15 +1076,15 @@
                   <line x1="680" y1="30" x2="350" y2="130" />
                 </g>
                 ${[
-                  [120, 110],
-                  [180, 95],
-                  [240, 115],
-                  [320, 85],
-                  [400, 105],
-                  [460, 115],
-                ].map(
-                  (p, i) =>
-                    html`<circle
+            [120, 110],
+            [180, 95],
+            [240, 115],
+            [320, 85],
+            [400, 105],
+            [460, 115],
+          ].map(
+            (p, i) =>
+              html`<circle
                       key=${i}
                       cx=${p[0]}
                       cy=${p[1]}
@@ -1093,31 +1092,30 @@
                       fill="rgba(255,255,255,0.9)"
                       style=${{ animation: "pulse 1s infinite alternate", animationDelay: i * 0.15 + "s" }}
                     />`,
-                )}
+          )}
               </g>`
-            : null
-        }
-        ${
-          stageIdx === 1
-            ? html`<g clipPath="url(#studioBodyClip)">
+        : null
+      }
+        ${stageIdx === 1
+        ? html`<g clipPath="url(#studioBodyClip)">
                 <path
                   d="M50 150 C70 120 120 110 180 98 C240 70 320 64 420 86 C480 102 540 118 570 144 Z"
                   fill="rgba(255,255,255,0.92)"
                 />
                 ${[
-                  [90, 130, 22],
-                  [150, 115, 18],
-                  [220, 95, 24],
-                  [300, 82, 26],
-                  [380, 88, 20],
-                  [440, 105, 24],
-                  [500, 122, 22],
-                  [260, 120, 20],
-                  [340, 115, 22],
-                  [410, 125, 18],
-                ].map(
-                  (f, i) =>
-                    html`<circle
+            [90, 130, 22],
+            [150, 115, 18],
+            [220, 95, 24],
+            [300, 82, 26],
+            [380, 88, 20],
+            [440, 105, 24],
+            [500, 122, 22],
+            [260, 120, 20],
+            [340, 115, 22],
+            [410, 125, 18],
+          ].map(
+            (f, i) =>
+              html`<circle
                       key=${i}
                       cx=${f[0]}
                       cy=${f[1]}
@@ -1126,7 +1124,7 @@
                       stroke="rgba(200,220,255,0.4)"
                       stroke-width="1.5"
                     />`,
-                )}
+          )}
                 <path
                   d="M-60 40 Q80 80 240 95"
                   stroke="rgba(255,255,255,0.75)"
@@ -1136,11 +1134,10 @@
                   stroke-dasharray="14 10"
                 />
               </g>`
-            : null
-        }
-        ${
-          stageIdx === 2
-            ? html`<g>
+        : null
+      }
+        ${stageIdx === 2
+        ? html`<g>
                 <g clipPath="url(#studioBodyClip)">
                   <rect
                     x="-50"
@@ -1203,11 +1200,10 @@
                   stroke-linecap="round"
                 />
               </g>`
-            : null
-        }
-        ${
-          stageIdx === 3
-            ? html`<g>
+        : null
+      }
+        ${stageIdx === 3
+        ? html`<g>
                 <path
                   d="M50 135 C190 98 330 90 490 112"
                   fill="none"
@@ -1216,21 +1212,21 @@
                   stroke-linecap="round"
                 />
                 ${[
-                  [130, 108],
-                  [170, 96],
-                  [210, 88],
-                  [250, 84],
-                  [290, 82],
-                  [330, 84],
-                  [380, 92],
-                  [430, 102],
-                  [480, 114],
-                  [230, 118],
-                  [310, 112],
-                  [390, 118],
-                ].map(
-                  (p, i) =>
-                    html`<g key=${i}>
+            [130, 108],
+            [170, 96],
+            [210, 88],
+            [250, 84],
+            [290, 82],
+            [330, 84],
+            [380, 92],
+            [430, 102],
+            [480, 114],
+            [230, 118],
+            [310, 112],
+            [390, 118],
+          ].map(
+            (p, i) =>
+              html`<g key=${i}>
                       <ellipse
                         cx=${p[0]}
                         cy=${p[1]}
@@ -1247,7 +1243,7 @@
                         fill="#fff"
                       />
                     </g>`,
-                )}
+          )}
                 <g transform="translate(300, 48)">
                   <path
                     d="M0 -18 L20 -10 V8 C20 22 10 30 0 35 C-10 30 -20 22 -20 8 V-10 Z"
@@ -1264,11 +1260,10 @@
                   />
                 </g>
               </g>`
-            : null
-        }
-        ${
-          stageIdx === 4
-            ? html`<g>
+        : null
+      }
+        ${stageIdx === 4
+        ? html`<g>
                 <path
                   d="M50 130 C190 94 330 86 500 110"
                   fill="none"
@@ -1307,14 +1302,14 @@
                   />
                 </g>
                 ${[
-                  [150, 96],
-                  [280, 78],
-                  [440, 94],
-                  [520, 126],
-                  [360, 110],
-                ].map(
-                  (p, i) =>
-                    html`<g
+            [150, 96],
+            [280, 78],
+            [440, 94],
+            [520, 126],
+            [360, 110],
+          ].map(
+            (p, i) =>
+              html`<g
                       key=${i}
                       transform=${"translate(" + p[0] + "," + p[1] + ")"}
                       style=${{ animation: "pulse 1.2s infinite alternate", animationDelay: i * 0.25 + "s" }}
@@ -1324,10 +1319,10 @@
                         fill="#ffffff"
                       />
                     </g>`,
-                )}
+          )}
               </g>`
-            : null
-        }
+        : null
+      }
 
         <path d=${B.g} fill="url(#glass)" />
         <${Wheel} x=${146} y=${B.y} />
@@ -1336,125 +1331,125 @@
     </svg>`;
   }
 
-  
-function Stages() {
-  const sequenceRef = useRef(null);
-  const [activeIdx, setActiveIdx] = useState(0);
-  const [slamming, setSlamming] = useState(false);
 
-  // Keep the next video ready before the current one ends.
-  useEffect(() => {
-    const nextIdx = (activeIdx + 1) % STAGE_DATA.length;
-    const nextSrc = STAGE_DATA[nextIdx].src;
+  function Stages() {
+    const sequenceRef = useRef(null);
+    const [activeIdx, setActiveIdx] = useState(0);
+    const [slamming, setSlamming] = useState(false);
 
-    if (nextSrc) {
-      const preloadVideo = document.createElement("video");
-      preloadVideo.preload = "auto";
-      preloadVideo.src = nextSrc;
-      preloadVideo.load();
+    // Keep the next video ready before the current one ends.
+    useEffect(() => {
+      const nextIdx = (activeIdx + 1) % STAGE_DATA.length;
+      const nextSrc = STAGE_DATA[nextIdx].src;
+
+      if (nextSrc) {
+        const preloadVideo = document.createElement("video");
+        preloadVideo.preload = "auto";
+        preloadVideo.src = nextSrc;
+        preloadVideo.load();
+
+        return () => {
+          preloadVideo.pause();
+          preloadVideo.removeAttribute("src");
+          preloadVideo.load();
+        };
+      }
+    }, [activeIdx]);
+
+    useEffect(() => {
+      const sequence = sequenceRef.current;
+      if (!sequence) return;
+
+      let frame = 0;
+      let previousStage = -1;
+      let slamTimer = 0;
+
+      const update = () => {
+        cancelAnimationFrame(frame);
+
+        frame = requestAnimationFrame(() => {
+          const viewportCenter =
+            sequence.scrollLeft + sequence.clientWidth / 2;
+
+          const stages = Array.from(sequence.children);
+          if (!stages.length) return;
+
+          const idx = stages.reduce((nearest, stage, stageIdx) => {
+            const stageCenter =
+              stage.offsetLeft + stage.offsetWidth / 2;
+
+            const nearestCenter =
+              stages[nearest].offsetLeft +
+              stages[nearest].offsetWidth / 2;
+
+            return Math.abs(stageCenter - viewportCenter) <
+              Math.abs(nearestCenter - viewportCenter)
+              ? stageIdx
+              : nearest;
+          }, 0);
+
+          if (idx !== previousStage) {
+            previousStage = idx;
+            setActiveIdx(idx);
+            setSlamming(true);
+
+            window.clearTimeout(slamTimer);
+
+            slamTimer = window.setTimeout(() => {
+              setSlamming(false);
+            }, 650);
+          }
+        });
+      };
+
+      sequence.addEventListener("scroll", update, {
+        passive: true,
+      });
+
+      window.addEventListener("resize", update);
+
+      update();
 
       return () => {
-        preloadVideo.pause();
-        preloadVideo.removeAttribute("src");
-        preloadVideo.load();
+        cancelAnimationFrame(frame);
+        window.clearTimeout(slamTimer);
+        sequence.removeEventListener("scroll", update);
+        window.removeEventListener("resize", update);
       };
-    }
-  }, [activeIdx]);
+    }, []);
 
-  useEffect(() => {
-    const sequence = sequenceRef.current;
-    if (!sequence) return;
+    const goToStage = (idx) => {
+      const sequence = sequenceRef.current;
+      if (!sequence) return;
 
-    let frame = 0;
-    let previousStage = -1;
-    let slamTimer = 0;
+      if (idx === activeIdx) {
+        const video = sequence.querySelector(
+          ".cinema-stage:nth-child(" + (idx + 1) + ") video"
+        );
 
-    const update = () => {
-      cancelAnimationFrame(frame);
-
-      frame = requestAnimationFrame(() => {
-        const viewportCenter =
-          sequence.scrollLeft + sequence.clientWidth / 2;
-
-        const stages = Array.from(sequence.children);
-        if (!stages.length) return;
-
-        const idx = stages.reduce((nearest, stage, stageIdx) => {
-          const stageCenter =
-            stage.offsetLeft + stage.offsetWidth / 2;
-
-          const nearestCenter =
-            stages[nearest].offsetLeft +
-            stages[nearest].offsetWidth / 2;
-
-          return Math.abs(stageCenter - viewportCenter) <
-            Math.abs(nearestCenter - viewportCenter)
-            ? stageIdx
-            : nearest;
-        }, 0);
-
-        if (idx !== previousStage) {
-          previousStage = idx;
-          setActiveIdx(idx);
-          setSlamming(true);
-
-          window.clearTimeout(slamTimer);
-
-          slamTimer = window.setTimeout(() => {
-            setSlamming(false);
-          }, 650);
+        if (video) {
+          video.currentTime = 0;
+          video.play().catch(() => { });
         }
+
+        return;
+      }
+
+      const stage = sequence.children[idx];
+      if (!stage) return;
+
+      sequence.scrollTo({
+        left:
+          stage.offsetLeft -
+          (sequence.clientWidth - stage.offsetWidth) / 2,
+        behavior:
+          idx === 0 && activeIdx === STAGE_DATA.length - 1
+            ? "instant"
+            : "smooth",
       });
     };
 
-    sequence.addEventListener("scroll", update, {
-      passive: true,
-    });
-
-    window.addEventListener("resize", update);
-
-    update();
-
-    return () => {
-      cancelAnimationFrame(frame);
-      window.clearTimeout(slamTimer);
-      sequence.removeEventListener("scroll", update);
-      window.removeEventListener("resize", update);
-    };
-  }, []);
-
-  const goToStage = (idx) => {
-    const sequence = sequenceRef.current;
-    if (!sequence) return;
-
-    if (idx === activeIdx) {
-      const video = sequence.querySelector(
-        ".cinema-stage:nth-child(" + (idx + 1) + ") video"
-      );
-
-      if (video) {
-        video.currentTime = 0;
-        video.play().catch(() => {});
-      }
-
-      return;
-    }
-
-    const stage = sequence.children[idx];
-    if (!stage) return;
-
-    sequence.scrollTo({
-      left:
-        stage.offsetLeft -
-        (sequence.clientWidth - stage.offsetWidth) / 2,
-      behavior:
-        idx === 0 && activeIdx === STAGE_DATA.length - 1
-          ? "instant"
-          : "smooth",
-    });
-  };
-
-  return html`<div class="ln-wrap">
+    return html`<div class="ln-wrap">
     <div class="ln-header">
       <div>
         <span class="ln-tagline">Cinematic Detailing Showcase</span>
@@ -1470,35 +1465,35 @@ function Stages() {
 
     <div class="cinema-sequence" ref=${sequenceRef}>
       ${STAGE_DATA.map(
-        (st, i) => html`<section
+      (st, i) => html`<section
           key=${st.idx}
           class=${"cinema-stage" +
-          (activeIdx === i ? " is-active" : "") +
-          (slamming && activeIdx === i ? " slam" : "")}
+        (activeIdx === i ? " is-active" : "") +
+        (slamming && activeIdx === i ? " slam" : "")}
           aria-label=${"Stage " + st.idx + ": " + st.tag.toLowerCase()}
         >
           <div class="cinema-footage">
             ${(activeIdx === i ||
-              i === (activeIdx + 1) % STAGE_DATA.length)
-              ? html`<video
+          i === (activeIdx + 1) % STAGE_DATA.length)
+          ? html`<video
                   src=${st.src}
                   muted
                   playsinline
                   preload=${activeIdx === i ? "auto" : "none"}
                   autoPlay=${activeIdx === i}
                   onLoadedData=${(e) => {
-                    if (activeIdx === i) {
-                      e.currentTarget.play().catch(() => {});
-                    }
-                  }}
+              if (activeIdx === i) {
+                e.currentTarget.play().catch(() => { });
+              }
+            }}
                   onEnded=${activeIdx === i
-                    ? () =>
-                        goToStage((i + 1) % STAGE_DATA.length)
-                    : undefined}
+              ? () =>
+                goToStage((i + 1) % STAGE_DATA.length)
+              : undefined}
                   aria-label=${"Detailing process: " +
-                  st.tag.toLowerCase()}
+            st.tag.toLowerCase()}
                 ></video>`
-              : null}
+          : null}
           </div>
 
           <div class="cinema-shade"></div>
@@ -1512,8 +1507,8 @@ function Stages() {
 
             <h3 class="cinema-title">
               ${st.headline.map(
-                (line) => html`<span key=${line}>${line}</span>`
-              )}
+            (line) => html`<span key=${line}>${line}</span>`
+          )}
             </h3>
 
             <span class="cinema-step-name">${st.tag}</span>
@@ -1521,30 +1516,30 @@ function Stages() {
             <p class="cinema-description">${st.desc}</p>
           </div>
         </section>`
-      )}
+    )}
     </div>
 
     <div class="cinema-stage-nav" aria-label="Detailing stages">
       ${STAGE_DATA.map(
-        (buttonStage, buttonIdx) => html`<button
+      (buttonStage, buttonIdx) => html`<button
           key=${buttonStage.idx}
           class=${"cinema-stage-button" +
-          (activeIdx === buttonIdx ? " on" : "")}
+        (activeIdx === buttonIdx ? " on" : "")}
           onClick=${() => goToStage(buttonIdx)}
           onMouseEnter=${() => goToStage(buttonIdx)}
           aria-current=${activeIdx === buttonIdx ? "step" : null}
           aria-label=${"Go to stage " +
-          buttonStage.idx +
-          ": " +
-          buttonStage.tag.toLowerCase()}
+        buttonStage.idx +
+        ": " +
+        buttonStage.tag.toLowerCase()}
         >
           <span>STAGE ${buttonStage.idx}</span>
           <b>${buttonStage.tag}</b>
         </button>`
-      )}
+    )}
     </div>
   </div>`;
-}
+  }
 
 
   function Home({ go, pick }) {
@@ -1639,23 +1634,23 @@ function Stages() {
         />
         <div class="gg">
           ${[
-            {
-              image: "var(--i-d1)",
-              title: "Premium Studio",
-              description: "A closer look at our premium automotive collection and studio.",
-            },
-            {
-              image: "var(--i-coupe)",
-              title: "Luxury Coupe",
-              description: "Experience elegant styling, sporty performance and refined details.",
-            },
-            {
-              image: "var(--i-suv)",
-              title: "Premium SUV",
-              description: "Discover bold design, spacious comfort and a powerful presence.",
-            },
-          ].map(
-            (g, i) => html`
+        {
+          image: "var(--i-d1)",
+          title: "Premium Studio",
+          description: "A closer look at our premium automotive collection and studio.",
+        },
+        {
+          image: "var(--i-coupe)",
+          title: "Luxury Coupe",
+          description: "Experience elegant styling, sporty performance and refined details.",
+        },
+        {
+          image: "var(--i-suv)",
+          title: "Premium SUV",
+          description: "Discover bold design, spacious comfort and a powerful presence.",
+        },
+      ].map(
+        (g, i) => html`
               <div class="gallery-card rv" key=${i}>
                 <div
                   class="gallery-image"
@@ -1667,7 +1662,7 @@ function Stages() {
                 </div>
               </div>
             `,
-          )}
+      )}
         </div>
         <div class="mid">
           <button class="b p" onClick=${() => go("gallery")}>
@@ -1683,10 +1678,10 @@ function Stages() {
       <section class="w sec" style=${{ paddingTop: 30 }}>
         <${Bg}
           items=${[
-            ["car", 58, 0, 420, -2],
-            ["pol", 1, 34, 120, -12],
-            ["sqg", 92, 40, 110, 14],
-          ]}
+        ["car", 58, 0, 420, -2],
+        ["pol", 1, 34, 120, -12],
+        ["sqg", 92, 40, 110, 14],
+      ]}
         /><${Head}
           eb="What we do"
           title=${html`Full-service. <span class="bl">Fully done.</span>`}
@@ -1759,8 +1754,8 @@ function Stages() {
       x.t === "media"
         ? html`<div class=${"gallery-media-frame" + (big ? " large" : "")}>
             ${x.type === "video"
-              ? html`<video src=${x.src} controls=${big} autoPlay=${big} muted playsinline preload="metadata"></video>`
-              : html`<img src=${x.src} alt=${x.c} loading="lazy" />`}
+            ? html`<video src=${x.src} controls=${big} autoPlay=${big} muted playsinline preload="metadata"></video>`
+            : html`<img src=${x.src} alt=${x.c} loading="lazy" />`}
           </div>`
         : x.t === "v"
           ? html`<${Reel} src=${VIDEOS[x.n]} n=${big ? 34 : 12} tag=${big} />`
@@ -1783,9 +1778,9 @@ function Stages() {
       <section id="gallery-top" class="w sec" style=${{ paddingTop: 30 }}>
         <${Bg}
           items=${[
-            ["spr", 90, 2, 120, 10],
-            ["cl", 2, 40, 110, 8],
-          ]}
+        ["spr", 90, 2, 120, 10],
+        ["cl", 2, 40, 110, 8],
+      ]}
         /><${Head}
           eb="Gallery"
           title=${html`Photos and <span class="bl">videos.</span>`}
@@ -1793,46 +1788,44 @@ function Stages() {
         />
         <div class="fl2">
           ${[
-            ["all", "All"],
-            ["photos", "Photos"],
-            ["videos", "Videos"],
-          ].map(
-            (x) =>
-              html`<button
+        ["all", "All"],
+        ["photos", "Photos"],
+        ["videos", "Videos"],
+      ].map(
+        (x) =>
+          html`<button
                 key=${x[0]}
                 class=${f === x[0] ? "on" : ""}
                 onClick=${() => setF(x[0])}
               >
                 ${x[1]}
               </button>`,
-          )}
+      )}
         </div>
         <div class="gg">
           ${shown.map((x) => html`<button key=${key(x)} class="tl pop" data-c=${x.c} onClick=${() => setM(x)}>${body(x, false)}${x.t === "v" || x.type === "video" ? html`<span class="play"></span>` : null}</button>`)}
         </div>
-        ${
-          list.length > 6
-            ? html`<div class="mid">
+        ${list.length > 6
+        ? html`<div class="mid">
                 <button
                   class="b p"
                   onClick=${() => {
-                    if (exp) {
-                      setExp(false);
-                      document
-                        .getElementById("gallery-top")
-                        .scrollIntoView({ behavior: "smooth", block: "start" });
-                    } else setExp(true);
-                  }}
+            if (exp) {
+              setExp(false);
+              document
+                .getElementById("gallery-top")
+                .scrollIntoView({ behavior: "smooth", block: "start" });
+            } else setExp(true);
+          }}
                 >
                   ${exp ? "Show less ↑" : "Explore more →"}
                 </button>
               </div>`
-            : null
-        }
+        : null
+      }
       </section>
-      ${
-        m
-          ? html`<div class="md" onClick=${() => setM(null)}>
+      ${m
+        ? html`<div class="md" onClick=${() => setM(null)}>
               <div class="in2" onClick=${(e) => e.stopPropagation()}>
                 <button
                   class="x"
@@ -1844,7 +1837,7 @@ function Stages() {
                 <div class="cp">${m.c}</div>
               </div>
             </div>`
-          : null
+        : null
       }
       <${CTA} go=${go} />
     </div>`;
@@ -1854,9 +1847,9 @@ function Stages() {
       <section class="w sec about-intro" style=${{ paddingTop: 30 }}>
         <${Bg}
           items=${[
-            ["car", 52, 62, 520, 2],
-            ["pol", 88, 4, 140, 10],
-          ]}
+        ["car", 52, 62, 520, 2],
+        ["pol", 88, 4, 140, 10],
+      ]}
         />
         <div class="two">
           <div class="rv">
@@ -1912,35 +1905,6 @@ function Stages() {
           </article>
         </div>
       </section>
-      <section class="w sec" style=${{ paddingTop: 0 }}>
-        <${Head}
-          eb="Our process"
-          title=${html`Four steps. <span class="bl">Every time.</span>`}
-        />
-        <div class="stp">
-          ${[
-            [
-              "01",
-              "Inspect",
-              "We check paint, glass and interior and agree the plan.",
-            ],
-            ["02", "Prepare", "Foam wash and careful decontamination."],
-            [
-              "03",
-              "Treat",
-              "Polish, coat or protect, depending on the service.",
-            ],
-            ["04", "Hand over", "Final check in good light, with care advice."],
-          ].map(
-            (s) =>
-              html`<div class="cd rv" key=${s[0]}>
-                <b>${s[0]}</b>
-                <h3>${s[1]}</h3>
-                <p>${s[2]}</p>
-              </div>`,
-          )}
-        </div>
-      </section>
       <${CTA} go=${go} />
     </div>`;
   }
@@ -1988,13 +1952,13 @@ function Stages() {
       window.open(
         wa(
           "Hi Ocean Car Care, I’d like to book " +
-            s +
-            ". Name: " +
-            n +
-            ", phone: " +
-            p +
-            ". Car and notes: " +
-            m,
+          s +
+          ". Name: " +
+          n +
+          ", phone: " +
+          p +
+          ". Car and notes: " +
+          m,
         ),
         "_blank",
       );
@@ -2003,10 +1967,10 @@ function Stages() {
       <section class="w sec" style=${{ paddingTop: 30 }}>
         <${Bg}
           items=${[
-            ["car", 4, 76, 480, -2],
-            ["pol", 90, 8, 130, 10],
-            ["bkt", 50, 3, 100, 0],
-          ]}
+        ["car", 4, 76, 480, -2],
+        ["pol", 90, 8, 130, 10],
+        ["bkt", 50, 3, 100, 0],
+      ]}
         /><span class="eb">Contact</span>
         <h2 style=${{ marginBottom: 50 }}>
           Bring it in. Take it back <span class="bl">shining.</span>
@@ -2208,7 +2172,7 @@ function Stages() {
       setPage(isSvc ? "service" : p);
       try {
         history.replaceState(null, "", "#" + (isSvc ? "service-" + encodeURIComponent(p.slice(8)) : p));
-      } catch (e) {}
+      } catch (e) { }
     };
     const pick = (k) => {
       go("service:" + k);
@@ -2253,10 +2217,10 @@ function Stages() {
           : page === "service"
             ? html`<${ServiceDetail} k=${svc} go=${go} book=${book} />`
             : page === "gallery"
-            ? html`<${Gallery} go=${go} />`
-            : page === "about"
-              ? html`<${About} go=${go} />`
-              : html`<${Contact} pref=${pref} />`;
+              ? html`<${Gallery} go=${go} />`
+              : page === "about"
+                ? html`<${About} go=${go} />`
+                : html`<${Contact} pref=${pref} />`;
     return html`<div>
       <${Defs} />
       <div class="glow"></div>
