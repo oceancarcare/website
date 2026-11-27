@@ -238,7 +238,7 @@ h3 {
   font-family: var(--fh);
   text-transform: uppercase;
   font-style: normal;
-  font-weight: 800;
+  font-weight: normal;
   line-height: 0.95;
 }
 h1 {
@@ -1902,7 +1902,7 @@ position: relative;
   transform: translate(-50%, -50%);
   font-family: var(--fd);
   font-size: clamp(130px, 25vw, 340px);
-  font-weight: 900;
+  font-weight: normal;
   letter-spacing: 0.08em;
   color: rgba(11, 12, 16, 0.025);
   pointer-events: none;
@@ -1933,7 +1933,7 @@ display: grid;
 .hero-title {
   font-family: var(--fd), "Montserrat", sans-serif;
   font-size: clamp(54px, 7.5vw, 102px);
-  font-weight: 900;
+  font-weight: normal;
   line-height: 0.96;
   letter-spacing: -0.01em;
   text-transform: capitalize;
@@ -1949,7 +1949,7 @@ display: grid;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--mu);
-  font-weight: 600;
+  font-weight: normal;
   margin: 0;
 }
 .hero-right-col {
@@ -1981,7 +1981,7 @@ font-size: clamp(15px, 1.35vw, 18px);
   color: var(--bl);
   font-family: "Montserrat", system-ui, sans-serif;
   font-size: clamp(17px, 1.5vw, 20px);
-  font-weight: 700;
+  font-weight: normal;
   cursor: pointer;
   padding: 8px 0;
   transition: all 0.25s ease;
@@ -2285,7 +2285,7 @@ width: min(920px, 88vw);
   gap: 12px;
   color: var(--bl);
   font-size: 11px;
-  font-weight: 700;
+  font-weight: normal;
   letter-spacing: 0.2em;
   text-transform: uppercase;
 }
@@ -2302,7 +2302,7 @@ width: min(920px, 88vw);
   font-family: "Montserrat", system-ui, sans-serif;
   font-size: clamp(54px, 7.6vw, 118px);
   font-style: normal;
-  font-weight: 700;
+  font-weight: normal;
   letter-spacing: -0.075em;
   line-height: 0.82;
   text-transform: uppercase;
@@ -2322,7 +2322,7 @@ width: min(920px, 88vw);
   min-height: 16px;
   color: #fff;
   font-size: 13px;
-  font-weight: 700;
+  font-weight: normal;
   letter-spacing: 0.16em;
   text-transform: uppercase;
 }
@@ -2826,7 +2826,7 @@ h2,
 h3 {
   font-family: var(--fh) !important;
   font-style: normal !important;
-  font-weight: 600 !important;
+  font-weight: normal !important;
   letter-spacing: -0.035em;
 }
 
@@ -3059,7 +3059,7 @@ h1 {
   margin: 16px 0 22px;
   color: #d5d8df;
   font-size: clamp(20px, 2.2vw, 28px);
-  font-weight: 700;
+  font-weight: normal;
   line-height: 1.2;
 }
 .about-copy-block {
@@ -3203,7 +3203,7 @@ h5,
 h6,
 .hero-title {
   font-family: "Montserrat", system-ui, sans-serif !important;
-  font-weight: 700 !important;
+  font-weight: normal !important;
 }
 h1,
 .hero-title {
@@ -3335,7 +3335,7 @@ h1,
 /* More of the britemakers.com typography:
    h2 = Montserrat SemiBold; navigation, buttons and form fields = Poppins. */
 h2 {
-  font-weight: 600 !important;
+  font-weight: normal !important;
   font-size: clamp(30px, 5vw, 50px) !important;
 }
 @media (max-width: 767px) {
@@ -3345,12 +3345,12 @@ h2 {
 }
 .tabs button {
   font-family: "Poppins", system-ui, sans-serif;
-  font-weight: 500;
+  font-weight: normal;
   font-size: 18px;
 }
 .b {
   font-family: "Poppins", system-ui, sans-serif;
-  font-weight: 700;
+  font-weight: normal;
   font-size: 18px;
 }
 @media (max-width: 767px) {
@@ -3362,7 +3362,7 @@ input,
 select,
 textarea {
   font-family: "Poppins", system-ui, sans-serif;
-  font-weight: 600;
+  font-weight: normal;
 }
 
 /* Mobile-only proportional typography & UI scaling (preserves desktop & photo/video cards) */
