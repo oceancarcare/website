@@ -160,7 +160,7 @@ button {
   content: none;
 }
 .tabs button:hover {
-  color: var(--bg);
+  color: var(--bl);
 }
 .ac {
   flex: none;
