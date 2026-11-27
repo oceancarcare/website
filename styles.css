@@ -39,7 +39,7 @@ body {
 margin: 0;
   background: var(--bg);
   color: #1f2937;
-  font: 400 16px/1.65 "Lato", system-ui, sans-serif;
+  font: 400 16px/1.65 "Montserrat", system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
 }
@@ -3330,4 +3330,37 @@ h1,
     grid-template-columns: 1fr;
     gap: 22px;
   }
+}
+
+/* More of the britemakers.com typography:
+   h2 = Montserrat SemiBold; navigation, buttons and form fields = Poppins. */
+h2 {
+  font-weight: 600 !important;
+  font-size: clamp(30px, 5vw, 50px) !important;
+}
+@media (max-width: 767px) {
+  h2 {
+    font-size: clamp(22px, 4vw, 40px) !important;
+  }
+}
+.tabs button {
+  font-family: "Poppins", system-ui, sans-serif;
+  font-weight: 500;
+  font-size: 18px;
+}
+.b {
+  font-family: "Poppins", system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+}
+@media (max-width: 767px) {
+  .b {
+    font-size: 16px;
+  }
+}
+input,
+select,
+textarea {
+  font-family: "Poppins", system-ui, sans-serif;
+  font-weight: 600;
 }
