@@ -21,18 +21,6 @@
     ["about", "About"],
     ["contact", "Contact"],
   ];
-  const THREE_M_PRODUCTS = [
-    { name: "Dashboard Dresser", src: "assets/3m-products/dashboard-dresser.png" },
-    { name: "High Power Brake Cleaner", src: "assets/3m-products/brake-cleaner.png" },
-    { name: "Quick Wax", src: "assets/3m-products/quick-wax.png" },
-    { name: "1 Step Finishing Compound", src: "assets/3m-products/finishing-compound.png" },
-    { name: "Car Wash Shampoo", src: "assets/3m-products/car-wash-shampoo.png" },
-    { name: "Premium Liquid Wax", src: "assets/3m-products/premium-liquid-wax.png" },
-    { name: "Foam Wash", src: "assets/3m-products/foam-wash.png" },
-    { name: "Car Scratch Remover", src: "assets/3m-products/scratch-remover.png" },
-    { name: "Dashboard Polish", src: "assets/3m-products/dashboard-polish.png" },
-    { name: "Tyre Dresser", src: "assets/3m-products/tyre-dresser.png" },
-  ];
   const THREE_M_LINK = "https://www.3mindia.in/3M/en_IN/auto-care-products-and-solutions-in/auto-care/";
   const SVALL = [
     {
@@ -1348,137 +1336,216 @@
     </svg>`;
   }
 
-  function Stages() {
-    const sequenceRef = useRef(null);
-    const [activeIdx, setActiveIdx] = useState(0);
-    const [slamming, setSlamming] = useState(false);
+  
+function Stages() {
+  const sequenceRef = useRef(null);
+  const [activeIdx, setActiveIdx] = useState(0);
+  const [slamming, setSlamming] = useState(false);
 
-    useEffect(() => {
-      const sequence = sequenceRef.current;
-      if (!sequence) return;
+  // Keep the next video ready before the current one ends.
+  useEffect(() => {
+    const nextIdx = (activeIdx + 1) % STAGE_DATA.length;
+    const nextSrc = STAGE_DATA[nextIdx].src;
 
-      let frame = 0;
-      let previousStage = -1;
-      let slamTimer = 0;
-
-      const update = () => {
-        cancelAnimationFrame(frame);
-        frame = requestAnimationFrame(() => {
-          const viewportCenter = sequence.scrollLeft + sequence.clientWidth / 2;
-          const stages = Array.from(sequence.children);
-          const idx = stages.reduce((nearest, stage, stageIdx) => {
-            const stageCenter = stage.offsetLeft + stage.offsetWidth / 2;
-            const nearestCenter =
-              stages[nearest].offsetLeft + stages[nearest].offsetWidth / 2;
-            return Math.abs(stageCenter - viewportCenter) <
-              Math.abs(nearestCenter - viewportCenter)
-              ? stageIdx
-              : nearest;
-          }, 0);
-
-          if (idx !== previousStage) {
-            previousStage = idx;
-            setActiveIdx(idx);
-            setSlamming(true);
-            window.clearTimeout(slamTimer);
-            slamTimer = window.setTimeout(() => setSlamming(false), 650);
-          }
-        });
-      };
-
-      sequence.addEventListener("scroll", update, { passive: true });
-      window.addEventListener("resize", update);
-      update();
+    if (nextSrc) {
+      const preloadVideo = document.createElement("video");
+      preloadVideo.preload = "auto";
+      preloadVideo.src = nextSrc;
+      preloadVideo.load();
 
       return () => {
-        cancelAnimationFrame(frame);
-        window.clearTimeout(slamTimer);
-        sequence.removeEventListener("scroll", update);
-        window.removeEventListener("resize", update);
+        preloadVideo.pause();
+        preloadVideo.removeAttribute("src");
+        preloadVideo.load();
       };
-    }, []);
+    }
+  }, [activeIdx]);
 
-    const goToStage = (idx) => {
-      const sequence = sequenceRef.current;
-      if (!sequence) return;
-      if (idx === activeIdx) {
-        const video = sequence.querySelector(
-          ".cinema-stage:nth-child(" + (idx + 1) + ") video",
-        );
-        if (video) {
-          video.currentTime = 0;
-          video.play().catch(() => {});
+  useEffect(() => {
+    const sequence = sequenceRef.current;
+    if (!sequence) return;
+
+    let frame = 0;
+    let previousStage = -1;
+    let slamTimer = 0;
+
+    const update = () => {
+      cancelAnimationFrame(frame);
+
+      frame = requestAnimationFrame(() => {
+        const viewportCenter =
+          sequence.scrollLeft + sequence.clientWidth / 2;
+
+        const stages = Array.from(sequence.children);
+        if (!stages.length) return;
+
+        const idx = stages.reduce((nearest, stage, stageIdx) => {
+          const stageCenter =
+            stage.offsetLeft + stage.offsetWidth / 2;
+
+          const nearestCenter =
+            stages[nearest].offsetLeft +
+            stages[nearest].offsetWidth / 2;
+
+          return Math.abs(stageCenter - viewportCenter) <
+            Math.abs(nearestCenter - viewportCenter)
+            ? stageIdx
+            : nearest;
+        }, 0);
+
+        if (idx !== previousStage) {
+          previousStage = idx;
+          setActiveIdx(idx);
+          setSlamming(true);
+
+          window.clearTimeout(slamTimer);
+
+          slamTimer = window.setTimeout(() => {
+            setSlamming(false);
+          }, 650);
         }
-        return;
-      }
-      const stage = sequence.children[idx];
-      if (!stage) return;
-      sequence.scrollTo({
-        left: stage.offsetLeft - (sequence.clientWidth - stage.offsetWidth) / 2,
-        behavior: idx === 0 && activeIdx === STAGE_DATA.length - 1 ? "instant" : "smooth",
       });
     };
 
-    return html`<div class="ln-wrap">
-      <div class="ln-header">
-        <div>
-          <span class="ln-tagline">Cinematic Detailing Showcase</span>
-          <h2 class="ln-title">
-            5-Stage <span class="bl">Precision Transformation</span>
-          </h2>
-          <p class="ln-desc">
-            Swipe horizontally or choose a stage below to explore each detailing
-            phase: Wash → Foam → Polish → Coating → Final Check.
-          </p>
-        </div>
-      </div>
+    sequence.addEventListener("scroll", update, {
+      passive: true,
+    });
 
-      <div class="cinema-sequence" ref=${sequenceRef}>
-        ${STAGE_DATA.map((st, i) => html`<section
+    window.addEventListener("resize", update);
+
+    update();
+
+    return () => {
+      cancelAnimationFrame(frame);
+      window.clearTimeout(slamTimer);
+      sequence.removeEventListener("scroll", update);
+      window.removeEventListener("resize", update);
+    };
+  }, []);
+
+  const goToStage = (idx) => {
+    const sequence = sequenceRef.current;
+    if (!sequence) return;
+
+    if (idx === activeIdx) {
+      const video = sequence.querySelector(
+        ".cinema-stage:nth-child(" + (idx + 1) + ") video"
+      );
+
+      if (video) {
+        video.currentTime = 0;
+        video.play().catch(() => {});
+      }
+
+      return;
+    }
+
+    const stage = sequence.children[idx];
+    if (!stage) return;
+
+    sequence.scrollTo({
+      left:
+        stage.offsetLeft -
+        (sequence.clientWidth - stage.offsetWidth) / 2,
+      behavior:
+        idx === 0 && activeIdx === STAGE_DATA.length - 1
+          ? "instant"
+          : "smooth",
+    });
+  };
+
+  return html`<div class="ln-wrap">
+    <div class="ln-header">
+      <div>
+        <span class="ln-tagline">Cinematic Detailing Showcase</span>
+        <h2 class="ln-title">
+          5-Stage <span class="bl">Precision Transformation</span>
+        </h2>
+        <p class="ln-desc">
+          Swipe horizontally or choose a stage below to explore each detailing
+          phase: Wash → Foam → Polish → Coating → Final Check.
+        </p>
+      </div>
+    </div>
+
+    <div class="cinema-sequence" ref=${sequenceRef}>
+      ${STAGE_DATA.map(
+        (st, i) => html`<section
           key=${st.idx}
-          class=${"cinema-stage" + (activeIdx === i ? " is-active" : "") + (slamming && activeIdx === i ? " slam" : "")}
+          class=${"cinema-stage" +
+          (activeIdx === i ? " is-active" : "") +
+          (slamming && activeIdx === i ? " slam" : "")}
           aria-label=${"Stage " + st.idx + ": " + st.tag.toLowerCase()}
         >
           <div class="cinema-footage">
-            ${activeIdx === i ? html`<video
-              src=${st.src}
-              muted
-              playsinline
-              autoPlay
-              preload="auto"
-              onEnded=${() => goToStage((i + 1) % STAGE_DATA.length)}
-              aria-label=${"Detailing process: " + st.tag.toLowerCase()}
-            ></video>` : null}
+            ${(activeIdx === i ||
+              i === (activeIdx + 1) % STAGE_DATA.length)
+              ? html`<video
+                  src=${st.src}
+                  muted
+                  playsinline
+                  preload=${activeIdx === i ? "auto" : "none"}
+                  autoPlay=${activeIdx === i}
+                  onLoadedData=${(e) => {
+                    if (activeIdx === i) {
+                      e.currentTarget.play().catch(() => {});
+                    }
+                  }}
+                  onEnded=${activeIdx === i
+                    ? () =>
+                        goToStage((i + 1) % STAGE_DATA.length)
+                    : undefined}
+                  aria-label=${"Detailing process: " +
+                  st.tag.toLowerCase()}
+                ></video>`
+              : null}
           </div>
+
           <div class="cinema-shade"></div>
           <div class="cinema-grain"></div>
           <div class="cinema-impact"></div>
 
           <div class="cinema-copy">
-            <span class="cinema-eyebrow">Process / ${st.idx} · ${st.subtitle}</span>
+            <span class="cinema-eyebrow">
+              Process / ${st.idx} · ${st.subtitle}
+            </span>
+
             <h3 class="cinema-title">
-              ${st.headline.map((line) => html`<span key=${line}>${line}</span>`)}
+              ${st.headline.map(
+                (line) => html`<span key=${line}>${line}</span>`
+              )}
             </h3>
+
             <span class="cinema-step-name">${st.tag}</span>
+
             <p class="cinema-description">${st.desc}</p>
           </div>
-</section>`)}
-      </div>
-      <div class="cinema-stage-nav" aria-label="Detailing stages">
-        ${STAGE_DATA.map((buttonStage, buttonIdx) => html`<button
+        </section>`
+      )}
+    </div>
+
+    <div class="cinema-stage-nav" aria-label="Detailing stages">
+      ${STAGE_DATA.map(
+        (buttonStage, buttonIdx) => html`<button
           key=${buttonStage.idx}
-          class=${"cinema-stage-button" + (activeIdx === buttonIdx ? " on" : "")}
+          class=${"cinema-stage-button" +
+          (activeIdx === buttonIdx ? " on" : "")}
           onClick=${() => goToStage(buttonIdx)}
           onMouseEnter=${() => goToStage(buttonIdx)}
           aria-current=${activeIdx === buttonIdx ? "step" : null}
-          aria-label=${"Go to stage " + buttonStage.idx + ": " + buttonStage.tag.toLowerCase()}
+          aria-label=${"Go to stage " +
+          buttonStage.idx +
+          ": " +
+          buttonStage.tag.toLowerCase()}
         >
           <span>STAGE ${buttonStage.idx}</span>
           <b>${buttonStage.tag}</b>
-        </button>`)}
-      </div>
-    </div>`;
-  }
+        </button>`
+      )}
+    </div>
+  </div>`;
+}
+
 
   function Home({ go, pick }) {
     return html`<div class="pg home-page">
@@ -1488,7 +1555,7 @@
           <div class="hero-top-row">
             <div class="hero-left-col">
               <div>
-                <a href=${THREE_M_LINK} target="_blank" rel="noopener noreferrer" aria-label="3M India auto care products"><img class="hero-3m-logo" src="assets/3m_new_logo.png" alt="3M" /></a>
+                <a href=${THREE_M_LINK} target="_blank" rel="noopener noreferrer" aria-label="3M India auto care products"><img class="hero-3m-logo" src="assets/3m_new_logo.png" loading="eager" fetchpriority="high" decoding="async" alt="3M" /></a>
                 <h1>
                   Fall in love<br />with <span class="bl">your car.</span>
                 </h1>
@@ -1513,6 +1580,9 @@
             <div class="hero-car-glow"></div>
             <video
               src="assets/hero-car-loop.mp4"
+              loading="eager"
+              fetchpriority="high"
+              decoding="async"
               class="hero-car-img hero-car-video"
               autoPlay
               muted
@@ -2053,7 +2123,7 @@
       <div class="w">
         <div class="gr">
           <div>
-            <img src=${LOGO} alt="Ocean Car Detailing ZPA" />
+            <img src=${LOGO} loading="eager" fetchpriority="high" decoding="async" alt="Ocean Car Detailing ZPA" />
             <p class="mu" style=${{ maxWidth: "26em", margin: 0 }}>
               Fall in love with your car.
             </p>
@@ -2091,11 +2161,10 @@
     const [active, setActive] = useState(0);
     useEffect(() => {
       const timer = window.setInterval(() => {
-        setActive((current) => (current + 1) % THREE_M_PRODUCTS.length);
+        setActive((current) => (current + 1));
       }, 4500);
       return () => window.clearInterval(timer);
     }, []);
-    const product = THREE_M_PRODUCTS[active];
     return html`<aside class="three-m-ad" aria-label="3M India car care products">
       <a class="three-m-ad-link" href=${THREE_M_LINK} target="_blank" rel="noopener noreferrer">
         <span class="three-m-ad-brand"><span>3M</span> INDIA · CAR CARE</span>
@@ -2106,7 +2175,6 @@
             <strong key=${product.name}>${product.name}</strong>
             <span class="three-m-ad-cta">Browse more on 3M India <b aria-hidden="true">↗</b></span>
             <span class="three-m-ad-dots" aria-hidden="true">
-              ${THREE_M_PRODUCTS.map((item, index) => html`<i key=${item.src} class=${index === active ? "active" : ""}></i>`)}
             </span>
           </span>
         </span>
@@ -2200,7 +2268,7 @@
               onClick=${() => go("home")}
               aria-label="Ocean Car Detailing ZPA home"
             >
-              <img src=${LOGO} alt="Ocean Car Detailing ZPA" />
+              <img src=${LOGO} loading="eager" fetchpriority="high" decoding="async"alt="Ocean Car Detailing ZPA" />
             </button>
            
           </div>
