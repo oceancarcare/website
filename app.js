@@ -1793,10 +1793,10 @@
             <span class="eb">About us</span>
             <h2>Ocean Agencies</h2>
             <h3 class="about-tagline">25+ Years of Automotive Industry Experience | Excellence in Automotive Detailing</h3>
-            <p class="lead about-text">
+            <p>
               Established in January 2020, Ocean Agencies is a professionally managed automotive detailing and car care company founded by Mr. Anil and Mr. Sreehari. Operating alongside the AB Enterprises business group, Ocean Agencies builds on a legacy of more than 25 years in 3M distribution and automotive care solutions, dating back to 2000.
             </p>
-            <p class="mu about-text">
+            <p>
               We bring technical expertise and industry knowledge to premium vehicle detailing, paint protection and specialized car care for individual customers. Our goal is to enhance each vehicle’s appearance, preserve its value and deliver an exceptional ownership experience through quality products, skilled professionals and personalized service.
             </p>
           </div>
