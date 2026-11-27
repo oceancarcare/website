@@ -9,6 +9,43 @@
   };
   const html = htm.bind(h);
   const LOGO = "assets/logo.png";
+  // Media: Cloudinary is the primary source, the local /assets copy is the automatic fallback.
+  // Files are looked up on Cloudinary by file name (e.g. assets/gallery/i-d1.png -> .../image/upload/i-d1.png).
+  const CLOUD = "https://res.cloudinary.com/l9qao8sm";
+  const isVid = (p) => /\.(mp4|webm|mov)$/i.test(p);
+  const cdn = (p) => CLOUD + (isVid(p) ? "/video" : "/image") + "/upload/" + p.split("/").pop();
+  const fb = (local) => (e) => {
+    const el = e.currentTarget;
+    if (el.dataset.fb) return;
+    el.dataset.fb = "1";
+    el.src = local;
+  };
+  // CSS background images (defined in styles.css): use Cloudinary, revert to local if it fails to load.
+  [
+    ["--i-about", "assets/about/studio.webp"],
+    ["--i-d1", "assets/gallery/i-d1.png"],
+    ["--i-coupe", "assets/gallery/hyundai-detailing-studio.png"],
+    ["--i-suv", "assets/gallery/i-d2.jpg"],
+    ["--u-hero", "assets/u-hero.jpg"],
+    ["--u-car", "assets/u-car.jpg"],
+    ["--u-cc", "assets/services/u-cc.png"],
+    ["--u-pp", "assets/services/u-pp.png"],
+    ["--u-gc", "assets/services/u-gc.png"],
+    ["--u-ar", "assets/services/u-ar.jpg"],
+    ["--u-sf", "assets/services/sunfilm_protection.png"],
+    ["--s0", "assets/s0.jpg"],
+    ["--s1", "assets/s1.jpg"],
+    ["--s2", "assets/s2.jpg"],
+    ["--s3", "assets/s3.jpg"],
+    ["--s4", "assets/s4.jpg"],
+    ["--s5", "assets/s5.jpg"],
+  ].forEach(([name, local]) => {
+    const root = document.documentElement;
+    root.style.setProperty(name, 'url("' + cdn(local) + '")');
+    const probe = new Image();
+    probe.onerror = () => root.style.setProperty(name, 'url("' + local + '")');
+    probe.src = cdn(local);
+  });
   const PHONE = "918086966660";
   // Set a local or hosted video URL to enable the optional detailing reel.
   const VIDEOS = ["", "", ""];
@@ -1345,7 +1382,7 @@
       if (nextSrc) {
         const preloadVideo = document.createElement("video");
         preloadVideo.preload = "auto";
-        preloadVideo.src = nextSrc;
+        preloadVideo.src = cdn(nextSrc);
         preloadVideo.load();
 
         return () => {
@@ -1476,7 +1513,8 @@
             ${(activeIdx === i ||
           i === (activeIdx + 1) % STAGE_DATA.length)
           ? html`<video
-                  src=${st.src}
+                  src=${cdn(st.src)}
+                  onError=${fb(st.src)}
                   muted
                   playsinline
                   preload=${activeIdx === i ? "auto" : "none"}
@@ -1550,7 +1588,7 @@
           <div class="hero-top-row">
             <div class="hero-left-col">
               <div>
-                <a href=${THREE_M_LINK} target="_blank" rel="noopener noreferrer" aria-label="3M India auto care products"><img class="hero-3m-logo" src="assets/3m_new_logo.png" loading="eager" fetchpriority="high" decoding="async" alt="3M" /></a>
+                <a href=${THREE_M_LINK} target="_blank" rel="noopener noreferrer" aria-label="3M India auto care products"><img class="hero-3m-logo" src=${cdn("assets/3m_new_logo.png")} onError=${fb("assets/3m_new_logo.png")} loading="eager" fetchpriority="high" decoding="async" alt="3M" /></a>
                 <h1>
                   Fall in love<br />with <span class="bl">your car.</span>
                 </h1>
@@ -1574,7 +1612,8 @@
           <div class="hero-car-showcase">
             <div class="hero-car-glow"></div>
             <video
-              src="assets/hero-car-loop.mp4"
+              src=${cdn("assets/hero-car-loop.mp4")}
+              onError=${fb("assets/hero-car-loop.mp4")}
               loading="eager"
               fetchpriority="high"
               decoding="async"
@@ -1754,8 +1793,8 @@
       x.t === "media"
         ? html`<div class=${"gallery-media-frame" + (big ? " large" : "")}>
             ${x.type === "video"
-            ? html`<video src=${x.src} controls=${big} autoPlay=${big} muted playsinline preload="metadata"></video>`
-            : html`<img src=${x.src} alt=${x.c} loading="lazy" />`}
+            ? html`<video src=${cdn(x.src)} onError=${fb(x.src)} controls=${big} autoPlay=${big} muted playsinline preload="metadata"></video>`
+            : html`<img src=${cdn(x.src)} onError=${fb(x.src)} alt=${x.c} loading="lazy" />`}
           </div>`
         : x.t === "v"
           ? html`<${Reel} src=${VIDEOS[x.n]} n=${big ? 34 : 12} tag=${big} />`
@@ -2087,7 +2126,7 @@
       <div class="w">
         <div class="gr">
           <div>
-            <img src=${LOGO} loading="eager" fetchpriority="high" decoding="async" alt="Ocean Car Detailing ZPA" />
+            <img src=${cdn(LOGO)} onError=${fb(LOGO)} loading="eager" fetchpriority="high" decoding="async" alt="Ocean Car Detailing ZPA" />
             <p class="mu" style=${{ maxWidth: "26em", margin: 0 }}>
               Fall in love with your car.
             </p>
@@ -2133,7 +2172,7 @@
       <a class="three-m-ad-link" href=${THREE_M_LINK} target="_blank" rel="noopener noreferrer">
         <span class="three-m-ad-brand"><span>3M</span> INDIA · CAR CARE</span>
         <span class="three-m-ad-product">
-          <span class="three-m-ad-image"><img key=${product.src} src=${product.src} alt=${product.name} /></span>
+          <span class="three-m-ad-image"><img key=${product.src} src=${cdn(product.src)} onError=${fb(product.src)} alt=${product.name} /></span>
           <span class="three-m-ad-copy">
             <span class="three-m-ad-kicker">Featured product</span>
             <strong key=${product.name}>${product.name}</strong>
@@ -2232,7 +2271,7 @@
               onClick=${() => go("home")}
               aria-label="Ocean Car Detailing ZPA home"
             >
-              <img src=${LOGO} loading="eager" fetchpriority="high" decoding="async"alt="Ocean Car Detailing ZPA" />
+              <img src=${cdn(LOGO)} onError=${fb(LOGO)} loading="eager" fetchpriority="high" decoding="async" alt="Ocean Car Detailing ZPA" />
             </button>
            
           </div>
