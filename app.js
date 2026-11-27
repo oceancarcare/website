@@ -36,38 +36,70 @@
   const THREE_M_LINK = "https://www.3mindia.in/3M/en_IN/auto-care-products-and-solutions-in/auto-care/";
   const SVALL = [
     {
-      k: "Ceramic Coating",
+      k: "Exterior Treatments",
       a: "ceramic",
       u: "--u-cc",
       d: "Deep gloss and long-lasting protection for your paint.",
       c: ["Deep gloss", "Hydrophobic"],
+      long: [
+        "Our exterior treatments bring out the best in your car's paintwork and then protect it. We start with a thorough wash and decontamination, correct visible swirls and light scratches, and finish with a protective coating that adds depth and gloss.",
+        "Coatings form a hard, slick layer on the paint that helps repel water, dirt and road grime, so the car stays cleaner for longer and is easier to wash.",
+      ],
+      pts: ["Thorough wash and paint decontamination", "Paint correction to reduce swirls and light scratches", "Ceramic, graphene or borophene coating options", "Deep gloss with a water-repellent, easy-to-clean finish"],
     },
     {
-      k: "Paint Protection",
-      a: "paint",
-      u: "--u-pp",
-      d: "Paint restoration and protection treatments, done by hand.",
-      c: ["Restoration", "Protection"],
-    },
-    {
-      k: "Germ Clean",
+      k: "Interior Treatments",
       a: "germ",
       u: "--u-gc",
       d: "Interior treatment that removes 99% of bacteria.",
       c: ["Bacteria-free", "Hygiene care"],
+      long: [
+        "A deep interior treatment for a cleaner, fresher and more hygienic cabin. We clean and treat seats, carpets, trim and the touch points you use every day, targeting the bacteria and odours that build up inside a car.",
+        "The result is a cabin that looks, feels and smells clean, which is especially useful for families, frequent travellers and shared vehicles.",
+      ],
+      pts: ["Deep clean of seats, carpets, mats and trim", "Germ-clean treatment on high-touch surfaces", "Odour removal and a fresh cabin", "Safe for all interior materials"],
+    },
+    {
+      k: "Paint Protection Film (PPF)",
+      a: "paint",
+      u: "--u-pp",
+      d: "Paint restoration and protection treatments, done by hand.",
+      c: ["Restoration", "Protection"],
+      long: [
+        "Paint Protection Film is a clear, durable layer applied over your paint to guard it against stone chips, scratches, bug splatter and everyday wear. It keeps the original paint underneath in better condition.",
+        "Each panel is prepared and fitted by hand, so the film sits cleanly and the finish stays smooth and clear.",
+      ],
+      pts: ["Protection against stone chips and light scratches", "Clear film that keeps your original paint colour", "Hand-fitted panel by panel", "Helps preserve resale value"],
+    },
+    {
+      k: "Anti Corrosion Treatments",
+      a: "rust",
+      u: "--u-ar",
+      d: "A protective coat against rust and corrosion.",
+      c: ["Underbody", "Corrosion defence"],
+      long: [
+        "The underbody and hidden areas of a car face constant moisture, salt air and road debris. Our anti corrosion treatment applies a protective coat that helps shield the metal from rust and corrosion.",
+        "It is a worthwhile protection for cars driven in humid, coastal or rainy conditions, and it helps keep the underside in good shape for longer.",
+      ],
+      pts: ["Underbody cleaning and preparation", "Protective anti corrosion coat on exposed metal", "Defence against moisture and road debris", "Helps extend the life of the underbody"],
+    },
+    {
+      k: "Sun Film Protection",
+      a: "sunfilm",
+      u: "--u-sf",
+      d: "Heat and UV protection for a cooler, more comfortable cabin.",
+      c: ["Heat rejection", "UV protection"],
+      long: [
+        "Automotive sun films are fitted to your windows to cut heat, glare and harmful UV rays. The cabin stays cooler and more comfortable, and your seats and dashboard are protected from fading.",
+        "Films are cut and fitted carefully for a clean, bubble-free finish, and the range lets you choose the level of tint you prefer.",
+      ],
+      pts: ["Reduces heat and glare inside the cabin", "Blocks harmful UV rays", "Helps protect the interior from fading", "Neat, precise fitting on every window"],
     },
     {
       k: "Interior Enrichment",
       a: "interior",
       d: "Seats, trim and cabin restored and refreshed.",
       c: ["Seats and trim", "Fresh cabin"],
-    },
-    {
-      k: "Anti Rust Coating",
-      a: "rust",
-      u: "--u-ar",
-      d: "A protective coat against rust and corrosion.",
-      c: ["Underbody", "Corrosion defence"],
     },
     {
       k: "Headlight Restoration",
@@ -1588,7 +1620,7 @@
         /><${Head}
           eb="What we do"
           title=${html`Full-service. <span class="bl">Fully done.</span>`}
-          sub="Tap a service to send us a quick request."
+          sub="Tap a service to read more about it."
         />
         <p class="brand-note rv">
           <strong>Engineered for perfection.</strong> Our car care systems are
@@ -1842,6 +1874,39 @@
       <${CTA} go=${go} />
     </div>`;
   }
+  function ServiceDetail({ k, go, book }) {
+    const s = SV.find((x) => x.k === k) || SV[0];
+    const i = SV.indexOf(s);
+    const next = SV[(i + 1) % SV.length];
+    return html`<div class="pg">
+      <section class="w sec svd" style=${{ paddingTop: 30 }}>
+        <button class="b svd-back" onClick=${() => go("services")}>← All services</button>
+        <div class="svd-grid">
+          <div class="svd-img rv" style=${{ backgroundImage: "var(" + s.u + ")" }} role="img" aria-label=${s.k}></div>
+          <div class="svd-body rv">
+            <span class="eb">Service 0${i + 1}</span>
+            <h1>${s.k}</h1>
+            <p class="lead">${s.d}</p>
+            ${(s.long || []).map((t, n) => html`<p key=${n}>${t}</p>`)}
+            <h3 class="svd-sub">What you get</h3>
+            <ul class="svd-list">
+              ${(s.pts || []).map((t) => html`<li key=${t}>${t}</li>`)}
+            </ul>
+            <div class="ch">
+              ${s.c.map((c) => html`<span key=${c}>${c}</span>`)}
+            </div>
+            <div class="row svd-actions">
+              <button class="b p" onClick=${() => book(s.k)}>Book this service →</button>
+              <a class="b g" target="_blank" rel="noopener" href=${wa("Hi Ocean Car Care, I would like to know more about " + s.k + ".")}>WhatsApp us</a>
+            </div>
+          </div>
+        </div>
+        <div class="mid">
+          <button class="b" onClick=${() => go("service:" + next.k)}>Next: ${next.k} →</button>
+        </div>
+      </section>
+    </div>`;
+  }
   function Contact({ pref }) {
     const [s, setS] = useState(pref || SV[0].k),
       [n, setN] = useState(""),
@@ -2049,21 +2114,38 @@
     </aside>`;
   }
   function App() {
+    const initSvc = () => {
+      const x = location.hash.slice(1);
+      if (x.indexOf("service-") !== 0) return "";
+      try {
+        const k = decodeURIComponent(x.slice(8));
+        return SV.some((v) => v.k === k) ? k : "";
+      } catch (e) {
+        return "";
+      }
+    };
     const init = () => {
       const x = location.hash.slice(1);
+      if (initSvc()) return "service";
       return PAGES.some((p) => p[0] === x) ? x : "home";
     };
-    const [page, setPage] = useState(init),
+    const [svc, setSvc] = useState(initSvc),
+      [page, setPage] = useState(init),
       [pref, setPref] = useState(""),
       [up, setUp] = useState(false);
     const go = (p) => {
       window.scrollTo(0, 0);
-      setPage(p);
+      const isSvc = p.indexOf("service:") === 0;
+      setSvc(isSvc ? p.slice(8) : "");
+      setPage(isSvc ? "service" : p);
       try {
-        history.replaceState(null, "", "#" + p);
+        history.replaceState(null, "", "#" + (isSvc ? "service-" + encodeURIComponent(p.slice(8)) : p));
       } catch (e) {}
     };
     const pick = (k) => {
+      go("service:" + k);
+    };
+    const book = (k) => {
       setPref(k);
       go("contact");
     };
@@ -2073,9 +2155,9 @@
       return () => removeEventListener("scroll", f);
     }, []);
     useEffect(() => {
-      document.title =
-        PAGES.find((p) => p[0] === page)[1] + " · Ocean Car Care";
-    }, [page]);
+      const t = page === "service" ? svc : (PAGES.find((p) => p[0] === page) || PAGES[0])[1];
+      document.title = t + " · Ocean Car Care";
+    }, [page, svc]);
     useEffect(() => {
       const t = document.querySelector(".tabs button.on");
       if (t && t.scrollIntoView)
@@ -2100,7 +2182,9 @@
         ? html`<${Home} go=${go} pick=${pick} />`
         : page === "services"
           ? html`<${Services} go=${go} pick=${pick} />`
-          : page === "gallery"
+          : page === "service"
+            ? html`<${ServiceDetail} k=${svc} go=${go} book=${book} />`
+            : page === "gallery"
             ? html`<${Gallery} go=${go} />`
             : page === "about"
               ? html`<${About} go=${go} />`
@@ -2121,7 +2205,7 @@
            
           </div>
           <nav class="tabs" aria-label="Pages">
-            ${PAGES.map((p) => html`<button key=${p[0]} class=${page === p[0] ? "on" : ""} onClick=${() => go(p[0])}>${p[1]}</button>`)}
+            ${PAGES.map((p) => html`<button key=${p[0]} class=${page === p[0] || (page === "service" && p[0] === "services") ? "on" : ""} onClick=${() => go(p[0])}>${p[1]}</button>`)}
           </nav>
           <div class="ac">
             <button class="b p sm" onClick=${() => go("contact")}>

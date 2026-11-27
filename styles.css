@@ -9,6 +9,7 @@
   --u-pp: url("assets/u-pp.png");
   --u-gc: url("assets/u-gc.png");
   --u-ar: url("assets/u-ar.jpg");
+  --u-sf: url("assets/sunfilm_protection.png");
   --s0: url("assets/s0.jpg");
   --s1: url("assets/s1.jpg");
   --s2: url("assets/s2.jpg");
@@ -3257,4 +3258,56 @@ h3,
 }
 .lead.about-text {
   margin: 22px 0 12px;
+}
+
+/* Service description page */
+.svd-back {
+  margin-bottom: 22px;
+}
+.svd-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 36px;
+  align-items: start;
+}
+.svd-img {
+  aspect-ratio: 4 / 3;
+  border-radius: 22px;
+  background-size: cover;
+  background-position: center;
+  border: 1px solid var(--line);
+}
+.svd-body {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.svd-body h1 {
+  margin: 0;
+}
+.svd-body p {
+  margin: 0;
+  color: var(--mu);
+}
+.svd-body .lead {
+  margin: 0;
+}
+.svd-sub {
+  margin: 8px 0 0;
+}
+.svd-list {
+  margin: 0;
+  padding-left: 20px;
+  color: var(--mu);
+  display: grid;
+  gap: 8px;
+}
+.svd-actions {
+  margin-top: 8px;
+}
+@media (max-width: 760px) {
+  .svd-grid {
+    grid-template-columns: 1fr;
+    gap: 22px;
+  }
 }
