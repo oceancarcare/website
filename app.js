@@ -1574,7 +1574,7 @@
                 <h1>
                   Fall in love<br />with <span class="bl">your car.</span>
                 </h1>
-                <p class="lead">Wash. Polish. Coat. Protect.</p>
+                <p class="lead hero-script">Wash. Polish. Coat. Protect.</p>
               </div>
             </div>
 

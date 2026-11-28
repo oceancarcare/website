@@ -4183,3 +4183,11 @@ h2,
 h3 {
   letter-spacing: -0.5px !important;
 }
+/* "Wash. Polish. Coat. Protect." in a cursive font (colour and spacing unchanged). */
+.hero-script {
+  font-family: "Dancing Script", "Brush Script MT", cursive !important;
+  font-weight: 600;
+  font-size: clamp(24px, 3.2vw, 34px);
+  line-height: 1.2;
+  letter-spacing: 0.01em;
+}
