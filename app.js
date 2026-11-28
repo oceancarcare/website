@@ -1471,7 +1471,6 @@
     return html`<div class="ln-wrap">
     <div class="ln-header">
       <div>
-        <span class="ln-tagline">Cinematic Detailing Showcase</span>
         <h2 class="ln-title">
           5-Stage <span class="bl">Precision Transformation</span>
         </h2>
