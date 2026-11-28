@@ -4131,6 +4131,7 @@ textarea {
     font-size: clamp(11px, 3vw, 13px);
   }
 }
+
 /* Lazy-loaded <img> elements that replaced CSS background images (cover behaviour). */
 .pic-fill,
 .ph,
@@ -4143,14 +4144,42 @@ textarea {
   object-position: center;
   display: block;
 }
+
 .ph,
 .big img {
   position: absolute;
   inset: 0;
 }
+
 .svd-img {
   overflow: hidden;
 }
+
 .gallery-image {
   overflow: hidden;
+}
+
+/* Headings styled like britemakers.com: Montserrat Bold, upright, Title Case. Colours unchanged. */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.hero-title {
+  font-family: "Montserrat", system-ui, sans-serif !important;
+  font-weight: 700 !important;
+  font-style: normal !important;
+  text-transform: capitalize !important;
+}
+
+h1,
+.hero-title {
+  line-height: 1 !important;
+  letter-spacing: -1px !important;
+}
+
+h2,
+h3 {
+  letter-spacing: -0.5px !important;
 }
