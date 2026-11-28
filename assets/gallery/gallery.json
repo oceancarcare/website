@@ -1,7 +1,7 @@
 {
   "items": [
     {
-      "name": "i-d1.png",
+      "name": "i-d1.webp",
       "description": "Our studio",
       "type": "image"
     },
@@ -11,12 +11,12 @@
       "type": "video"
     },
     {
-      "name": "hyundai-detailing-studio.png",
+      "name": "hyundai-detailing-studio.webp",
       "description": "Detailing in our illuminated studio",
       "type": "image"
     },
     {
-      "name": "i-d2.jpg",
+      "name": "i-d2.webp",
       "description": "Studio after dark",
       "type": "image"
     },
@@ -36,7 +36,7 @@
       "type": "video"
     },
     {
-      "name": "headlight-renewal-3m.png",
+      "name": "headlight-renewal-3m.webp",
       "description": "3M Headlight Care",
       "type": "image"
     }

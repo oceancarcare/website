@@ -8,44 +8,34 @@
     return React.createElement(t, p, ...c);
   };
   const html = htm.bind(h);
-  const LOGO = "assets/logo.png";
+  const LOGO = "assets/logo.webp";
   // Media: Cloudinary is the primary source, the local /assets copy is the automatic fallback.
-  // Files are looked up on Cloudinary by file name (e.g. assets/gallery/i-d1.png -> .../image/upload/i-d1.png).
+  // Files are looked up on Cloudinary by file name, so assets/gallery/i-d1.webp uses the Cloudinary image "i-d1".
+  // Images are delivered resized (w) with automatic format and quality (f_auto,q_auto) to keep data low.
   const CLOUD = "https://res.cloudinary.com/l9qao8sm";
   const isVid = (p) => /\.(mp4|webm|mov)$/i.test(p);
-  const cdn = (p) => CLOUD + (isVid(p) ? "/video" : "/image") + "/upload/" + p.split("/").pop();
+  const cdn = (p, w) => {
+    const f = p.split("/").pop();
+    if (isVid(f)) return CLOUD + "/video/upload/" + f;
+    const id = f.replace(/\.[a-z0-9]+$/i, "");
+    return CLOUD + "/image/upload/f_auto,q_auto" + (w ? ",w_" + w + ",c_limit" : "") + "/" + id;
+  };
   const fb = (local) => (e) => {
     const el = e.currentTarget;
     if (el.dataset.fb) return;
     el.dataset.fb = "1";
     el.src = local;
   };
-  // CSS background images (defined in styles.css): use Cloudinary, revert to local if it fails to load.
-  [
-    ["--i-about", "assets/about/studio.webp"],
-    ["--i-d1", "assets/gallery/i-d1.png"],
-    ["--i-coupe", "assets/gallery/hyundai-detailing-studio.png"],
-    ["--i-suv", "assets/gallery/i-d2.jpg"],
-    ["--u-hero", "assets/u-hero.jpg"],
-    ["--u-car", "assets/u-car.jpg"],
-    ["--u-cc", "assets/services/u-cc.png"],
-    ["--u-pp", "assets/services/u-pp.png"],
-    ["--u-gc", "assets/services/u-gc.png"],
-    ["--u-ar", "assets/services/u-ar.jpg"],
-    ["--u-sf", "assets/services/sunfilm_protection.png"],
-    ["--s0", "assets/s0.jpg"],
-    ["--s1", "assets/s1.jpg"],
-    ["--s2", "assets/s2.jpg"],
-    ["--s3", "assets/s3.jpg"],
-    ["--s4", "assets/s4.jpg"],
-    ["--s5", "assets/s5.jpg"],
-  ].forEach(([name, local]) => {
-    const root = document.documentElement;
-    root.style.setProperty(name, 'url("' + cdn(local) + '")');
-    const probe = new Image();
-    probe.onerror = () => root.style.setProperty(name, 'url("' + local + '")');
-    probe.src = cdn(local);
-  });
+  // Lazy-loaded image with Cloudinary first and local fallback; fills its parent like a CSS cover background.
+  const Pic = ({ src, w, alt, cls, eager }) =>
+    html`<img
+      class=${cls || "pic-fill"}
+      src=${cdn(src, w)}
+      onError=${fb(src)}
+      alt=${alt || ""}
+      loading=${eager ? "eager" : "lazy"}
+      decoding="async"
+    />`;
   const PHONE = "918086966660";
   // Set a local or hosted video URL to enable the optional detailing reel.
   const VIDEOS = ["", "", ""];
@@ -63,7 +53,7 @@
     {
       k: "Exterior Treatments",
       a: "ceramic",
-      u: "--u-cc",
+      u: "assets/services/u-cc.webp",
       d: "Deep gloss and long-lasting protection for your paint.",
       c: ["Deep gloss", "Hydrophobic"],
       long: [
@@ -75,7 +65,7 @@
     {
       k: "Interior Treatments",
       a: "germ",
-      u: "--u-gc",
+      u: "assets/services/u-gc.webp",
       d: "Interior treatment that removes 99% of bacteria.",
       c: ["Bacteria-free", "Hygiene care"],
       long: [
@@ -87,7 +77,7 @@
     {
       k: "Paint Protection Film (PPF)",
       a: "paint",
-      u: "--u-pp",
+      u: "assets/services/u-pp.webp",
       d: "Paint restoration and protection treatments, done by hand.",
       c: ["Restoration", "Protection"],
       long: [
@@ -99,7 +89,7 @@
     {
       k: "Anti Corrosion Treatments",
       a: "rust",
-      u: "--u-ar",
+      u: "assets/services/u-ar.webp",
       d: "A protective coat against rust and corrosion.",
       c: ["Underbody", "Corrosion defence"],
       long: [
@@ -111,7 +101,7 @@
     {
       k: "Sun Film Protection",
       a: "sunfilm",
-      u: "--u-sf",
+      u: "assets/services/sunfilm_protection.webp",
       d: "Heat and UV protection for a cooler, more comfortable cabin.",
       c: ["Heat rejection", "UV protection"],
       long: [
@@ -776,7 +766,7 @@
     return html`<article class="cd rv" onClick=${() => pick(s.k)}>
       <div class="im">
         <span class="no">0${i + 1}</span
-        >${s.u ? html`<div class="ph" style=${{ backgroundImage: "var(" + s.u + ")" }}></div>` : html`<${Art} k=${s.a} />`}
+        >${s.u ? html`<${Pic} src=${s.u} w=${700} alt=${s.k} cls="ph" />` : html`<${Art} k=${s.a} />`}
       </div>
       <div class="bd">
         <h3>${s.k}</h3>
@@ -877,14 +867,6 @@
       </defs>
     </svg>`;
   }
-  const STAGES = [
-    ["Exterior washing", "--u-gc"],
-    ["Foam wash", "--u-car"],
-    ["Paint correction", "--u-cc"],
-    ["Protection film", "--u-pp"],
-    ["Rust treatment", "--u-ar"],
-    ["Final result", "--u-hero"],
-  ];
   const STAGE_DATA = [
     {
       idx: "01",
@@ -1588,7 +1570,7 @@
           <div class="hero-top-row">
             <div class="hero-left-col">
               <div>
-                <a href=${THREE_M_LINK} target="_blank" rel="noopener noreferrer" aria-label="3M India auto care products"><img class="hero-3m-logo" src=${cdn("assets/3m_new_logo.png")} onError=${fb("assets/3m_new_logo.png")} loading="eager" fetchpriority="high" decoding="async" alt="3M" /></a>
+                <a href=${THREE_M_LINK} target="_blank" rel="noopener noreferrer" aria-label="3M India auto care products"><img class="hero-3m-logo" src=${cdn("assets/3m_new_logo.webp", 640)} onError=${fb("assets/3m_new_logo.webp")} loading="eager" fetchpriority="high" decoding="async" alt="3M" /></a>
                 <h1>
                   Fall in love<br />with <span class="bl">your car.</span>
                 </h1>
@@ -1612,6 +1594,7 @@
           <div class="hero-car-showcase">
             <div class="hero-car-glow"></div>
             <video
+              poster="assets/hero-poster.webp"
               src=${cdn("assets/hero-car-loop.mp4")}
               onError=${fb("assets/hero-car-loop.mp4")}
               loading="eager"
@@ -1674,27 +1657,24 @@
         <div class="gg">
           ${[
         {
-          image: "var(--i-d1)",
+          image: "assets/gallery/i-d1.webp",
           title: "Premium Studio",
           description: "A closer look at our premium automotive collection and studio.",
         },
         {
-          image: "var(--i-coupe)",
+          image: "assets/gallery/hyundai-detailing-studio.webp",
           title: "Luxury Coupe",
           description: "Experience elegant styling, sporty performance and refined details.",
         },
         {
-          image: "var(--i-suv)",
+          image: "assets/gallery/i-d2.webp",
           title: "Premium SUV",
           description: "Discover bold design, spacious comfort and a powerful presence.",
         },
       ].map(
         (g, i) => html`
               <div class="gallery-card rv" key=${i}>
-                <div
-                  class="gallery-image"
-                  style=${{ backgroundImage: g.image }}
-                ></div>
+                <div class="gallery-image"><${Pic} src=${g.image} w=${800} alt=${g.title} /></div>
                 <div class="gallery-info">
                   <h3>${g.title}</h3>
                   <p>${g.description}</p>
@@ -1793,8 +1773,8 @@
       x.t === "media"
         ? html`<div class=${"gallery-media-frame" + (big ? " large" : "")}>
             ${x.type === "video"
-            ? html`<video src=${cdn(x.src)} onError=${fb(x.src)} controls=${big} autoPlay=${big} muted playsinline preload="metadata"></video>`
-            : html`<img src=${cdn(x.src)} onError=${fb(x.src)} alt=${x.c} loading="lazy" />`}
+            ? html`<video src=${cdn(x.src) + (big ? "" : "#t=0.1")} onError=${fb(x.src)} controls=${big} autoPlay=${big} muted playsinline preload="metadata"></video>`
+            : html`<img src=${cdn(x.src, big ? 1600 : 800)} onError=${fb(x.src)} alt=${x.c} loading="lazy" decoding="async" />`}
           </div>`
         : x.t === "v"
           ? html`<${Reel} src=${VIDEOS[x.n]} n=${big ? 34 : 12} tag=${big} />`
@@ -1902,7 +1882,7 @@
               We bring technical expertise and industry knowledge to premium vehicle detailing, paint protection and specialized car care for individual customers. Our goal is to enhance each vehicle’s appearance, preserve its value and deliver an exceptional ownership experience through quality products, skilled professionals and personalized service.
             </p>
           </div>
-          <div class="big rv"></div>
+          <div class="big rv"><${Pic} src="assets/about/studio.webp" w=${1000} alt="Ocean Car Care studio" /></div>
         </div>
       </section>
       <section class="w sec" style=${{ paddingTop: 0 }}>
@@ -1955,7 +1935,7 @@
       <section class="w sec svd" style=${{ paddingTop: 30 }}>
         <button class="b svd-back" onClick=${() => go("services")}>← All services</button>
         <div class="svd-grid">
-          <div class="svd-img rv" style=${{ backgroundImage: "var(" + s.u + ")" }} role="img" aria-label=${s.k}></div>
+          <div class="svd-img rv"><${Pic} src=${s.u} w=${1000} alt=${s.k} eager=${true} /></div>
           <div class="svd-body rv">
             <span class="eb">Service 0${i + 1}</span>
             <h1>${s.k}</h1>
@@ -2126,7 +2106,7 @@
       <div class="w">
         <div class="gr">
           <div>
-            <img src=${cdn(LOGO)} onError=${fb(LOGO)} loading="eager" fetchpriority="high" decoding="async" alt="Ocean Car Detailing ZPA" />
+            <img src=${cdn(LOGO, 320)} onError=${fb(LOGO)} loading="eager" fetchpriority="high" decoding="async" alt="Ocean Car Detailing ZPA" />
             <p class="mu" style=${{ maxWidth: "26em", margin: 0 }}>
               Fall in love with your car.
             </p>
@@ -2172,7 +2152,7 @@
       <a class="three-m-ad-link" href=${THREE_M_LINK} target="_blank" rel="noopener noreferrer">
         <span class="three-m-ad-brand"><span>3M</span> INDIA · CAR CARE</span>
         <span class="three-m-ad-product">
-          <span class="three-m-ad-image"><img key=${product.src} src=${cdn(product.src)} onError=${fb(product.src)} alt=${product.name} /></span>
+          <span class="three-m-ad-image"><img key=${product.src} src=${cdn(product.src, 280)} onError=${fb(product.src)} alt=${product.name} /></span>
           <span class="three-m-ad-copy">
             <span class="three-m-ad-kicker">Featured product</span>
             <strong key=${product.name}>${product.name}</strong>
@@ -2271,7 +2251,7 @@
               onClick=${() => go("home")}
               aria-label="Ocean Car Detailing ZPA home"
             >
-              <img src=${cdn(LOGO)} onError=${fb(LOGO)} loading="eager" fetchpriority="high" decoding="async" alt="Ocean Car Detailing ZPA" />
+              <img src=${cdn(LOGO, 320)} onError=${fb(LOGO)} loading="eager" fetchpriority="high" decoding="async" alt="Ocean Car Detailing ZPA" />
             </button>
            
           </div>
